@@ -1,0 +1,49 @@
+@use "../mixins"
+
+$content-spacing: 16px
+$navbar-height: 56px
+
+$radius: 8px
+$shadow: 0 0.5em 1em -0.125em rgba(0, 0, 0, .1), 0 0px 0 1px rgba(0, 0, 0, .02)
+
+$VideoPlayer-minimum-spacing: 24px
+$VideoPlayer-breakpoint-nospace: 769px
+
+$VideoInfo-title-size: _clamp(1.5em, 4vmin, 3em)
+$VideoInfo-breakpoint-spacing: 12px
+
+:root
+	--VideoPlayer-max-width: calc(100% - 2 * max(#{$VideoPlayer-minimum-spacing}, var(--scrollbar-width)))
+	--VideoPlayer-max-height: calc(100vh - #{$navbar-height + 2 * $content-spacing} - 1.6 * #{$VideoInfo-title-size})
+	--VideoPlayer-max-height: calc(100svh - #{$navbar-height + 2 * $content-spacing} - 1.6 * #{$VideoInfo-title-size})
+
+.VideoPlayer, .VideoInfo
+	min-width: 240px
+	@media screen and (min-width: 769px), print
+		max-width: min(var(--VideoPlayer-max-width), calc(var(--VideoPlayer-max-height) * 16 / 9))
+
+.VideoPlayer
+	+clip
+	margin: $content-spacing auto
+	@media screen and (min-width: 769px), print
+		border-radius: _clamp(8px, 1.5vmin, 32px)
+		.no-scale &
+			border-radius: 8px
+	.no-scale &
+		width: fit-content
+	video
+		width: 100%
+		height: 100%
+
+.VideoInfo
+	margin: 0 auto
+	padding: 0 $VideoInfo-breakpoint-spacing
+	@media screen and (min-width: 769px), print
+		padding: 0
+	h1
+		+clip
+		margin-bottom: 0.28em
+		font-size: $VideoInfo-title-size
+		font-weight: bold
+		letter-spacing: _clamp(-.01em, -.026667vmin, -.02em)
+		line-height: 1.25

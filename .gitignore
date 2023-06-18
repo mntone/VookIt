@@ -1,0 +1,21 @@
+# Logs
+logs
+*.log
+
+# Dependency directories
+node_modules/
+
+# dotenv environment variable files
+.env
+
+# Stores VSCode versions used for testing VSCode extensions
+.vscode-test
+
+# Ignore redis binary dump (dump.rdb) files
+*.rdb
+
+# VookIt! (Clogs/Hawks) default asset directories
+.assets/
+.dev/
+.temp/
+m/

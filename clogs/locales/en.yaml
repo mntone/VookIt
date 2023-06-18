@@ -1,0 +1,51 @@
+sitename: "VookIt!"
+
+navbar:
+  upload: Upload
+  settings: Settings
+  modal:
+    appearance: Appearance
+    theme: Theme
+    theme_default: Default
+    theme_light: Light
+    theme_dark: Dark
+    animation: Animation
+    noscale: No Video Scaling
+    save: Save
+    cancel: Cancel
+    close: Close
+
+toppage:
+  error:
+    until: "The variable `until` should be UNIX timestamp."
+
+viewpage:
+  error:
+    id: "The variable `id` should be in url safe base64."
+
+postpage:
+  pagetitle: Post
+  title: Title (required)
+  description: Description
+  visibility: Visibility
+  visibility_private: Private
+  visibility_publicIfAvailable: Public (if available)
+  post: Post
+  cancel: Cancel
+
+uploadpage:
+  pagetitle: Upload
+  help: Require MP4 or WebM file
+  choose: Choose a file…
+
+errorpage:
+  pagetitle: Error!
+  message: "Status code: %d"
+
+formats:
+  avc1: H.264/AVC {{height}}p ({{bitrate}}bps)
+  mp4a_64k: HE-AAC LQ (64 kbps)
+  mp4a_128k: AAC-LC MQ (128 kbps)
+  mp4a_256k: AAC-LC HQ (256 kbps)
+  opus_48k: Opus LQ (48 kbps)
+  opus_96k: Opus MQ (96 kbps)

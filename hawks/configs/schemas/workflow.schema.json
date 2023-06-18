@@ -1,0 +1,114 @@
+{
+	"title": "Workflow schema",
+	"type": "object",
+	"properties": {
+		"priority": {
+			"title": "Priority of Workflow",
+			"type": "array",
+			"minItems": 1,
+			"items": {
+				"title": "Format Type Name (\"types.*\")",
+				"type": "string"
+			}
+		},
+		"workflows": {
+			"title": "Workflows for Encoding",
+			"type": "object",
+			"additionalProperties": {
+				"title": "Workflow Name",
+				"type": "object",
+				"properties": {
+					"constraints": {
+						"$ref": "constraints.schema.json#/$defs"
+					},
+					"flows": {
+						"title": "Workflow",
+						"type": "array",
+						"minItems": 1,
+						"items": {
+							"type": "object",
+							"properties": {
+								"encodes": {
+									"title": "Encoding Jobs",
+									"type": "array",
+									"minItems": 1,
+									"items": {
+										"type": "object",
+										"properties": {
+											"priority": {
+												"title": "Job Priority",
+												"description": "Automatically add weight to priority.\nFor example, group \"avc1:ld\" consists of format \"avc1_180p\" and \"avc1_360p\". The priority of its group is 1500. These jobs add +10 and +20, such as 1510 and 1520.\n\nIn the future, you can add custom weighting from -9 to +9.",
+												"type": "number"
+											},
+											"name": {
+												"title": "Include format name or format group name",
+												"type": "string"
+											},
+											"queueName": {
+												"title": "Use Custom Queue",
+												"type": "string",
+												"default": "encode"
+											}
+										},
+										"required": [
+											"priority"
+										]
+									}
+								},
+								"postprocesses": {
+									"title": "Post-processes",
+									"type": "array",
+									"minItems": 0,
+									"items": {
+										"title": "Post-process",
+										"type": "object",
+										"properties": {
+											"name": {
+												"title": "Postprocess Name",
+												"type": "string"
+											},
+											"includesNames": {
+												"title": "Include Formats",
+												"type": "array",
+												"minItems": 1,
+												"items": {
+													"title": "Format name / format group name",
+													"type": "string"
+												}
+											},
+											"hls": {
+												"title": "Enable HLS",
+												"description": "Default is false.",
+												"type": "boolean",
+												"default": false
+											},
+											"audioonly": {
+												"title": "Enable Audio only",
+												"description": "Default is false.",
+												"type": "boolean",
+												"default": false
+											}
+										},
+										"required": [
+											"name"
+										]
+									}
+								}
+							},
+							"required": [
+								"encodes"
+							]
+						}
+					}
+				},
+				"required": [
+					"flows"
+				]
+			}
+		}
+	},
+	"required": [
+		"priority",
+		"workflows"
+	]
+}

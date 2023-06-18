@@ -1,0 +1,31 @@
+# WebP
+id: 0
+idstr: webp
+type: image
+enabled: true
+use: ffmpeg
+ext: ".webp"
+singleJob: true # [TODO]
+
+encoder:
+  quality: 85
+  resize: crop
+
+variants:
+- id: 18030
+  idstr: webp_225p_1x
+  enabled: true
+  filename: "t@1.webp"
+  encoder:
+    maxSize: 400x225
+    quality: 25
+
+- id: 18040
+  idstr: webp_225p_2x
+  enabled: true
+  filename: "t@2.webp"
+  constraints:
+    height: ">=450"
+  encoder:
+    maxSize: 800x450
+    quality: 12

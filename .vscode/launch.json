@@ -1,0 +1,77 @@
+{
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"type": "node",
+			"request": "launch",
+			"name": "Clogs (frontend) with nodemon",
+			"skipFiles": [
+				"<node_internals>/**"
+			],
+			"runtimeExecutable": "${workspaceFolder}/node_modules/nodemon/bin/nodemon.js",
+			"program": "${workspaceFolder}/clogs/index.js",
+			"args": [
+				"--watch",
+				"./clogs",
+				"--watch",
+				"./utils",
+				"--ext",
+				"js,jsx,yaml",
+				"--ignore",
+				"**/__test__/**",
+				"--delay",
+				"1"
+			],
+			"env": {
+				"NODE_ENV": "development"
+			}
+		},
+		{
+			"type": "node",
+			"request": "launch",
+			"name": "Clogs (frontend)",
+			"skipFiles": [
+				"<node_internals>/**"
+			],
+			"program": "${workspaceFolder}/clogs/index.js",
+			"env": {
+				"NODE_ENV": "development"
+			}
+		},
+		{
+			"type": "node",
+			"request": "launch",
+			"name": "Hawks (backend) with nodemon",
+			"skipFiles": [
+				"<node_internals>/**"
+			],
+			"runtimeExecutable": "${workspaceFolder}/node_modules/nodemon/bin/nodemon.js",
+			"program": "${workspaceFolder}/hawks/workers/launch.js",
+			"args": [
+				"--watch",
+				"./hawks",
+				"--ext",
+				"js,yaml",
+				"--ignore",
+				"**/__test__/**",
+				"--delay",
+				"3"
+			],
+			"env": {
+				"NODE_ENV": "development"
+			}
+		},
+		{
+			"type": "node",
+			"request": "launch",
+			"name": "Hawks (backend)",
+			"skipFiles": [
+				"<node_internals>/**"
+			],
+			"program": "${workspaceFolder}/hawks/workers/launch.js",
+			"env": {
+				"NODE_ENV": "development"
+			}
+		}
+	]
+}

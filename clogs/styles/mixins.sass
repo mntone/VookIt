@@ -1,0 +1,22 @@
+
+// Safari 11.0-13.0 / iOS 11.3-13.3
+@function _clamp($minValue, $value, $maxValue)
+	@return min($maxValue, max($value, $minValue))
+
+=clip
+	overflow: hidden
+	overflow: clip
+
+=unselectable
+	-webkit-touch-callout: none
+	-webkit-user-select: none
+	// -moz-user-select: none // 0.09%
+	-ms-user-select: none // 0.37%
+	user-select: none
+
+=reduced-motion
+	.use-reduced-motion &
+		@content
+	@media (prefers-reduced-motion)
+		body:not(.no-reduced-motion) &
+			@content

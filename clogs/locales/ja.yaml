@@ -1,0 +1,52 @@
+sitename: "VookIt!"
+
+navbar:
+  upload: アップロード
+  settings: 設定
+  modal:
+    appearance: 外観の設定
+    theme: テーマ
+    theme_default: 既定
+    theme_light: ライト
+    theme_dark: ダーク
+    animation: アニメーション効果
+    noscale: ビデオを拡大しない
+    save: 保存
+    cancel: キャンセル
+    close: 閉じる
+
+toppage:
+  error:
+    until: "変数 `until` はUNIXタイムスタンプである必要があります。"
+
+viewpage:
+  error:
+    id: "変数 `id` はURL安全BASE64である必要があります。"
+
+postpage:
+  pagetitle: 投稿
+  title: 題名 (必須)
+  description: 説明
+  visibility: 公開範囲
+  visibility_private: 非公開
+  visibility_publicIfAvailable: 公開 (可能であれば)
+  post: 投稿
+  cancel: キャンセル
+
+uploadpage:
+  pagetitle: アップロード
+  help: MP4またはWebMのファイルをアップロードできます
+  upload: アップロード
+  choose: ファイルを選択…
+
+errorpage:
+  pagetitle: エラー！
+  message: "ステータス コード: %d"
+
+formats:
+  avc1: H.264/AVC {{height}}p ({{bitrate}}bps)
+  mp4a_64k: HE-AAC LQ (64 kbps)
+  mp4a_128k: AAC-LC MQ (128 kbps)
+  mp4a_256k: AAC-LC HQ (256 kbps)
+  opus_32k: Opus LQ (32 kbps)
+  opus_96k: Opus MQ (96 kbps)

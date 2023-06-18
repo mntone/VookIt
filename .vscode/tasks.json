@@ -1,0 +1,21 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "webpack (watch)",
+			"type": "npm",
+			"script": "webpack:serve",
+			"runOptions": {
+				"runOn": "folderOpen"
+			}
+		},
+		{
+			"label": "Sass (watch)",
+			"type": "npm",
+			"script": "sass:serve",
+			"runOptions": {
+				"runOn": "folderOpen"
+			}
+		}
+	]
+}

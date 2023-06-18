@@ -1,0 +1,106 @@
+priority:
+- sdr_hd
+- sdr_sd
+
+# If you work encodes on other queue, add the param `queueName` to job object.
+workflows:
+  image:
+    flows:
+      - encodes:
+        - { priority: 1000, name: "jpeg" }
+        - { priority: 1200, name: "webp" }
+        - { priority: 1300, name: "avif" }
+        postprocesses:
+        - name: "dummy"
+          audioonly: true
+  sdr_sd:
+    constraints:
+      height: ">=480"
+    flows:
+      - encodes:
+        - { priority: 1000, name: "jpeg" }
+        - { priority: 1100, name: "mp4a:sq" }
+        - { priority: 1200, name: "webp" }
+        - { priority: 1300, name: "avif" }
+        - { priority: 1300, name: "opus" }
+        - { priority: 1500, name: "avc1:ld" }
+        postprocesses:
+        - name: "st:avc1:ld"
+          includesNames: ["avc1:ld", "mp4a:sq"]
+          workdir: "./.avc1_ld"
+          hls: true
+      - encodes:
+        - { priority: 2000, name: "mp4a:hq" }
+        - { priority: 2500, name: "avc1:sd_hq" }
+        - { priority: 2600, name: "hvc1:ld" }
+        postprocesses:
+        - name: st:avc1:sd_hq
+          includesNames: ["avc1:ld", "avc1:sd_hq", "mp4a"]
+          workdir: "./.avc1_sd"
+          hls: true
+        - name: st:hvc1:ld
+          includesNames: ["hvc1:ld", "mp4a"]
+          workdir: "./.hvc1_ld"
+          hls: true
+      - encodes:
+        - { priority: 3600, name: "hvc1:sd_hq" }
+  sdr_hd:
+    constraints:
+      height: ">=720"
+    flows:
+      - encodes:
+        - { priority: 1000, name: "jpeg" }
+        - { priority: 1100, name: "mp4a:sq" }
+        - { priority: 1200, name: "webp" }
+        - { priority: 1300, name: "avif" }
+        - { priority: 1300, name: "opus" }
+        - { priority: 1500, name: "avc1:ld" }
+        postprocesses:
+        - name: "st:avc1:ld"
+          includesNames: ["avc1:ld", "mp4a:sq"]
+          workdir: "./.avc1_ld"
+          hls: true
+      - encodes:
+        #- { priority: 2500, name: "avc1:sd" }
+        - { priority: 2600, name: "hvc1:ld" }
+        postprocesses:
+        #- name: st:avc1:sd
+        #  includesNames: ["avc1:ld", "avc1:sd", "mp4a:sq"]
+        #  workdir: "./.avc1_sd"
+        #  hls: true
+        - name: st:hvc1:ld
+          includesNames: ["hvc1:ld", "mp4a:sq"]
+          workdir: "./.hvc1_ld"
+          hls: true
+      - encodes:
+        - { priority: 3000, name: "mp4a:hq" }
+        - { priority: 3500, name: "avc1:hd" }
+        - { priority: 3600, name: "hvc1:sd" }
+        postprocesses:
+        - name: st:avc1:hd
+          includesNames: ["avc1:ld", "avc1:sd", "avc1:hd", "mp4a"]
+          workdir: "./.avc1_hd"
+          hls: true
+        - name: st:hvc1:sd
+          includesNames: ["hvc1:ld", "hvc1:sd", "mp4a"]
+          workdir: "./.hvc1_sd"
+          hls: true
+      - encodes:
+        - { priority: 4500, name: "avc1:fhd" }
+        - { priority: 4600, name: "hvc1:hd" }
+        postprocesses:
+        - name: st:avc1:fhd
+          includesNames: ["avc1:ld", "avc1:sd", "avc1:hd", "avc1:fhd", "mp4a"]
+          workdir: "./.avc1_fhd"
+          hls: true
+        - name: st:hvc1:hd
+          includesNames: ["hvc1:ld", "hvc1:sd", "hvc1:hd", "mp4a"]
+          workdir: "./.hvc1_hd"
+          hls: true
+      - encodes:
+        - { priority: 5600, name: "hvc1:fhd" }
+        postprocesses:
+        - name: st:hvc1:fhd
+          includesNames: ["hvc1:ld", "hvc1:sd", "hvc1:hd", "hvc1:fhd", "mp4a"]
+          workdir: "./.hvc1_fhd"
+          hls: true

@@ -1,0 +1,205 @@
+{
+	"title": "Format schema",
+	"type": "object",
+	"properties": {
+		"id": {
+			"title": "Format ID",
+			"type": "number"
+		},
+		"idstr": {
+			"title": "Readable Format ID",
+			"type": "string"
+		},
+		"type": {
+			"title": "Media type",
+			"type": "string",
+			"enum": [
+				"audio",
+				"image",
+				"video"
+			]
+		},
+		"enabled": {
+			"title": "Enable Format if True",
+			"type": "boolean",
+			"default": true
+		},
+		"use": {
+			"title": "Use Encoder if True",
+			"type": "string",
+			"enum": [
+				"ffmpeg"
+			],
+			"default": "ffmpeg"
+		},
+		"ext": {
+			"title": "Output File Extension",
+			"type": "string",
+			"enum": [
+				".avif",
+				".jpg",
+				".jpeg",
+				".m4a",
+				".m4v",
+				".mp3",
+				".mp4",
+				".opus",
+				".webm",
+				".webp"
+			],
+			"default": ".mp4"
+		},
+		"encoder": {
+			"$ref": "#/$defs/encoder"
+		},
+		"variants": {
+			"title": "Variants",
+			"type": "array",
+			"minItems": 1,
+			"items": {
+				"title": "Variant",
+				"type": "object",
+				"properties": {
+					"id": {
+						"title": "Variant ID",
+						"type": "number"
+					},
+					"idstr": {
+						"title": "Readable Variant ID",
+						"type": "string"
+					},
+					"group": {
+						"title": "Variant Group IDs",
+						"type": "array",
+						"minItems": 1,
+						"items": {
+							"title": "Variant Group ID",
+							"type": "string"
+						},
+						"uniqueItems": true
+					},
+					"enabled": {
+						"title": "Enable Variant if True",
+						"type": "boolean",
+						"default": true
+					},
+					"bitrate": {
+						"title": "Bitrate",
+						"type": ["string", "number"],
+						"pattern": "^([0-9]*\\.)?[0-9]+([kKmMgGtTpPeE])?$",
+						"minimum": 0,
+						"default": "1M"
+					},
+					"constraints": {
+						"$ref": "constraints.schema.json#/$defs"
+					},
+					"filename": {
+						"title": "Filename",
+						"description": "Default is \"[idstr][ext]\"."
+					},
+					"encoder": {
+						"$ref": "#/$defs/encoder"
+					}
+				},
+				"required": [
+					"id",
+					"idstr",
+					"enabled"
+				]
+			}
+		}
+	},
+	"required": [
+		"id",
+		"idstr",
+		"type",
+		"use",
+		"ext",
+		"enabled"
+	],
+	"$defs": {
+		"encoder": {
+			"title": "Encoder Config",
+			"type": "object",
+			"properties": {
+				"codec": {
+					"title": "Codec",
+					"description": "\"vcodec\" in Video, \"acodec\" in Audio.",
+					"type": "string",
+					"enum": [
+						"libx264",
+						"libx265",
+						"libvpx",
+						"libvpx-vp9",
+						"libaom-av1",
+
+						"libmp3lame",
+						"aac",
+						"aac_at",
+						"libopus"
+					]
+				},
+				"pixelFormat": {
+					"title": "Pixel Format",
+					"type": "string",
+					"enum": [
+						"default",
+						"yuv420p",
+						"yuv420p10le"
+					],
+					"default": "yuv420p"
+				},
+				"maxWidth": {
+					"title": "Maximum Width",
+					"type": "number",
+					"minimum": 1,
+					"maximum": 99999,
+					"default": 1280
+				},
+				"maxSize": {
+					"title": "Maximum Resolution",
+					"type": "string",
+					"pattern": "^[1-9][0-9]{0,4}x[1-9][0-9]{0,3}$",
+					"default": "1920x1080"
+				},
+				"maxFramerate": {
+					"title": "Maximum Framerate",
+					"description": "For example, 30 (\"number\"), \"30000/1001\" (\"string\") or `{ numerator: 30000, denominator: 1001 }` (\"object\")",
+					"default": 30,
+					"anyOf": [
+						{
+							"type": "number",
+							"minimum": 0,
+							"default": 30
+						},
+						{
+							"type": "string",
+							"pattern": "^[1-9][0-9]*/[1-9][0-9]*$",
+							"default": "30000/1001"
+						},
+						{
+							"type": "object",
+							"properties": {
+								"numerator": {
+									"type": "number",
+									"minimum": 1,
+									"default": 30000
+								},
+								"denominator": {
+									"type": "number",
+									"minimum": 1,
+									"default": 1001
+								}
+							},
+							"required": [
+								"numerator",
+								"denominator"
+							]
+						}
+					]
+				}
+			},
+			"additionalProperties": true
+		}
+	}
+}

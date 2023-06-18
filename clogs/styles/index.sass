@@ -1,0 +1,62 @@
+@import "../../node_modules/bulma/sass/utilities/_all"
+
+// TODO: move to initial-variables.sass
+$radius-small: 4px
+$radius: 8px
+$radius-large: 8px
+
+// Basic
+@import "./base/minireset"
+@import "./base/generic"
+@import "../../node_modules/bulma/sass/base/animations"
+
+@import "../../node_modules/bulma/sass/helpers/color"
+
+// For development
+@import "../../node_modules/bulma/sass/helpers/spacing"
+
+@import "../../node_modules/bulma/sass/helpers/typography"
+@import "../../node_modules/bulma/sass/helpers/other"
+
+// Layouts
+@import "./layouts/navbar"
+@import "./layouts/top"
+@import "./layouts/view"
+
+@import "../../node_modules/bulma/sass/elements/other"
+@import "../../node_modules/bulma/sass/elements/box"
+@import "../../node_modules/bulma/sass/elements/button"
+@import "../../node_modules/bulma/sass/elements/container"
+@import "../../node_modules/bulma/sass/elements/image"
+@import "../../node_modules/bulma/sass/elements/title"
+
+$modal-background-background-color: bulmaRgba($scheme-invert, 0.86)
+@import "../../node_modules/bulma/sass/components/modal"
+
+@supports (-webkit-backdrop-filter: blur(8px))
+  .modal-background
+    background-color: bulmaRgba($scheme-invert, 0.66)
+    -webkit-backdrop-filter: blur(8px)
+@supports (backdrop-filter: blur(8px))
+  .modal-background
+    background-color: bulmaRgba($scheme-invert, 0.66)
+    backdrop-filter: blur(8px)
+
+@import "../../node_modules/bulma/sass/form/shared"
+@import "../../node_modules/bulma/sass/form/select"
+@import "../../node_modules/bulma/sass/form/tools"
+@import "../../node_modules/bulma-switch/src/sass"
+
+$card-radius: $radius
+@import "../../node_modules/bulma/sass/components/card"
+
+.card-footer-item
+  padding-top: calc(0.75rem - 1px)
+.card-footer-item.p-2
+  padding-top: calc(0.5rem - 1px) !important
+
+@import "./components/VideoCard"
+
+// Delay
+@import "./components/AppearanceModal"
+@import "./components/Footer"

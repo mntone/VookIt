@@ -1,0 +1,51 @@
+@use "sass:math"
+
+$content-spacing: 16px
+
+$navbar-height: 56px
+
+$navbar-item-color: $text
+$navbar-item-hover-color: $link
+
+$navbar-title-color: $text-strong
+
+// navbar-container
+.nnc
+	contain: strict
+	display: flex
+	align-items: flex-end
+	height: $navbar-height
+
+// navbar
+.nn
+	display: flex
+	width: 100%
+	max-height: $navbar-height
+	align-items: center
+	justify-content: space-between
+
+.n-item
+	display: block
+	padding-inline: 0.75rem
+
+a.n-item
+	&:focus,
+	&:focus-within,
+	&:hover,
+	&.is-active
+		color: $navbar-item-hover-color // TODO move to paint
+
+.n-brand
+	.n-item
+		+ltr-property("padding", 0, false)
+
+.n-end
+	justify-content: flex-end
+	.n-item
+		+ltr-property("padding", 0, true)
+
+.n-title // .is-3
+	color: $navbar-title-color // TODO move to paint
+	font-size: min(floor(math.div($navbar-height, 1.125) - $content-spacing), 2rem)
+	font-weight: 600 // TODO move to paint
+	line-height: 1.125

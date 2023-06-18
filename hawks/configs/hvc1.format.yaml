@@ -1,0 +1,107 @@
+# ISO/IEC 23008-2 High Efficiency Video Coding
+id: 110000
+idstr: hvc1
+type: video
+enabled: false
+use: ffmpeg
+ext: ".mp4"
+
+encoder:
+  codec: libx265
+  tag: hvc1 # Require Apple platforms
+  pixelFormat: yuv420p
+  profile: "main"
+  preset: "slow"
+  fpsmax: 30
+  sc_threshold: 0
+
+tune:
+
+variants:
+- id: 110180
+  idstr: hvc1_180p
+  group: ["ld"]
+  enabled: true
+  bitrate: 256k
+  constraints:
+    height: ">=180"
+  encoder:
+    maxSize: 432x180
+    maxFramerate: 30
+
+- id: 110240
+  idstr: hvc1_240p
+  group: ["ld"]
+  enabled: false
+  bitrate: 341k
+  constraints:
+    height: ">=240"
+  encoder:
+    maxSize: 576x240
+    maxFramerate: 30
+
+- id: 110360
+  idstr: hvc1_360p
+  group: ["ld"]
+  enabled: true
+  bitrate: 512k
+  constraints:
+    height: ">=360"
+  encoder:
+    maxSize: 864x360
+    maxFramerate: 30
+
+- id: 110480
+  idstr: hvc1_480p
+  group: ["sd"]
+  enabled: false
+  bitrate: 0.8M
+  constraints:
+    height: ">=480"
+  encoder:
+    maxSize: 1152x480
+    maxFramerate: 30
+
+- id: 110482
+  idstr: hvc1_480p_hq
+  group: ["sd_hq"]
+  enabled: true
+  bitrate: 1.2M
+  constraints:
+    height: ">=480"
+  encoder:
+    maxSize: 1152x480
+    maxFramerate: 30
+
+- id: 110540
+  idstr: hvc1_540p
+  group: ["sd"]
+  enabled: false
+  bitrate: 1M
+  constraints:
+    height: ">=540"
+  encoder:
+    maxSize: 1296x540
+    maxFramerate: 30
+
+- id: 110720
+  idstr: hvc1_720p
+  group: ["hd"]
+  enabled: true
+  bitrate: 1.6M
+  constraints:
+    height: ">=720"
+  encoder:
+    maxSize: 1728x720
+    maxFramerate: 30
+
+- id: 111080
+  idstr: hvc1_1080p
+  group: ["fhd"]
+  enabled: true
+  bitrate: 3.2M
+  constraints:
+    height: ">=1080"
+  encoder:
+    maxSize: 2592x1080
+    maxFramerate: 30

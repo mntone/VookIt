@@ -1,0 +1,86 @@
+@use "../mixins"
+
+@forward "../../../node_modules/bulma/sass/components/card"
+
+=aspect-ratio($width, $height)
+	position: relative
+	padding-top: calc(100% * $height / $width)
+	img
+		position: absolute
+		top: 0
+		left: 0
+		right: 0
+		bottom: 0
+	@supports (aspect-ratio: #{$width} / $height)
+		position: static
+		padding-top: 0
+		aspect-ratio: #{$width} / $height
+		img
+			position: static
+			top: auto
+			left: auto
+			right: auto
+			bottom: auto
+
+$VideoCard-color: #000000
+$VideoCard-radius: 16px
+
+.VideoCard
+	+clip
+	position: relative
+	z-index: 1
+	border-radius: $VideoCard-radius
+	box-shadow: 0 0 2px rgba(0, 0, 0, .12), 0 2px 4px rgba(0, 0, 0, .14), inset 0 0 0px 2px transparent
+	transition: box-shadow .25s ease-in-out
+	+unselectable
+	&:hover
+		box-shadow: 0 0 2px rgba(0, 0, 0, .12), 0 8px 16px rgba(0, 0, 0, .14), inset 0 0 0px 5px white // last params is current background
+	+reduced-motion
+		transition: none 0s
+
+	figure
+		+aspect-ratio(16, 9)
+	img
+		width: 100%
+		height: auto
+		vertical-align: top
+		-webkit-user-drag: none
+		user-drag: none
+	&-content
+		padding: .75em
+		:not(.is-admin) &
+			padding-top: .5em
+	h2
+		+clip
+		padding: .5rem .5rem .05em .75rem
+		font-size: 1.25em
+		font-weight: bold
+		letter-spacing: -.01em
+		white-space: nowrap
+		text-overflow: ellipsis
+		.is-admin &
+			padding-top: .75rem
+	&-time
+		padding: 0 .5rem .75rem .75rem
+		font-size: .75em
+
+	&-link
+		color: $VideoCard-color
+		&:after
+			position: absolute
+			top: 0
+			left: 0
+			border: 3px solid $primary
+			border-radius: $VideoCard-radius
+			content: ""
+			width: 100%
+			height: 100%
+			opacity: 0
+			transition: opacity .25s ease-in-out
+			+reduced-motion
+				transition: none 0s
+			.is-admin &
+				border-bottom-left-radius: 0
+				border-bottom-right-radius: 0
+		&:hover:after
+			opacity: 1

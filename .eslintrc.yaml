@@ -1,0 +1,96 @@
+root: true
+plugins:
+  - import
+  - jest
+  - jsdoc
+  - node
+  - react
+extends:
+  - eslint:recommended
+  - plugin:import/recommended
+  - plugin:import/errors
+  - plugin:jest/recommended
+  - plugin:jsdoc/recommended
+  - plugin:react/recommended
+env:
+  es2022: true,
+  node: true
+parserOptions:
+  ecmaFeatures:
+    jsx: true
+  ecmaVersion: 13
+  sourceType: script
+rules:
+  camelcase: ["error"]
+  default-case: ["error"]
+  default-case-last: ["error"]
+  default-param-last: ["error"]
+  eqeqeq: ["error", "always", { "null": "ignore" }]
+  no-duplicate-case: ["error"]
+  no-new-symbol: ["error"]
+  no-var: ["error"]
+  prefer-const: ["error"]
+  prefer-named-capture-group: ["error"]
+  radix: ["error"]
+  spaced-comment: ["error", "always"]
+  # Layout & Formatting
+  array-bracket-spacing: ["error"]
+  arrow-spacing: ["error"]
+  arrow-parens: ["warn", "as-needed"]
+  block-spacing: ["error"]
+  comma-dangle: ["error", "always-multiline"]
+  comma-spacing: ["error"]
+  computed-property-spacing: ["error"]
+  eol-last: ["warn", "always"]
+  func-call-spacing: ["warn"]
+  implicit-arrow-linebreak: ["warn"]
+  indent: ["error", "tab"]
+  jsx-quotes: ["error", "prefer-double"]
+  linebreak-style: ["error", "unix"]
+  new-parens: ["error"]
+  no-mixed-spaces-and-tabs: ["error", "smart-tabs"]
+  no-multi-spaces: ["warn"]
+  no-trailing-spaces: ["warn"]
+  no-whitespace-before-property: ["error"]
+  operator-linebreak: ["error", "before"]
+  padded-blocks: ["error", "never"]
+  quotes: ["error", "single", { avoidEscape: true }]
+  semi: ["error", "never"]
+  semi-spacing: ["error"]
+  semi-style: ["error", "last"]
+  space-in-parens: ["error", "never"]
+  space-infix-ops: ["error", { int32Hint: true }]
+  space-unary-ops: ["error"]
+  # import
+  "import/exports-last": ["error"]
+  "import/first": ["error"]
+  "import/newline-after-import": ["error"]
+  "import/no-dynamic-require": ["error"]
+  "import/no-unassigned-import": ["error"]
+  "import/order": 
+  - "warn"
+  - groups: ["builtin", "external", "internal", "parent", "sibling", "index", "object"]
+    newlines-between: "always"
+    alphabetize:
+      order: "asc"
+      caseInsensitive: true
+    pathGroups:
+    - { "pattern": "@constants/**", group: "internal", position: "after" }
+    warnOnUnassignedImports: true
+  # node
+  "node/no-deprecated-api": ["error"]
+  "node/no-exports-assign": ["error"]
+  "node/no-missing-require":
+    - "error"
+    - tryExtensions: [".js", ".jsx"]
+  "node/no-path-concat": ["error"]
+  # jsdoc
+  "jsdoc/check-line-alignment": ["error", "always"]
+  "jsdoc/require-param-description": 0
+  "jsdoc/require-param-type": 0
+  "jsdoc/require-property-description": 0
+  "jsdoc/require-property-type": 0
+  "jsdoc/require-returns-description": 0
+  "jsdoc/require-returns-type": 0
+  # React
+  "react/self-closing-comp": ["error"]

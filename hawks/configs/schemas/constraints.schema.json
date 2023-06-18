@@ -1,0 +1,24 @@
+{
+	"$defs": {
+		"title": "Constraints",
+		"description": "Enable if cond is All True.",
+		"type": "object",
+		"properties": {
+			"width": {
+				"title": "Constraint for Width",
+				"type": "string",
+				"pattern": "^(<|<=|>|>=)[1-9][0-9]{0,4}$"
+			},
+			"height": {
+				"title": "Constraint for Height",
+				"type": "string",
+				"pattern": "^(<|<=|>|>=)[1-9][0-9]{0,3}$"
+			},
+			"bitrate": {
+				"title": "Constraint for Bitrate",
+				"type": "string",
+				"pattern": "^(<|<=|>|>=)[1-9][0-9]*$"
+			}
+		}
+	}
+}

@@ -1,0 +1,29 @@
+# Joint Photographic Experts Group
+id: 0
+idstr: jpeg
+type: image
+enabled: true
+use: ffmpeg
+ext: ".jpg"
+singleJob: true # [TODO]
+
+encoder:
+  quality: 8
+  resize: crop
+
+variants:
+- id: 18010
+  idstr: jpeg_225p_1x
+  enabled: true
+  filename: "t@1.jpg"
+  encoder:
+    maxSize: 400x225
+    quality: 8
+
+- id: 18020
+  idstr: jpeg_225p_2x
+  enabled: true
+  filename: "t@2.jpg"
+  encoder:
+    maxSize: 800x450
+    quality: 18

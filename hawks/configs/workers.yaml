@@ -1,0 +1,16 @@
+# The n-th queue name is 'queue_name:n'.
+queues:
+  # Detect media format and dispatch tasks.
+  init:
+    name: "init"
+    maxCount: 1
+
+  # Encode media like H.264/AVC, AV1 and so on.
+  encode:
+    name: "encode"
+    maxCount: 2
+
+  # Generate DASH & HLS, and clean files up.
+  postprocess:
+    name: "post_processing"
+    maxCount: 2

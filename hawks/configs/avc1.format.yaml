@@ -1,0 +1,106 @@
+# MPEG-4 Part 10 Advanced Video Coding
+id: 100000
+idstr: avc1
+type: video
+enabled: true
+use: ffmpeg
+ext: ".mp4"
+
+encoder:
+  codec: libx264
+  pixelFormat: yuv420p
+  profile: "high"
+  preset: "slow"
+  fpsmax: 30
+  sc_threshold: 0
+
+tune:
+
+variants:
+- id: 100180
+  idstr: avc1_180p
+  group: ["ld"]
+  enabled: true
+  bitrate: 320k
+  constraints:
+    height: ">=180"
+  encoder:
+    maxSize: 432x180
+    maxFramerate: 30
+
+- id: 100240
+  idstr: avc1_240p
+  group: ["ld"]
+  enabled: false
+  bitrate: 426k
+  constraints:
+    height: ">=240"
+  encoder:
+    maxSize: 576x240
+    maxFramerate: 30
+
+- id: 100360
+  idstr: avc1_360p
+  group: ["ld"]
+  enabled: true
+  bitrate: 640k
+  constraints:
+    height: ">=360"
+  encoder:
+    maxSize: 864x360
+    maxFramerate: 30
+
+- id: 100480
+  idstr: avc1_480p
+  group: ["sd"]
+  enabled: false
+  bitrate: 1M
+  constraints:
+    height: ">=480"
+  encoder:
+    maxSize: 1152x480
+    maxFramerate: 30
+
+- id: 100482
+  idstr: avc1_480p_hq
+  group: ["sd_hq"]
+  enabled: true
+  bitrate: 1.5M
+  constraints:
+    height: ">=480"
+  encoder:
+    maxSize: 1152x480
+    maxFramerate: 30
+
+- id: 100540
+  idstr: avc1_540p
+  group: ["sd"]
+  enabled: false
+  bitrate: 1.25M
+  constraints:
+    height: ">=540"
+  encoder:
+    maxSize: 1296x540
+    maxFramerate: 30
+
+- id: 100720
+  idstr: avc1_720p
+  group: ["hd"]
+  enabled: true
+  bitrate: 2M
+  constraints:
+    height: ">=720"
+  encoder:
+    maxSize: 1728x720
+    maxFramerate: 30
+
+- id: 101080
+  idstr: avc1_1080p
+  group: ["fhd"]
+  enabled: true
+  bitrate: 4M
+  constraints:
+    height: ">=1080"
+  encoder:
+    maxSize: 2592x1080
+    maxFramerate: 30

@@ -1,0 +1,74 @@
+@import "../mixins"
+
+$content-spacing: 16px
+
+$column-margin-x: 24px
+$column-margin-x-mobile: calc($column-margin-x / 2)
+$column-width: 400px
+$column-gap: 16px
+
+$column-max-width: 480px
+
+@function columns-width($n)
+	@return 2 * $column-margin-x + $n * $column-width + ($n - 1) * $column-gap
+
+=snap-width($i, $max: 6)
+	$columns-width: columns-width($i)
+	@if $i == 2
+		@media screen and (min-width: $columns-width), print
+			@content
+			width: $columns-width
+	@else 
+		@media screen and (min-width: $columns-width)
+			$chain: ''
+			@for $j from 2 through $i - 1
+				$chain: $chain + ':not(.cc-max#{$j})'
+
+			body#{$chain} &
+				@content
+				width: $columns-width
+
+=snap-width-for($from, $to: 6)
+	@for $i from $from through $to
+		+snap-width($i, $to)
+
+
+// column
+.VideoCard
+	contain: layout
+	margin: calc($column-gap / 2)
+	@media screen and (min-width: columns-width(2)), print
+		width: $column-width
+
+// columns
+.cc
+	display: flex
+	padding: calc($content-spacing / 2) calc($column-margin-x-mobile - $column-gap / 2)
+	padding-right: calc(var(--scrollbar-width) + calc($column-margin-x-mobile - $column-gap / 2))
+	flex-wrap: wrap
+	+snap-width(2)
+		+ltr-property("padding", calc($column-margin-x - $column-gap / 2), false)
+		+ltr-property("padding", calc($column-margin-x - $column-gap / 2))
+
+// pagination
+@import "./pagination"
+
+@media screen and (min-width: columns-width(2)), print
+	body:not(.is-popover-active)
+		+ltr-property("margin", max(-24px, calc(-1 * var(--scrollbar-width))))
+
+.nnc, .pp, .Footer
+	padding: 0 $column-margin-x-mobile
+	+snap-width(2)
+		padding-left: $column-margin-x
+		padding-right: $column-margin-x
+
+.nnc, .cc, .pp, .Footer
+	margin: 0 auto
+	max-width: 2 * $column-margin-x-mobile + $column-max-width
+	+snap-width(2)
+		max-width: unset
+	+snap-width-for(3)
+
+.pp
+	margin-bottom: $content-spacing

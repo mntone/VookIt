@@ -1,0 +1,21 @@
+:root
+	--scrollbar-width: calc(100vw - 100%)
+	--scrollbar-width: calc(100lvw - 100%)
+
+html
+	-moz-osx-font-smoothing: auto
+	-webkit-font-smoothing: subpixel-antialiased
+	text-size-adjust: 100%
+
+body
+	overflow-x: hidden
+	overflow-y: scroll
+	font-family: $family-primary
+	&.is-popover-active
+		overflow: hidden
+
+a
+	color: $link
+	text-decoration: none
+	&:hover
+		color: $link-hover

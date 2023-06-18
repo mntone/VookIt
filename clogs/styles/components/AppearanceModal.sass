@@ -1,0 +1,10 @@
+@use "../mixins"
+
+.AppearanceModal
+	padding: 0 12px
+	+unselectable
+	.modal-card
+		contain: content
+		max-width: 400px
+	.modal-card-foot
+		justify-content: flex-end

@@ -1,0 +1,41 @@
+use:
+  video: video
+  audio: audio
+
+# Default action is "fail".
+# Default args is "[rightval]".
+flows:
+# --- [Video] -----------------
+  video:
+  # Expect duration <= 90
+  - left: duration
+    operator: ">"
+    right: 90
+    message: encode.video.duration
+  # Expect height >= 180
+  - left: height
+    operator: "<"
+    right: 180
+    message: encode.video.height
+  # Expect width >= 180
+  - left: width
+    operator: "<"
+    right: 180
+    message: encode.video.width
+  # Expect progressive
+  - left: field_order
+    operator: "=="
+    right: progressive
+    message: encode.video.interlace
+  # Expect SDR
+  - left: color_transfer
+    operator: includes
+    right: [smpte2084, arib-std-b67]
+    message: encode.video.hdr
+# --- [Audio] -----------------
+  audio:
+  # Expect channels <= 2
+  - left: channels
+    operator: ">"
+    right: 2
+    message: encode.audio.channel
