@@ -1,3 +1,4 @@
+$widely-breakpoint: 864px
 
 // Safari 11.0-13.0 / iOS 11.3-13.3
 @function _clamp($minValue, $value, $maxValue)
@@ -20,3 +21,13 @@
 	@media (prefers-reduced-motion)
 		body:not(.no-reduced-motion) &
 			@content
+
+
+// Recommend after display
+=widely-container
+	padding: 0 12px
+	@media screen and (min-width: $widely-breakpoint), print
+		padding-left: 24px
+		padding-right: max(calc(24px - var(--scrollbar-width)), calc(var(--scrollbar-width) - 22px))
+		.is-popover-active &
+			padding-right: 24px

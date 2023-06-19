@@ -1,4 +1,5 @@
 @use "sass:math"
+@import "../mixins"
 
 $content-spacing: 16px
 
@@ -13,6 +14,7 @@ $navbar-title-color: $text-strong
 .nnc
 	contain: strict
 	display: flex
+	+widely-container
 	align-items: flex-end
 	height: $navbar-height
 
@@ -23,6 +25,7 @@ $navbar-title-color: $text-strong
 	max-height: $navbar-height
 	align-items: center
 	justify-content: space-between
+	+unselectable
 
 .n-item
 	display: block
