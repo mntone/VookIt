@@ -22,11 +22,14 @@ $widely-breakpoint: 864px
 		body:not(.no-reduced-motion) &
 			@content
 
+=widely
+	@media screen and (min-width: $widely-breakpoint), print
+		@content
 
 // Recommend after display
 =widely-container
 	padding: 0 12px
-	@media screen and (min-width: $widely-breakpoint), print
+	+widely
 		padding-left: 24px
 		padding-right: max(calc(24px - var(--scrollbar-width)), calc(var(--scrollbar-width) - 22px))
 		.is-popover-active &
