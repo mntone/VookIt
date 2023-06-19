@@ -1,9 +1,7 @@
 const PropTypes = require('prop-types')
 const React = require('react')
 
-const AppearanceModal = require('../components/AppearanceModal')
-const Footer = require('../components/Footer')
-const NavBar = require('../components/NavBar')
+const Root = require('../components/Root')
 
 /**
  * @param   {object}                   props
@@ -15,28 +13,18 @@ const NavBar = require('../components/NavBar')
 function ErrorPage({ t, language, description }) {
 	const title = t('errorpage.pagetitle')
 	return (
-		<html lang={language}>
-			<head>
-				<title>{title + ' - ' + t('sitename')}</title>
-				<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
-				<link rel="stylesheet" href="/a/index.css" />
-				<link rel="stylesheet" href="/a/form.css" />
-			</head>
-			<body>
-				<NavBar t={t} />
-
-				<div className="container is-max-desktop">
-					<div className="box is-unselectable">
-						<h1 className="title">{title}</h1>
-						<h2 className="subtitle">{description}</h2>
-					</div>
+		<Root
+			t={t}
+			title={title}
+			language={language}
+			stylesheets="/a/form.css">
+			<div className="container is-max-desktop">
+				<div className="box is-unselectable">
+					<h1 className="title">{title}</h1>
+					<h2 className="subtitle">{description}</h2>
 				</div>
-
-				<AppearanceModal t={t} />
-				<Footer t={t} />
-				<script src="/a/bundle.js" />
-			</body>
-		</html>
+			</div>
+		</Root>
 	)
 }
 ErrorPage.propTypes = {

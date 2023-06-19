@@ -2,9 +2,7 @@ const PropTypes = require('prop-types')
 const React = require('react')
 
 const env = require('../../../constants/env')
-const AppearanceModal = require('../components/AppearanceModal')
-const Footer = require('../components/Footer')
-const NavBar = require('../components/NavBar')
+const Root = require('../components/Root')
 const VideoCard = require('../components/VideoCard')
 
 /**
@@ -18,31 +16,29 @@ const VideoCard = require('../components/VideoCard')
 function TopPage({ t, language, limit, posts }) {
 	const isAdmin = false
 	const count = posts.length
+
+	let pager = null
+	if (count === limit) {
+		pager = (
+			<div className="pp">
+				{<a href={'/?until=' + posts[count - 1].postedBy.getTime()} className="button p-next is-light" style={{ width: '8rem' }}>Next</a>}
+			</div>
+		)
+	}
+
 	return (
-		<html lang={language}>
-			<head>
-				<title>{t('sitename')}</title>
-				<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
-				<link rel="stylesheet" href="/a/index.css" />
-			</head>
-			<body className={count !== env.topMaxCount && `cc-max${Math.max(2, Math.ceil(count / 2))}`}>
-				<NavBar t={t} />
+		<Root
+			t={t}
+			language={language}
+			className={count !== env.topMaxCount && `cc-max${Math.max(2, Math.ceil(count / 2))}`}>
+			<div className="cc">
+				{posts.slice(0, limit - 1).map((post, index) => (
+					<VideoCard key={index} post={post} isAdmin={isAdmin} />
+				))}
+			</div>
 
-				<div className="cc">
-					{posts.slice(0, limit - 1).map((post, index) => (
-						<VideoCard key={index} post={post} isAdmin={isAdmin} />
-					))}
-				</div>
-
-				<div className="pp">
-					{count === limit && <a href={'/?until=' + posts[count - 1].postedBy.getTime()} className="button p-next is-light" style={{ width: '8rem' }}>Next</a>}
-				</div>
-
-				<AppearanceModal t={t} />
-				<Footer t={t} />
-				<script src="/a/bundle.js" />
-			</body>
-		</html>
+			{pager}
+		</Root>
 	)
 }
 TopPage.propTypes = {
