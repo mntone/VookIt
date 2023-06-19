@@ -1,6 +1,7 @@
 const React = require('react')
 
 const env = require('../../../constants/env')
+const { numToUsid } = require('../../../utils/IdSupport')
 const AppearanceModal = require('../components/AppearanceModal')
 const DateTime = require('../components/DateTime')
 const Footer = require('../components/Footer')
@@ -50,6 +51,7 @@ function getInlineScript(id) {
  */
 // eslint-disable-next-line react/display-name, react/prop-types
 module.exports = ({ t, language, id, title, description, postedBy, published, publishedBy }) => {
+	const usid = numToUsid(id)
 	return (
 		<html lang={language}>
 			<head>
@@ -67,7 +69,7 @@ module.exports = ({ t, language, id, title, description, postedBy, published, pu
 					<div id="player">
 						<video id="video" playsInline data-shaka-player />
 					</div>
-					<script dangerouslySetInnerHTML={{ __html: getInlineScript(id) }} />
+					<script dangerouslySetInnerHTML={{ __html: getInlineScript(usid) }} />
 				</div>
 
 				<div className="VideoInfo">

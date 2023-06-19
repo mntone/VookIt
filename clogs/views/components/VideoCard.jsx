@@ -14,12 +14,13 @@ const PictureSet = require('./PictureSet')
  * @returns {React.JSX.Element}
  */
 function VideoCard({ post, isAdmin }) {
+	const usid = numToUsid(post.id)
 	return (
 		<div className="VideoCard">
-			<a className="VideoCard-link" href={'/v/' + numToUsid(post.id)}>
+			<a className="VideoCard-link" href={'/v/' + usid}>
 				<figure>
 					<PictureSet
-						path={`/m/${post.id}/`}
+						path={`/m/${usid}/`}
 						alt={post.title}
 						width={env.videoCardThumbnailWidth}
 						height={env.videoCardThumbnailHeight}
