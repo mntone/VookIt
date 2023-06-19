@@ -1,7 +1,5 @@
-const { PrismaClient } = require('@prisma/client')
-
-// Load environment constants.
 const env = require('../../../constants/env')
+const prisma = require('../prisma')
 
 /**
  * Get posts.
@@ -42,7 +40,6 @@ module.exports = async options => {
 		where = undefined
 	}
 
-	const prisma = new PrismaClient()
 	const posts = await prisma.post.findMany({
 		select: options.select,
 		where,

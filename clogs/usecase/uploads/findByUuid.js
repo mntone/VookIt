@@ -1,5 +1,6 @@
-const { PrismaClient } = require('@prisma/client')
 const validator = require('validator')
+
+const prisma = require('../prisma')
 
 /**
  * Find a upload by uuid.
@@ -13,7 +14,6 @@ module.exports = async uuid => {
 	}
 
 	// Find a upload by uuid.
-	const prisma = new PrismaClient()
 	const upload = await prisma.upload.findUnique({
 		where: {
 			uuid,

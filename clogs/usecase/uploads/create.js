@@ -1,9 +1,8 @@
 const fs = require('fs')
 const path = require('path')
 
-const { PrismaClient } = require('@prisma/client')
-
 const env = require('../../../constants/env')
+const prisma = require('../prisma')
 
 /**
  * Create upload from temporary file.
@@ -21,7 +20,6 @@ module.exports = async tempfile => {
 	}
 
 	// Add upload to database.
-	const prisma = new PrismaClient()
 	const upload = await prisma.upload.create({
 		data: {
 			filename: savedFilename,

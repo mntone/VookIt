@@ -1,12 +1,12 @@
 const fs = require('fs')
 const path = require('path')
 
-const { PrismaClient } = require('@prisma/client')
 const validator = require('validator')
 
 const env = require('../../../constants/env')
 const { mkdirIfNeeded } = require('../../../utils/FileSupport')
 const { numToUsid } = require('../../../utils/IdSupport')
+const prisma = require('../prisma')
 
 /**
  * Create a post by screenname.
@@ -29,7 +29,6 @@ module.exports = async (uuid, screenname, title, description) => {
 	}
 
 	// Find a upload by uuid.
-	const prisma = new PrismaClient()
 	const upload = await prisma.upload.findUnique({
 		where: {
 			uuid,

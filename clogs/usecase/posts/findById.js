@@ -1,4 +1,4 @@
-const { PrismaClient } = require('@prisma/client')
+const prisma = require('../prisma')
 
 /**
  * Find a post by id.
@@ -12,7 +12,6 @@ module.exports = async id => {
 	}
 
 	// Find a post by id.
-	const prisma = new PrismaClient()
 	const post = await prisma.post.findUnique({
 		where: {
 			id,

@@ -1,7 +1,5 @@
-const { PrismaClient } = require('@prisma/client')
-
-// Load environment constants.
 const env = require('../../../constants/env')
+const prisma = require('../prisma')
 
 /**
  * @param   {number}                                   chunk
@@ -14,7 +12,6 @@ module.exports = async (chunk, hash) => {
 	}
 
 	// Add upload to database.
-	const prisma = new PrismaClient()
 	const upload = await prisma.upload.create({
 		data: {
 			count: chunk,

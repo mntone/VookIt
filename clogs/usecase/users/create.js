@@ -1,8 +1,7 @@
-const { PrismaClient } = require('@prisma/client')
 const validator = require('validator')
 
-// Load environment constants.
 const env = require('../../../constants/env')
+const prisma = require('../prisma')
 
 /**
  * Create a user.
@@ -20,7 +19,6 @@ module.exports = async (screenname, name) => {
 	}
 
 	// Add user to database.
-	const prisma = new PrismaClient()
 	const user = await prisma.user.create({
 		data: {
 			screenname,

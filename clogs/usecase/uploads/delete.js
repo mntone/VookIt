@@ -1,10 +1,10 @@
 const fs = require('fs')
 const path = require('path')
 
-const { PrismaClient } = require('@prisma/client')
 const validator = require('validator')
 
 const env = require('../../../constants/env')
+const prisma = require('../prisma')
 
 /**
  * @param   {string}                          uuid
@@ -17,7 +17,6 @@ module.exports = async uuid => {
 	}
 
 	// Remove upload from database.
-	const prisma = new PrismaClient()
 	const upload = await prisma.upload.delete({
 		where: {
 			uuid,
