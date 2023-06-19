@@ -1,16 +1,14 @@
-const { createElement } = require('react')
-
-const { renderToStream } = require('../utils/react/ReactServerSupport')
 const UploadPage = require('../views/pages/UploadPage')
+
+const { renderToStream } = require('./utils/ReactServerSupport')
 
 /**
  * @param {import('express').Request}  req
  * @param {import('express').Response} res
  */
 module.exports = async (req, res) => {
-	const comp = createElement(UploadPage, {
+	renderToStream(UploadPage, {
 		t: req.t,
 		language: req.language,
-	})
-	renderToStream(comp, res)
+	}, res)
 }

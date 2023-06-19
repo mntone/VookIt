@@ -1,5 +1,4 @@
 const deepFreeze = require('deep-freeze')
-const { checkSchema } = require('express-validator')
 
 /**
  * @type {import('express-validator').Schema}
@@ -14,4 +13,4 @@ const schema = {
 	},
 }
 
-module.exports = checkSchema(deepFreeze(schema))
+module.exports = deepFreeze(schema)

@@ -1,21 +1,28 @@
-const { createElement } = require('react')
-
+const { toIdAsNumber } = require('../../utils/IdSupport')
+const scheme = require('../schemas/view/:id')
 const findPostById = require('../usecase/posts/findById')
-const { renderToStream } = require('../utils/react/ReactServerSupport')
 const ViewPage = require('../views/pages/ViewPage')
 
-/**
- * @param {string}                     id
- * @param {import('express').Request}  req
- * @param {import('express').Response} res
- */
-module.exports = async (id, req, res) => {
-	const nmid = Number(id) // [TODO] base64 decoding
-	const post = await findPostById(nmid)
-	const comp = createElement(ViewPage, {
-		t: req.t,
-		language: req.language,
-		...post,
-	})
-	renderToStream(comp, res)
+const ViewBuilder = require('./utils/ViewBuilder')
+
+class ViewPageBuilder extends ViewBuilder {
+	/**
+	 * @param {import('express').Request}  req
+	 * @param {import('express').Response} res
+	 */
+	async onNext(req, res) {
+		const id = toIdAsNumber(req.params.id)
+		const post = await findPostById(id)
+		this.render(res, ViewPage, {
+			t: req.t,
+			language: req.language,
+			...post,
+		})
+	}
+
+	get scheme() {
+		return scheme
+	}
 }
+
+module.exports = new ViewPageBuilder()

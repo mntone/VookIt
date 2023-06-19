@@ -1,7 +1,6 @@
-const { createElement } = require('react')
-
-const { renderToStream } = require('../utils/react/ReactServerSupport')
 const ErrorPage = require('../views/pages/ErrorPage')
+
+const { renderToStream } = require('./utils/ReactServerSupport')
 
 /**
  * @param {string}                     description
@@ -9,10 +8,9 @@ const ErrorPage = require('../views/pages/ErrorPage')
  * @param {import('express').Response} res
  */
 module.exports = async (description, req, res) => {
-	const comp = createElement(ErrorPage, {
+	renderToStream(ErrorPage, {
 		t: req.t,
 		language: req.language,
 		description,
-	})
-	renderToStream(comp, res)
+	}, res)
 }

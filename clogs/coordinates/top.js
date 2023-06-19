@@ -1,9 +1,9 @@
-const { createElement } = require('react')
-
 const env = require('../../constants/env')
+const scheme = require('../schemas/index')
 const findPosts = require('../usecase/posts/findMany')
-const { renderToStream } = require('../utils/react/ReactServerSupport')
 const TopPage = require('../views/pages/TopPage')
+
+const ViewBuilder = require('./utils/ViewBuilder')
 
 /**
  * Define selection
@@ -15,20 +15,30 @@ const select = {
 	postedBy: true,
 }
 
-/**
- * @param {import('express').Request}  req
- * @param {import('express').Response} res
- * @param {object}                     options
- * @param {Date?}                      options.untilDate
- */
-module.exports = async (req, res, options) => {
-	const limit = env.topMaxCount + 1
-	const posts = await findPosts({ select, limit, ...options })
-	const comp = createElement(TopPage, {
-		t: req.t,
-		language: req.language,
-		limit,
-		posts,
-	})
-	renderToStream(comp, res)
+class TopPageBuilder extends ViewBuilder {
+	/**
+	 * @param {import('express').Request}  req
+	 * @param {import('express').Response} res
+	 */
+	async onNext(req, res) {
+		const limit = env.topMaxCount + 1
+		const options = { select, limit }
+		if (req.query.until) {
+			options.untilDate = new Date(Number(req.query.until))
+		}
+
+		const posts = await findPosts(options)
+		this.render(res, TopPage, {
+			t: req.t,
+			language: req.language,
+			limit,
+			posts,
+		}, res)
+	}
+
+	get scheme() {
+		return scheme
+	}
 }
+
+module.exports = new TopPageBuilder()

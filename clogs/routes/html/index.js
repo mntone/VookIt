@@ -1,13 +1,11 @@
+const path = require('path')
+
 const express = require('express')
 const i18next = require('i18next')
 const i18nextFsBackend = require('i18next-fs-backend')
 const i18nextMiddleware = require('i18next-http-middleware')
 const jsx = require('node-jsx')
-const path = require('path')
 const { initReactI18next } = require('react-i18next')
-
-const { toId } = require('../../../utils/IdSupport')
-const validators = require('../../utils/express/validators')
 
 // Init i18n
 i18next
@@ -34,50 +32,14 @@ const router = express
 	})
 	.use(i18nextMiddleware.handle(i18next))
 
-const { validationResult } = require('express-validator')
-const createError = require('http-errors')
-/**
- * @param req
- * @param _
- * @param next
- */
-function autoValidation(req, _, next) {
-	const result = validationResult(req)
-	if (!result.isEmpty()) {
-		const err = createError(422, result.array()[0].msg)
-		next(err)
-		return
-	}
-
-	next()
-}
-
 router.get(
 	'/',
 	express.urlencoded({ extended: true }),
-	require('../../schemas/index'),
-	autoValidation,
-	(req, res) => {
-		const options = {}
-		if (req.query.until) {
-			options.untilDate = new Date(Number(req.query.until))
-		}
-		top(req, res, options)
-	})
+	top.handlers)
 
-router.get(
-	'/v/:id',
-	require('../../schemas/view/:id'),
-	autoValidation,
-	(req, res) => {
-		const id = toId(req.params.id)
-		view(id, req, res)
-	})
+router.get('/v/:id', ...view.handlers)
 
-router.get(
-	'/post/:uuid',
-	validators.param.uuid,
-	(req, res) => post(req.params.uuid, req, res))
+router.get('/post/:uuid', ...post.handlers)
 
 router.use('/upload', (req, res) => upload(req, res))
 

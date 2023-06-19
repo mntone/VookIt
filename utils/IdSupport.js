@@ -13,6 +13,20 @@ function toId(usid) {
 }
 
 /**
+ *
+ * @param   {string} usid URL safe base64 encoded ID
+ * @returns {number}      ID as Number
+ */
+function toIdAsNumber(usid) {
+	const buffer = Buffer.from(usid, 'base64url')
+	let id = 0
+	for (let i = buffer.length - 1; i >= 0; --i) {
+		id = (id << 8) | buffer[i]
+	}
+	return id
+}
+
+/**
  * @param   {bigint} id ID as BigInt
  * @returns {string}    URL safe base64 encoded ID
  */
@@ -45,6 +59,7 @@ function numToUsid(num) {
 
 module.exports = {
 	toId,
+	toIdAsNumber,
 	toUsid,
 	numToUsid,
 }
