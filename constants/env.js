@@ -15,6 +15,9 @@ module.exports = {
 	// [TODO-impl] Defines to launch the redis server by backend: hawks.
 	redisAutorunWhenDevelopment: true,
 
+	// Defines static assets/media deploying feature.
+	staticDeployEnabled: true,
+
 	// --- User configs
 	// Defines the length of screenname
 	screennameLength: {

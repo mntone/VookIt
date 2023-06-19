@@ -15,15 +15,21 @@ const app = express()
 app.use('/', html)
 app.use('/api', rest)
 
-// Style files.
-app.use('/a', express.static('./.assets'))
+// Deploy static assets.
+if (env.staticDeployEnabled) {
+	// Add MimeType
+	express.static.mime.define({ 'image/avif': ['avif'] })
 
-// Media files.
-if (process.env.NODE_ENV !== 'development') {
-	app.use(env.mediaForbiddenPath, (_, res) => res.sendStatus(404))
-	app.use(env.mediaRootPath, express.static(env.mediaDir))
-} else {
-	app.use(env.mediaRootPath, express.static(env.mediaDir, { dotfiles: 'allow' }))
+	// Style and script files.
+	app.use('/a', express.static('./.assets'))
+
+	// Media files.
+	if (process.env.NODE_ENV !== 'development') {
+		app.use(env.mediaForbiddenPath, (_, res) => res.sendStatus(404))
+		app.use(env.mediaRootPath, express.static(env.mediaDir))
+	} else {
+		app.use(env.mediaRootPath, express.static(env.mediaDir, { dotfiles: 'allow' }))
+	}
 }
 
 // Stand-by.

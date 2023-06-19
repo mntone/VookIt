@@ -26,9 +26,6 @@ jsx.install({
 	extension: '.jsx',
 })
 
-// Add MimeType
-express.static.mime.define({ 'image/avif': ['avif'] })
-
 const { error, top, post, upload, view } = require('../../coordinates/index')
 
 const router = express
