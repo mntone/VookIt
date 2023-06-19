@@ -1,3 +1,6 @@
+const { readFileSync } = require('fs')
+const { createServer } = require('https')
+
 const express = require('express')
 
 const env = require('../constants/env')
@@ -33,4 +36,11 @@ if (env.staticDeployEnabled) {
 }
 
 // Stand-by.
-app.listen(80)
+if (env.ssl) {
+	createServer({
+		key: readFileSync(env.sslKeyFile),
+		cert: readFileSync(env.sslCertFile),
+	}, app).listen(env.port)
+} else {
+	app.listen(env.port)
+}

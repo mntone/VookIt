@@ -27,6 +27,7 @@
     "webpack:serve": "npm run webpack -- --watch",
     "sass": "npx sass --style=compressed --no-source-map clogs/styles/index.sass:.assets/index.css clogs/styles/form.sass:.assets/form.css",
     "sass:serve": "npx sass --watch clogs/styles/index.sass:.assets/index.css clogs/styles/form.sass:.assets/form.css",
+    "openssl:init": "openssl req -x509 -newkey rsa:4096 -keyout ./.dev/key.pem -out ./.dev/cert.pem -nodes -days 30",
     "test": "jest"
   },
   "author": "mntone",

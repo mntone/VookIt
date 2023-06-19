@@ -2,6 +2,13 @@
 module.exports = {
 
 	// --- Server settings
+	// Defines server config.
+	// [Note] Quickly start with the command "npm run openssl:init"
+	port: 443,
+	ssl: true,
+	sslKeyFile: './.dev/key.pem',
+	sslCertFile: './.dev/cert.pem',
+
 	// Defines the redis server.
 	redisHost: 'localhost',
 	redisPort: 6379,
