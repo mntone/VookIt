@@ -1,3 +1,5 @@
+const deepFreeze = require('deep-freeze')
+
 const { removeSIPrefix } = require('../utils/DataSizeSupport')
 const { mkdirSyncIfNeeded } = require('../utils/FileSupport')
 
@@ -32,9 +34,15 @@ module.exports = () => {
 		}
 	}
 
+	// Update parameters in dev mode
+	if (process.env.NODE_ENV === 'development') {
+		env.uploadMaxFileSize *= env.uploadMaxFileSizeMultiplierInDev
+	}
+	delete env.uploadMaxFileSizeMultiplierInDev
+
 	// Init workdir.
 	mkdirSyncIfNeeded(env.uploadWorkdir)
 
 	// Immutalize env.
-	Object.freeze(env)
+	deepFreeze(env)
 }

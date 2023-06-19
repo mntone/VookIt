@@ -125,6 +125,9 @@ module.exports = {
 	// --- Hawks configs
 	hawksConfigsFormat: 'yaml',
 
+	// --- For Development
+	uploadMaxFileSizeMultiplierInDev: 15,
+
 	// --- Placeholders: Calc these envs when init.
 	// Note: But, you can apply custom value that is larger than 0.
 	postFetchingLimit: 0,
