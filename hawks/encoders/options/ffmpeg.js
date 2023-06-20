@@ -1,4 +1,5 @@
 const { removeSIPrefix, removeSIPrefixIfNeeded } = require('../../../utils/DataSizeSupport')
+const toCommand = require('../utils/command')
 
 class FFmpegOptions {
 	#bitrate
@@ -94,30 +95,7 @@ class FFmpegOptions {
 			Object.assign(args, args2)
 		}
 
-		const command = Object
-			.entries(args)
-			.flatMap(kv => {
-				/**
-				 * @type {string[]}
-				 */
-				let ret
-				if (kv[1] == null) {
-					ret = [kv[0]]
-				} else if (typeof kv[1] === 'boolean') {
-					if (kv[1]) {
-						ret = [options.keyPrefix + kv[0]]
-					} else {
-						ret = []
-					}
-				} else if (Array.isArray(kv[1])) {
-					const key = options.keyPrefix + kv[0]
-					ret = kv[1].flatMap(value => [key, value])
-				} else {
-					ret = [options.keyPrefix + kv[0], kv[1]]
-				}
-				return ret
-			})
-
+		const command = toCommand(args)
 		return command
 	}
 

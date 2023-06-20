@@ -49,11 +49,12 @@ class FFmpegImageOptions extends FFmpegOptions {
 			const [width, height] = this.#params.maxSize.split('x').map(Number)
 			switch (this.#params.resize) {
 			case 'crop':
-				args['vf'] = `scale=-2:${height},crop=${width}:${height}:(iw-ow)/2:0:exact=1`
+				args['vf'] = `scale=if(gte(${width}/iw\\,${height}/ih)\\,${width}\\,-2):if(gte(${width}/iw\\,${height}/ih)\\,-2\\,${height}),crop=${width}:${height}:(iw-ow)/2:(ih-oh)/2:exact=1`
 				break
-			case 'pad':
-				args['vf'] = `scale=-2:${height},pad=${width}:${height}:(ow-iw)/2:0:exact=1`
-				break
+			// "vf:pad" has no chroma sampling option, and I decide no use this option
+			// case 'pad':
+			//	args['vf'] = `scale=if(lt(${width}/iw\\,${height}/ih)\\,${width}\\,-2):if(lt(${width}/iw\\,${height}/ih)\\,-2\\,${height}),pad=${width}:${height}:-1:-1`
+			//	break
 			case 'fill':
 				args['vf'] = `scale=${width}:${height}`
 				break
