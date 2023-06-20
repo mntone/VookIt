@@ -27,7 +27,7 @@ class AppearanceState {
 
 	constructor(storage = window.localStorage) {
 		this.#storage = storage
-		this.#animation = preferredReducedMotion()
+		this.#animation = !preferredReducedMotion()
 		this.#noscale = false
 		this.load()
 	}
@@ -39,13 +39,13 @@ class AppearanceState {
 
 	load() {
 		const animation = this.#storage.getItem(ANIMATION_KEY)
-		if (animation !== null) {
+		if (animation != null) {
 			this.#animation = animation === 'true'
 			AppearanceState.#updateAnimation(this.#animation)
 		}
 
 		const noscale = this.#storage.getItem(NOSCALE_KEY)
-		if (noscale !== null) {
+		if (noscale != null) {
 			this.#noscale = noscale === 'true'
 			AppearanceState.#updateNoscale(this.#noscale)
 		}
