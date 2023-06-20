@@ -1,12 +1,17 @@
+
 $widely-breakpoint: 864px
 
 // Safari 11.0-13.0 / iOS 11.3-13.3
-@function _clamp($minValue, $value, $maxValue)
+@function clamp-backport($minValue, $value, $maxValue)
 	@return min($maxValue, max($value, $minValue))
 
 =clip
 	overflow: hidden
 	overflow: clip
+
+=backdrop-filter($filter)
+	-webkit-backdrop-filter: $filter
+	backdrop-filter: $filter
 
 =unselectable
 	-webkit-touch-callout: none

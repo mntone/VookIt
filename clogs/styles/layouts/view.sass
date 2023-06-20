@@ -1,6 +1,7 @@
-@use "../mixins"
+@use "../mixins" as *
+@use "../base/variables" as *
+@use "../elements/glass" as *
 
-$content-spacing: 16px
 $navbar-height: 56px
 
 $radius: 8px
@@ -8,7 +9,7 @@ $shadow: 0 0.5em 1em -0.125em rgba(0, 0, 0, .1), 0 0px 0 1px rgba(0, 0, 0, .02)
 
 $VideoPlayer-minimum-spacing: 24px
 
-$VideoInfo-title-size: _clamp(1.5em, 4vmin, 3em)
+$VideoInfo-title-size: clamp-backport(1.5em, 4vmin, 3em)
 $VideoInfo-narrow-spacing: 12px
 
 :root
@@ -34,10 +35,12 @@ $VideoInfo-narrow-spacing: 12px
 	max-width: var(--VideoPlayer-max-width)
 
 .VideoPlayer
+	contain: content
 	+clip
-	box-shadow: 0 0 2px rgba(0, 0, 0, .12), 0 4px 8px rgba(0, 0, 0, .14)
+	+glass(#F4F4F4)
+	box-shadow: $shadow16
 	+widely
-		border-radius: _clamp(8px, 1.5vmin, 32px)
+		border-radius: clamp-backport(8px, 1.5vmin, 32px)
 		.no-scale &
 			border-radius: 8px
 	.no-scale &

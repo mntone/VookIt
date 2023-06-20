@@ -18,11 +18,9 @@ function ErrorPage({ t, language, description }) {
 			title={title}
 			language={language}
 			stylesheets="/a/form.css">
-			<div className="container is-max-desktop">
-				<div className="box is-unselectable">
-					<h1 className="title">{title}</h1>
-					<h2 className="subtitle">{description}</h2>
-				</div>
+			<div className="c">
+				<h1>{title}</h1>
+				<p>{description}</p>
 			</div>
 		</Root>
 	)

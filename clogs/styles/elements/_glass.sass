@@ -1,0 +1,8 @@
+@use "sass:color"
+
+@use "../mixins" as m
+
+=glass($background-color: null)
+	@if $background-color
+		background-color: color.adjust($background-color, $alpha: -0.333)
+	+m.backdrop-filter(blur(2px))

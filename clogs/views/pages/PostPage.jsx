@@ -22,34 +22,32 @@ function PostPage({ t, language, uuid }) {
 			title={title}
 			language={language}
 			stylesheets="/a/form.css">
-			<div className="container is-max-desktop">
-				<div className="box is-unselectable">
-					<h1 className="title">{title}</h1>
+			<div className="c">
+				<h1>{title}</h1>
 
-					<form action="/api/post.html" method="POST">
-						<Forms.Hidden id="uuid" content={uuid} />
-						<Forms.TextInput id="title" title={t('postpage.title')} content={uuid} required={true} />
-						<Forms.TextArea id="description" title={t('postpage.description')} content={'説明文です!\n' + uuid} />
-						<Forms.Select id="visibility" title={t('postpage.visibility')} items={[
-							t('postpage.visibility_private'),
-							t('postpage.visibility_publicIfAvailable'),
-						]} />
+				<form action="/api/post.html" method="POST">
+					<Forms.Hidden id="uuid" content={uuid} />
+					<Forms.TextInput id="title" title={t('postpage.title')} content={uuid} required={true} />
+					<Forms.TextArea id="description" title={t('postpage.description')} content={'説明文です!\n' + uuid} />
+					<Forms.Select id="visibility" title={t('postpage.visibility')} items={[
+						t('postpage.visibility_private'),
+						t('postpage.visibility_publicIfAvailable'),
+					]} />
 
-						<div className="field is-horizontal">
-							<div className="field-label is-normal" />
-							<div className="field-body">
-								<div className="field is-grouped">
-									<div className="control">
-										<button className="button is-link" style={{ width: '7.5em' }}>{t('postpage.post')}</button>
-									</div>
-									<div className="control">
-										<button className="button is-light" style={{ width: '7.5em' }}>{t('postpage.cancel')}</button>
-									</div>
+					<div className="field is-horizontal">
+						<div className="field-label is-normal" />
+						<div className="field-body">
+							<div className="field is-grouped">
+								<div className="control">
+									<button className="button is-link" style={{ width: '7.5em' }}>{t('postpage.post')}</button>
+								</div>
+								<div className="control">
+									<button className="button is-light" style={{ width: '7.5em' }}>{t('postpage.cancel')}</button>
 								</div>
 							</div>
 						</div>
-					</form>
-				</div>
+					</div>
+				</form>
 			</div>
 		</Root>
 	)

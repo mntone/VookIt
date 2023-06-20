@@ -1,14 +1,14 @@
 @use "sass:math"
-@import "../mixins"
 
-$content-spacing: 16px
+@use "../mixins" as *
+@use "../base/variables" as *
 
 $navbar-height: 56px
 
-$navbar-item-color: $text
-$navbar-item-hover-color: $link
+$navbar-item-color: $black
+$navbar-item-hover-color: $accent-dark1
 
-$navbar-title-color: $text-strong
+$navbar-title-color: $black-dark1
 
 // navbar-container
 .nnc
@@ -40,12 +40,12 @@ a.n-item
 
 .n-brand
 	.n-item
-		+ltr-property("padding", 0, false)
+		padding-left: 0
 
 .n-end
 	justify-content: flex-end
 	.n-item
-		+ltr-property("padding", 0, true)
+		padding-right: 0
 
 .n-title // .is-3
 	color: $navbar-title-color // TODO move to paint

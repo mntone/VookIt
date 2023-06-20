@@ -17,27 +17,25 @@ function UploadPage({ t, language }) {
 			title={title}
 			language={language}
 			stylesheets="/a/form.css">
-			<div className="container is-max-desktop">
-				<div className="box is-unselectable">
-					<h1 className="title">{title}</h1>
+			<div className="c">
+				<h1>{title}</h1>
 
-					<form action="/api/upload.html" encType="multipart/form-data" method="POST">
-						<div className="control">
-							<div className="file is-large is-boxed is-fullwidth">
-								<label className="file-label">
-									<div dangerouslySetInnerHTML={{ __html: '<input class="file-input" type="file" name="file" accept=".mp4,.webm,video/mp4,video/webm" onchange="submit(this.form)" />' }} />
-									<span className="file-cta">
-										<span className="file-label">{t('uploadpage.choose')}</span>
-									</span>
-								</label>
-							</div>
+				<form action="/api/upload.html" encType="multipart/form-data" method="POST">
+					<div className="control">
+						<div className="file is-large is-boxed is-fullwidth">
+							<label className="file-label">
+								<div dangerouslySetInnerHTML={{ __html: '<input class="file-input" type="file" name="file" accept=".mp4,.webm,video/mp4,video/webm" onchange="submit(this.form)" />' }} />
+								<span className="file-cta">
+									<span className="file-label">{t('uploadpage.choose')}</span>
+								</span>
+							</label>
 						</div>
-						<p className="help"><ul>
-							<li>{t('uploadpage.help')}</li>
-							<li>21.6:9までの動画は高さ基準で処理されます</li>
-						</ul></p>
-					</form>
-				</div>
+					</div>
+					<p className="help"><ul>
+						<li>{t('uploadpage.help')}</li>
+						<li>21.6:9までの動画は高さ基準で処理されます</li>
+					</ul></p>
+				</form>
 			</div>
 		</Root>
 	)

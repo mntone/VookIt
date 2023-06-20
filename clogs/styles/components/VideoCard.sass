@@ -1,6 +1,6 @@
-@use "../mixins"
-
-@forward "../../../node_modules/bulma/sass/components/card"
+@use "../mixins" as *
+@use "../base/variables" as *
+@use "../elements/glass" as *
 
 =aspect-ratio($width, $height, $defaultPosition: static)
 	position: relative
@@ -23,7 +23,9 @@
 			right: auto
 			bottom: auto
 
-$VideoCard-color: #000000
+$VideoCard-text: $black
+$VideoCard-text-hover: $black-dark2
+$VideoCard-border: $accent
 $VideoCard-radius: 16px
 
 .VideoCard
@@ -31,11 +33,12 @@ $VideoCard-radius: 16px
 	position: relative
 	z-index: 1
 	border-radius: $VideoCard-radius
-	box-shadow: 0 0 2px rgba(0, 0, 0, .12), 0 2px 4px rgba(0, 0, 0, .14)
+	+glass(#FFFFFF)
+	box-shadow: $shadow4
 	transition: box-shadow .25s ease-in-out
 	+unselectable
 	&:hover
-		box-shadow: 0 0 2px rgba(0, 0, 0, .12), 0 8px 16px rgba(0, 0, 0, .14)
+		box-shadow: $shadow16
 	+reduced-motion
 		transition: none 0s
 
@@ -69,16 +72,16 @@ $VideoCard-radius: 16px
 	&-link
 		display: block
 		border-radius: $VideoCard-radius
-		color: $VideoCard-color
+		color: $VideoCard-text
 		box-shadow: inset 0 0 0px 2px transparent
-		transition: box-shadow .25s ease-in-out
+		transition: color .25s ease-in-out, box-shadow .25s ease-in-out
 		+reduced-motion
 			transition: none 0s
 		&:after
 			position: absolute
 			top: 0
 			left: 0
-			border: 3px solid $primary
+			border: 3px solid $VideoCard-border
 			border-radius: $VideoCard-radius
 			content: ""
 			width: 100%
@@ -91,6 +94,7 @@ $VideoCard-radius: 16px
 				border-bottom-left-radius: 0
 				border-bottom-right-radius: 0
 		&:hover
+			color: $VideoCard-text-hover
 			box-shadow: inset 0 0 0px 5px white // last params is current background
 			&:after
 				opacity: 1

@@ -1,0 +1,23 @@
+@use "../mixins" as *
+@use "../base/variables" as *
+@use "./glass" as *
+@use "./title"
+
+$dialog-margin-x-mobile: $container-margin-mobile
+$dialog-max-width: 640px
+$dialog-spacing-x: 1.5em !default
+$dialog-spacing-y: 2em !default
+$dialog-radius: 1em !default
+
+=dialog
+	margin: $content-spacing auto
+	padding: $dialog-spacing-y $dialog-spacing-x
+	max-width: min($dialog-max-width, calc(100% - $dialog-margin-x-mobile))
+	border-radius: $dialog-radius
+	+glass(#FFFFFF)
+	box-shadow: $shadow64
+	+unselectable
+	h1
+		+title.main
+	h2
+		+title.sub

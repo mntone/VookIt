@@ -1,3 +1,5 @@
+@use "../base/variables" as *
+
 :root
 	// Apply JavaScript, but it has placeholders
 	--scrollbar-width: calc(100vw - 100%)
@@ -11,12 +13,12 @@ html
 body
 	overflow: scroll
 	overflow-x: hidden
-	font-family: $family-primary
+	font-family: $font
 	&.is-popover-active
 		overflow: hidden
 
 a
-	color: $link
+	color: $accent
 	text-decoration: none
 	&:hover
-		color: $link-hover
+		color: $accent-dark1
