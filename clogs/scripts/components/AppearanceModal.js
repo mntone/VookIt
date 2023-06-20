@@ -3,6 +3,8 @@ import { preferredReducedMotion } from '../utils/StyleStateHelpers'
 
 import VirtualCheckBox from './VirtualCheckBox'
 
+const FALSE_VALUE = ''
+const TRUE_VALUE = 'T'
 const ANIMATION_KEY = 'AppearanceState.animation'
 const NOSCALE_KEY = 'AppearanceState.noscale'
 
@@ -40,15 +42,19 @@ class AppearanceState {
 	load() {
 		const animation = this.#storage.getItem(ANIMATION_KEY)
 		if (animation != null) {
-			this.#animation = animation === 'true'
+			this.#animation = animation === TRUE_VALUE
 			AppearanceState.#updateAnimation(this.#animation)
 		}
 
 		const noscale = this.#storage.getItem(NOSCALE_KEY)
 		if (noscale != null) {
-			this.#noscale = noscale === 'true'
+			this.#noscale = noscale === TRUE_VALUE
 			AppearanceState.#updateNoscale(this.#noscale)
 		}
+	}
+
+	#setValue(key, value) {
+		this.#storage.setItem(key, value ? TRUE_VALUE : FALSE_VALUE)
 	}
 
 	/**
@@ -65,7 +71,7 @@ class AppearanceState {
 	set animation(value) {
 		if (this.#animation !== value) {
 			this.#animation = value
-			this.#storage.setItem(ANIMATION_KEY, value)
+			this.#setValue(ANIMATION_KEY, value)
 			AppearanceState.#updateAnimation(value)
 		}
 	}
@@ -99,7 +105,7 @@ class AppearanceState {
 	set noscale(value) {
 		if (this.#noscale !== value) {
 			this.#noscale = value
-			this.#storage.setItem(NOSCALE_KEY, value)
+			this.#setValue(NOSCALE_KEY, value)
 			AppearanceState.#updateNoscale(value)
 		}
 	}
