@@ -11,11 +11,26 @@ const { getSoftwareVersion, getGitHashSync } = require('../../utils/VersionSuppo
 function Footer({ t }) {
 	const hash = getGitHashSync().slice(0, 7)
 	const version = getSoftwareVersion()
+	const sitename = t('sitename')
+
+	let content
+	if (sitename === 'VookIt!') {
+		content = (
+			<span className="Footer-title">
+				<strong>{t('sitename')}</strong> Ver. {version} (<code>{hash}</code>)
+			</span>
+		)
+	} else {
+		content = (
+			<span className="Footer-title">
+				<strong>{t('sitename')}</strong> powered by <i> VookIt!</i> Ver. {version} (<code>{hash}</code>)
+			</span>
+		)
+	}
+
 	return (
 		<footer className="Footer">
-			<span className="Footer-title subtitle is-6">
-				<strong>{t('sitename')}</strong> powered by <i>VookIt!</i> Ver. {version} (<code>{hash}</code>)
-			</span>
+			{content}
 		</footer>
 	)
 }
