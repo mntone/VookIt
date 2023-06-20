@@ -3,7 +3,7 @@ const IORedis = require('ioredis')
 
 const env = require('../../constants/env')
 const initConstants = require('../../constants/init')
-const configStore = require('../configs/HawksConfigCacheStore')
+const { loadYaml } = require('../utils/yaml-loader')
 
 /**
  * @returns {Promise<import('bullmq').Worker[]>}
@@ -13,7 +13,7 @@ async function main() {
 	initConstants()
 
 	// Load worker handlers.
-	const workersConfig = await configStore.load('workers')
+	const workersConfig = await loadYaml(__dirname, '../configs/workers')
 	const workerHandlers = Object.keys(workersConfig.queues).reduce((handlers, key) => {
 		// eslint-disable-next-line import/no-dynamic-require
 		handlers[key] = require('./handlers/' + key)

@@ -29,10 +29,6 @@ class HawksConfigCacheStore extends ConfigCacheStore {
 	 * @param {object} config Config object.
 	 */
 	_process(name, config) {
-		if (name === 'workers') {
-			return
-		}
-
 		if (name === 'workflows') {
 			this.#processFormatConfig(config)
 			return
