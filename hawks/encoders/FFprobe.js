@@ -56,12 +56,21 @@ function exec(options) {
 function execAsJson(options) {
 	return new Promise((resolve, reject) => {
 		const ffprobe = exec(options)
-		ffprobe.stdout.on('data', data => {
-			const str = data.toString()
-			const json = JSON.parse(str)
-			resolve(json)
+		const buffers = []
+		ffprobe.stdout.on('data', data => buffers.push(data))
+		ffprobe.on('close', code => {
+			if (code === 0) {
+				const str = Buffer.concat(buffers).toString()
+				try {
+					const json = JSON.parse(str)
+					resolve(json)
+				} catch (err) {
+					reject(err)
+				}
+			} else {
+				reject(code)
+			}
 		})
-		ffprobe.on('close', code => reject(code))
 	})
 }
 

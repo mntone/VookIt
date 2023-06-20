@@ -8,6 +8,7 @@
     "user:new": "node cli/CreateUser.js",
     "upload:delete": "node cli/DeleteUpload.js",
     "dispatch:encode": "node cli/DispatchEncode.js",
+    "validate": "node cli/ValidateMedia.js",
     "encode:audio": "NODE_ENV=development node cli/EncodeAudio.js",
     "encode:mp3": "NODE_ENV=development node cli/EncodeAudio.js -c mp3",
     "encode:aac": "NODE_ENV=development node cli/EncodeAudio.js -c aac_at",
