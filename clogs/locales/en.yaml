@@ -32,6 +32,7 @@ postpage:
 uploadpage:
   pagetitle: Upload
   help: Require MP4 or WebM file
+  upload: Upload
   choose: Choose a file…
 
 errorpage:
@@ -44,6 +45,8 @@ error:
   title: Invalid title
   description: Invalid description
   until: Invalid until. `until` should be UNIX timestamp.
+  mediatype: Unsupported media type
+  filesize: File size is larger than {{filesize}}B
   notfound: Not found media
   options:
     limit: Limit is exceeded

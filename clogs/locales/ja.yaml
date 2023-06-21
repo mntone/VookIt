@@ -45,6 +45,8 @@ error:
   title: 不正な題名です
   description: 不正な説明です
   until: 不正な期間です。`until` はUNIXタイムスタンプである必要があります。
+  mediatype: サポートされていないメディア タイプです
+  filesize: ファイル容量が{{filesize}}Bを超えています
   notfound: 動画が見つかりません
   options:
     limit: 指定された件数が制限値を超えています

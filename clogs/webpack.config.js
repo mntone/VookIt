@@ -7,12 +7,15 @@ const environment = process.env.NODE_ENV || 'development'
 module.exports = {
 	mode: environment,
 	name: 'commonjs',
-	entry: './clogs/scripts/app.js',
+	entry: {
+		main: './clogs/scripts/app.js',
+		upload: './clogs/scripts/upload.js',
+	},
 	devtool: environment === 'development'
 		? 'eval-cheap-module-source-map' // build: slow, rebuild: fast
 		: false,
 	optimization: {
-		minimize: environment === 'production',
+		minimize: environment !== 'development',
 		minimizer: [new TerserPlugin({
 			terserOptions: {
 				/* eslint-disable camelcase */
@@ -24,7 +27,7 @@ module.exports = {
 					keep_fargs: false,
 				},
 				mangle: {
-					reserved: ['AppearanceModal'],
+					reserved: ['AppearanceModal', 'installUpload'],
 					properties: true,
 				},
 				format: {
@@ -32,13 +35,12 @@ module.exports = {
 					shebang: false,
 				},
 				toplevel: true,
-				safari10: true,
 				/* eslint-enable camelcase */
 			},
 		})],
 	},
 	output: {
-		filename: 'bundle.js',
+		filename: '[name].js',
 		path: path.resolve(process.cwd(), './.assets'),
 	},
 }

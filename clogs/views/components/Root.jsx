@@ -50,7 +50,7 @@ function Root({ t, title, language, className, stylesheets, children }) {
 
 				<Footer t={t} />
 				<AppearanceModal t={t} />
-				<script src="/a/bundle.js" />
+				<script src="/a/main.js" />
 			</body>
 		</html>
 	)

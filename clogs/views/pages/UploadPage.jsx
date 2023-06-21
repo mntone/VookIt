@@ -1,7 +1,27 @@
 const PropTypes = require('prop-types')
 const React = require('react')
 
+const env = require('../../../constants/env')
+const { addSIPrefix } = require('../../../utils/DataSizeSupport')
 const Root = require('../components/Root')
+
+const getInlineScript = t => {
+	const friendly = addSIPrefix(env.uploadMaxFileSize, 1)
+	return `
+'use strict'
+const info = {
+	targetId: 'file',
+	useHashAlgorithm: 'sha256',
+	maxFilesize: ${env.uploadMaxFileSize},
+	supportedMimeType: [${env.uploadSupportMimeTypes.map(mime => `'${mime}'`).join(',')}],
+	messages: {
+		mimeType: '${t('error.mediatype')}',
+		fileSize: '${t('error.filesize').replace('{{filesize}}', friendly)}',
+	},
+}
+window.installUpload(info)
+`
+}
 
 /**
  * @param   {object}                   props
@@ -11,6 +31,7 @@ const Root = require('../components/Root')
  */
 function UploadPage({ t, language }) {
 	const title = t('uploadpage.pagetitle')
+	const accept = env.uploadSupportExtensions.concat(env.uploadSupportMimeTypes).join(',')
 	return (
 		<Root
 			t={t}
@@ -24,7 +45,7 @@ function UploadPage({ t, language }) {
 					<div className="control">
 						<div className="file is-large is-boxed is-fullwidth">
 							<label className="file-label">
-								<div dangerouslySetInnerHTML={{ __html: '<input class="file-input" type="file" name="file" accept=".mp4,.webm,video/mp4,video/webm" onchange="submit(this.form)" />' }} />
+								<input className="file-input" type="file" id="file" name="file" accept={accept} />
 								<span className="file-cta">
 									<span className="file-label">{t('uploadpage.choose')}</span>
 								</span>
@@ -35,7 +56,14 @@ function UploadPage({ t, language }) {
 						<li>{t('uploadpage.help')}</li>
 						<li>21.6:9までの動画は高さ基準で処理されます</li>
 					</ul></p>
+					<noscript>
+						<div className="control">
+							<button className="button is-primary">{t('uploadpage.upload')}</button>
+						</div>
+					</noscript>
 				</form>
+				<script src="/a/upload.js" />
+				<script dangerouslySetInnerHTML={{ __html: getInlineScript(t) }} defer={true} />
 			</div>
 		</Root>
 	)

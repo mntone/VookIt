@@ -124,7 +124,10 @@ module.exports = {
 	uploadMaxJob: 3,
 
 	// Defines the supported extensions to upload a file
-	uploadSupportExtensions: ['mp4', 'm4v', 'webm'],
+	uploadSupportExtensions: ['.mp4', '.m4v', '.webm'],
+
+	// Defines the supported mime type to upload a file
+	uploadSupportMimeTypes: ['video/mp4', 'video/webm'],
 
 	// Replace original filename to 'video.[ext]' if true.
 	uploadDeleteOriginalFilename: true,
