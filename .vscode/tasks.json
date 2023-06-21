@@ -7,7 +7,8 @@
 			"script": "webpack:serve",
 			"runOptions": {
 				"runOn": "folderOpen"
-			}
+			},
+			"problemMatcher": []
 		},
 		{
 			"label": "Sass (watch)",
@@ -15,7 +16,8 @@
 			"script": "sass:serve",
 			"runOptions": {
 				"runOn": "folderOpen"
-			}
+			},
+			"problemMatcher": []
 		}
 	]
 }
