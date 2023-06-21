@@ -1,20 +1,7 @@
 const PropTypes = require('prop-types')
 const React = require('react')
 
-/**
- * input[type=hidden]
- * @param   {{ id: string, content: string? }} props
- * @returns {React.JSX.Element}
- */
-function Hidden({ id, content }) {
-	return (
-		<input type="hidden" name={id} value={content} />
-	)
-}
-Hidden.propTypes = {
-	id: PropTypes.string.isRequired,
-	content: PropTypes.string,
-}
+const { Hidden } = require('./Forms')
 
 /**
  * @typedef TextInputProps
