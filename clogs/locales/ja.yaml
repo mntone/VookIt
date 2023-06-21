@@ -15,10 +15,6 @@ navbar:
     cancel: キャンセル
     close: 閉じる
 
-toppage:
-  error:
-    until: "変数 `until` はUNIXタイムスタンプである必要があります。"
-
 viewpage:
   error:
     id: "変数 `id` はURL安全BASE64である必要があります。"
@@ -42,6 +38,16 @@ uploadpage:
 errorpage:
   pagetitle: エラー！
   message: "ステータス コード: %d"
+
+error:
+  id: 不正なIDです
+  uuid: 不正なUUIDです
+  title: 不正な題名です
+  description: 不正な説明です
+  until: 不正な期間です。`until` はUNIXタイムスタンプである必要があります。
+  notfound: 動画が見つかりません
+  options:
+    limit: 指定された件数が制限値を超えています
 
 formats:
   avc1: H.264/AVC {{height}}p ({{bitrate}}bps)

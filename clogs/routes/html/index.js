@@ -37,9 +37,9 @@ router.get(
 	express.urlencoded({ extended: true }),
 	top.handlers)
 
-router.get('/v/:id', ...view.handlers)
+router.get('/v/:id', view.handlers)
 
-router.get('/post/:uuid', ...post.handlers)
+router.get('/post/:uuid', post.handlers)
 
 router.use('/upload', (req, res) => upload(req, res))
 

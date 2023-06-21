@@ -1,5 +1,5 @@
 const env = require('../../constants/env')
-const scheme = require('../schemas/index')
+const scheme = require('../schemas/top')
 const findPosts = require('../usecase/posts/findMany')
 const TopPage = require('../views/pages/TopPage')
 
@@ -20,7 +20,7 @@ class TopPageBuilder extends ViewBuilder {
 	 * @param {import('express').Request}  req
 	 * @param {import('express').Response} res
 	 */
-	async onNext(req, res) {
+	async _onNext(req, res) {
 		const limit = env.topMaxCount + 1
 		const options = { select, limit }
 		if (req.query.until) {
@@ -36,7 +36,7 @@ class TopPageBuilder extends ViewBuilder {
 		}, res)
 	}
 
-	get scheme() {
+	get _scheme() {
 		return scheme
 	}
 }

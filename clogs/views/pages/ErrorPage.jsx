@@ -27,7 +27,7 @@ function ErrorPage({ t, language, description }) {
 }
 ErrorPage.propTypes = {
 	t: PropTypes.func.isRequired,
-	language: PropTypes.func.isRequired,
+	language: PropTypes.string.isRequired,
 	description: PropTypes.string.isRequired,
 }
 

@@ -15,10 +15,6 @@ navbar:
     cancel: Cancel
     close: Close
 
-toppage:
-  error:
-    until: "The variable `until` should be UNIX timestamp."
-
 viewpage:
   error:
     id: "The variable `id` should be in url safe base64."
@@ -41,6 +37,16 @@ uploadpage:
 errorpage:
   pagetitle: Error!
   message: "Status code: %d"
+
+error:
+  id: Invalid ID
+  uuid: Invalid UUID
+  title: Invalid title
+  description: Invalid description
+  until: Invalid until. `until` should be UNIX timestamp.
+  notfound: Not found media
+  options:
+    limit: Limit is exceeded
 
 formats:
   avc1: H.264/AVC {{height}}p ({{bitrate}}bps)

@@ -6,7 +6,6 @@ const deepFreeze = require('deep-freeze')
 const schema = {
 	until: {
 		in: 'query',
-		errorMessage: 'toppage.error.until',
 		optional: {
 			options: { nullable: true },
 		},

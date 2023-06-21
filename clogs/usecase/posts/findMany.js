@@ -1,5 +1,6 @@
 const env = require('../../../constants/env')
 const prisma = require('../prisma')
+const ValidationError = require('../ValidationError')
 
 /**
  * Get posts.
@@ -13,7 +14,7 @@ const prisma = require('../prisma')
 module.exports = async options => {
 	// Validate params.
 	if (options && options.limit && options.limit > env.postFetchingLimit) {
-		throw new Error('options.limit')
+		throw ValidationError('options.limit')
 	}
 
 	// Define params.

@@ -1,4 +1,5 @@
 const prisma = require('../prisma')
+const { ValidationError } = require('../ValidationError')
 
 /**
  * Find a post by id.
@@ -8,7 +9,7 @@ const prisma = require('../prisma')
 module.exports = async id => {
 	// Validate params.
 	if (typeof id !== 'number' || Number.isNaN(id)) {
-		throw new Error('id')
+		throw ValidationError('id')
 	}
 
 	// Find a post by id.
