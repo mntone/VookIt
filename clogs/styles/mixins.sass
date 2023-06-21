@@ -5,9 +5,20 @@ $widely-breakpoint: 864px
 @function clamp-backport($minValue, $value, $maxValue)
 	@return min($maxValue, max($value, $minValue))
 
+=safari-only
+	@at-root ::-webkit-full-page-media, :future, :root &
+		@content
+
 =clip
 	overflow: hidden
 	overflow: clip
+
+=text-overflow-ellipsis
+	+safari-only
+		overflow: hidden
+	text-overflow: ellipsis
+	white-space: nowrap
+	
 
 =backdrop-filter($filter)
 	-webkit-backdrop-filter: $filter
