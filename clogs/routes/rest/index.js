@@ -1,3 +1,4 @@
+/* eslint-disable import/order */
 const { validationResult } = require('express-validator')
 const express = require('express')
 
@@ -88,7 +89,7 @@ router.get(
 	})
 
 // Handle error.
-router.use((err, _, res, next) => {
+router.use((err, req, res, next) => {
 	if (err.status) {
 		const body = {
 			status: err.status,
@@ -98,11 +99,7 @@ router.use((err, _, res, next) => {
 			body.reason = err.message
 		}
 
-		if (err.format) {
-			return res.select(err.format, body)
-		} else {
-			return res.prefer(body)
-		}
+		return res.select(req.params.format, body)
 	} else {
 		return next(err)
 	}

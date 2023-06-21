@@ -1,26 +1,12 @@
 const express = require('express')
-const multiparty = require('multiparty')
 
+const env = require('../../../constants/env')
+const { addSIPrefix } = require('../../../utils/DataSizeSupport')
+const uploadCoordinate = require('../../coordinates/api/upload/default')
+const info = require('../../usecase/uploads/info')
 const { nostore } = require('../../utils/express/cachecontrol')
 const validators = require('../../utils/express/validators')
-const { addSIPrefix } = require('../../../utils/DataSizeSupport')
 
-// Load environment constants
-const env = require('../../../constants/env')
-
-// Load usecases
-const create = require('../../usecase/uploads/create')
-const info = require('../../usecase/uploads/info')
-
-/**
- * Define multiparty options
- * @constant
- * @type {multiparty.FormOptions}
- */
-const multipartyOptions = Object.freeze({
-	maxFieldsSize: 0,
-	maxFilesSize: env.uploadMaxFileSize,
-})
 
 // Init a router
 const router = express
@@ -53,64 +39,15 @@ function checkContentLength(maxSize, req, _, next) {
 	next()
 }
 
-/**
- *
- * @param err
- * @param assistSize
- * @param format
- */
-function convertMultiparyError(err, assistSize, format) {
-	let properties
-	if (format === '.json' || format === '.msgpack') {
-		properties = { format }
-	} else {
-		properties = {}
-	}
-
-	let ret
-	switch (err.message) {
-	case 'maximum file length exceeded': {
-		const friendly = addSIPrefix(assistSize)
-		ret = createError(err.status, `The file exceeds the maximum size of ${friendly}Bytes.`, properties)
-		break
-	}
-	default:
-		ret = createError(err.status, err.message, properties)
-		break
-	}
-	return ret
-}
-
 // Init chunk upload system.
 //
 // [Endpoints]
 // - POST /upload:format?
 router.post(
 	'/upload:format',
-	validators.param.formatWithHtml,
 	checkContentLength.bind(env.uploadMaxFileSize),
-	(req, res, next) => {
-		const format = req.params.format
-		const form = new multiparty.Form(multipartyOptions)
-		form.parse(req, async (err, _, files) => {
-			if (err) {
-				next(convertMultiparyError(err, env.uploadMaxFileSize, format))
-				return
-			}
-
-			if (files['file'] && files['file'].length === 1) {
-				const body = await create(files['file'][0])
-				if (format === '.html') {
-					res.redirect(302, '/post/' + body.uuid)
-				} else {
-					res.select(format, body)
-				}
-			} else {
-				// [TODO] handling error
-				res.sendStatus(500)
-			}
-		})
-	})
+	uploadCoordinate.handlers,
+)
 
 // Init chunk upload system.
 //
