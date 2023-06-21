@@ -1,7 +1,6 @@
 const PropTypes = require('prop-types')
 const React = require('react')
 
-const env = require('../../../constants/env')
 const Root = require('../components/Root')
 const VideoCard = require('../components/VideoCard')
 
@@ -21,18 +20,19 @@ function TopPage({ t, language, limit, posts }) {
 	if (count === limit) {
 		pager = (
 			<div className="pp">
-				{<a href={'/?until=' + posts[count - 1].postedBy.getTime()} className="button p-next is-light" style={{ width: '8rem' }}>Next</a>}
+				<a href={'/?until=' + posts[count - 1].postedBy.getTime()} className="button p-next is-light" style={{ width: '8rem' }}>Next</a>
 			</div>
 		)
+		posts = posts.slice(0, limit - 1)
 	}
 
 	return (
 		<Root
 			t={t}
 			language={language}
-			className={count !== env.topMaxCount && `cc-max${Math.max(2, Math.ceil(count / 2))}`}>
+			className={`cc-max${Math.max(2, Math.ceil(count / 3))}`}>
 			<div className="cc">
-				{posts.slice(0, limit - 1).map((post, index) => (
+				{posts.map((post, index) => (
 					<VideoCard key={index} post={post} isAdmin={isAdmin} />
 				))}
 			</div>
