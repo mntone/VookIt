@@ -44,7 +44,9 @@ $VideoInfo-narrow-spacing: 12px
 		.no-scale &
 			border-radius: 8px
 	.no-scale &
-		margin: 0 auto // [TODO] centering
+		// [TODO] centering
+		margin-left: auto
+		margin-right: auto
 		width: fit-content
 	video
 		width: 100%
@@ -64,10 +66,14 @@ $VideoInfo-narrow-spacing: 12px
 	h1
 		+clip
 		margin-bottom: 0.28em
+		color: $black-dark3
+		font-family: "Palatino Linotype", "Yu Mincho Demibold", YuMincho, serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"
+		font-feature-settings: "pkna"
 		font-size: $VideoInfo-title-size
-		font-weight: bold
-		letter-spacing: _clamp(-.01em, -.026667vmin, -.02em)
+		font-weight: 600
+		//letter-spacing: clamp-backport(-.01em, -.026667vmin, -.02em)
 		line-height: 1.25
+		text-shadow: 2px 2px .1em rgba(255, 255, 255, .8)
 	&-buttons
 		display: flex
 		+widely

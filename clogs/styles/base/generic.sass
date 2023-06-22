@@ -1,3 +1,5 @@
+@use "sass:math"
+
 @use "../base/variables" as *
 
 :root
@@ -14,8 +16,22 @@ body
 	overflow: scroll
 	overflow-x: hidden
 	font-family: $font
+	color: $black
+	$background-gradient-color: #FEADD8
+	$background-gradient-color2: #FFC6E4
+	$background-gradient-color3: #FFE0F0
+	$background-gradient-color4: #FFFFFF
+	$background-gradient-degree: 65deg
+	$background-gradient-offset: math.div(math.round(math.div(7.5vmin, math.sin($background-gradient-degree)) * 1000), 1000)
+	$background-gradient-offset2: math.div(math.round(math.div(15vmin, math.sin($background-gradient-degree)) * 1000), 1000)
+	$background-gradient-offset3: math.div(math.round(math.div(25vmin, math.sin($background-gradient-degree)) * 1000), 1000)
+	--offset-reverse: calc(100% - #{$background-gradient-offset})
+	--offset2-reverse: calc(100% - #{$background-gradient-offset2})
+	--offset3-reverse: calc(100% - #{$background-gradient-offset3})
+	background: fixed no-repeat $background-gradient-color4 linear-gradient(-#{$background-gradient-degree}, $background-gradient-color $background-gradient-offset, $background-gradient-color2 $background-gradient-offset, $background-gradient-color2 $background-gradient-offset2, $background-gradient-color3 $background-gradient-offset2, $background-gradient-color3 $background-gradient-offset3, $background-gradient-color4 $background-gradient-offset3, $background-gradient-color4 var(--offset3-reverse), $background-gradient-color3 var(--offset3-reverse), $background-gradient-color3 var(--offset2-reverse), $background-gradient-color2 var(--offset2-reverse), $background-gradient-color2 var(--offset-reverse), $background-gradient-color var(--offset-reverse))
 	&.is-popover-active
 		overflow: hidden
+		background-size: calc(100% - var(--scrollbar-width)) 100%
 
 a
 	color: $accent

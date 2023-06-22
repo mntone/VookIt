@@ -1,5 +1,6 @@
 // Basic
 @use "./base/minireset"
+@use "./base/variables"
 @use "./base/generic"
 
 // Layouts
@@ -12,8 +13,10 @@
 @use "./components/VideoCard"
 @use "./components/Footer"
 
-@use "../../node_modules/bulma/sass/utilities/_all" as *
-@use "../../node_modules/bulma/sass/base/animations" as *
+$primary: variables.$accent
+
+@import "../../node_modules/bulma/sass/utilities/_all"
+@import "../../node_modules/bulma/sass/base/animations"
 
 // TODO: move to initial-variables.sass
 $radius-small: 4px
