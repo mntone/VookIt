@@ -32,7 +32,7 @@ PictureSet.propTypes = {
 	path: PropTypes.string.isRequired,
 	width: PropTypes.number.isRequired,
 	height: PropTypes.number.isRequired,
-	variantsByMimes: PropTypes.shape({
+	variantsByMimes: PropTypes.exact({
 		default: PropTypes.object.isRequired,
 		['image/webp']: PropTypes.object,
 		['image/avif']: PropTypes.object,

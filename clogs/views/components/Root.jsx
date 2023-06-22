@@ -65,7 +65,7 @@ Root.propTypes = {
 	stylesheets: PropTypes.oneOfType([
 		PropTypes.string,
 		PropTypes.arrayOf(PropTypes.string),
-		PropTypes.arrayOf(PropTypes.shape({
+		PropTypes.arrayOf(PropTypes.exact({
 			href: PropTypes.string.isRequired,
 			integrity: PropTypes.string,
 			crossOrigin: PropTypes.oneOf(['anonymous', 'use-credentials']),
