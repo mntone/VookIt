@@ -13,7 +13,7 @@ const ValidationError = require('../ValidationError')
  */
 module.exports = async options => {
 	// Validate params.
-	if (options && options.limit && options.limit > env.postFetchingLimit) {
+	if (options?.limit && options.limit > env.postFetchingLimit) {
 		throw ValidationError('options.limit')
 	}
 
@@ -29,16 +29,22 @@ module.exports = async options => {
 		if (options.untilDate != null) {
 			where = {
 				postedBy: { lte: options.untilDate },
+				published: { equals: true },
 			}
 		} else if (options.maxId != null) {
 			where = {
 				id: { lte: options.maxId },
+				published: { equals: true },
 			}
 		} else {
-			where = undefined
+			where = {
+				published: { equals: true },
+			}
 		}
 	} else {
-		where = undefined
+		where = {
+			published: { equals: true },
+		}
 	}
 
 	const posts = await prisma.post.findMany({

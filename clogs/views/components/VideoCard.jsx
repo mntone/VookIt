@@ -28,7 +28,7 @@ function VideoCard({ post, isAdmin }) {
 				</figure>
 				<h2>{post.title}</h2>
 				<p className="VideoCard-time">
-					<DateTime datetime={post.postedBy} />
+					<DateTime datetime={post.publishedBy || post.postedBy} />
 				</p>
 			</a>
 			{isAdmin ? (
@@ -45,6 +45,8 @@ VideoCard.propTypes = {
 		id: PropTypes.number.isRequired,
 		title: PropTypes.string.isRequired,
 		postedBy: PropTypes.objectOf(Date).isRequired,
+		published: PropTypes.bool.isRequired,
+		publishedBy: PropTypes.objectOf(Date),
 	}).isRequired,
 	isAdmin: PropTypes.bool.isRequired,
 }

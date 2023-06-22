@@ -13,6 +13,8 @@ const select = {
 	id: true,
 	title: true,
 	postedBy: true,
+	published: true,
+	publishedBy: true,
 }
 
 class TopPageBuilder extends ViewBuilder {
