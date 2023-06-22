@@ -16,7 +16,7 @@ function NavBar({ t }) {
 
 				<div className="n-end">
 					<div className="n-item buttons">
-						<a className="button is-primary" href="/upload">
+						<a className="button is-primary" rel="nofollow" href="/upload">
 							<strong>{t('navbar.upload')}</strong>
 						</a>
 						<button className="button is-light hint-popoverable" data-target="AppearanceModal" disabled={true}>

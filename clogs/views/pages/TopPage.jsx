@@ -20,7 +20,11 @@ function TopPage({ t, language, limit, posts }) {
 	if (count === limit) {
 		pager = (
 			<div className="pp">
-				<a href={'/?until=' + posts[count - 1].postedBy.getTime()} className="button p-next is-light" style={{ width: '8rem' }}>Next</a>
+				<a
+					className="button p-next is-light"
+					rel="next"
+					href={'/?until=' + posts[count - 1].postedBy.getTime()}
+					style={{ width: '8rem' }}>Next</a>
 			</div>
 		)
 		posts = posts.slice(0, limit - 1)
