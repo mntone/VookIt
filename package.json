@@ -17,7 +17,7 @@
     "prisma:reset": "npx prisma migrate reset --force",
     "prisma:init": "npx prisma migrate dev --name init",
     "clogs:start": "node -r dotenv/config clogs/index.js",
-    "clogs:start:serve": "nodemon -r dotenv/config clogs/index.js --watch ./clogs --watch ./utils --ext js,jsx --ignore **/__test__/** --delay 5",
+    "clogs:start:serve": "nodemon -r dotenv/config clogs/index.js --watch ./clogs --watch ./utils --ext js,jsx --ignore **/__test__/**,./clogs/scripts/**,./clogs/styles/** --delay 5",
     "hawks:start": "node hawks/workers/launch.js",
     "hawks:start:serve": "nodemon hawks/workers/launch.js --watch ./hawks --ext js,yaml --ignore **/__test__/** --delay 5",
     "redis:start": "redis-server",

@@ -18,7 +18,7 @@
 				"--ext",
 				"js,jsx,yaml",
 				"--ignore",
-				"**/__test__/**",
+				"**/__test__/**,./clogs/scripts/**,./clogs/styles/**",
 				"--delay",
 				"1"
 			],
