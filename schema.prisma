@@ -26,6 +26,7 @@ model Post {
   postedBy    DateTime  @default(now())
   published   Boolean   @default(false)
   publishedBy DateTime?
+  updatedBy   DateTime  @updatedAt
   author      User      @relation(fields: [authorId], references: [id])
   authorId    Int
 }
