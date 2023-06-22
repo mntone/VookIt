@@ -104,8 +104,8 @@ function Select({ id, title, items, disabled }) {
 					<div className="control">
 						<div className="select">
 							<select id={id} name={id} disabled={disabled}>
-								{items.map((item, index) => (
-									<option key={index}>{item}</option>
+								{items.map(({ value, content }, index) => (
+									<option key={index} value={value}>{content}</option>
 								))}
 							</select>
 						</div>
@@ -118,7 +118,10 @@ function Select({ id, title, items, disabled }) {
 Select.propTypes = {
 	id: PropTypes.string.isRequired,
 	title: PropTypes.string.isRequired,
-	items: PropTypes.arrayOf(PropTypes.string).isRequired,
+	items: PropTypes.arrayOf(PropTypes.exact({
+		value: PropTypes.string,
+		content: PropTypes.string.isRequired,
+	})).isRequired,
 	disabled: PropTypes.bool.isRequired,
 }
 Select.defaultProps = {

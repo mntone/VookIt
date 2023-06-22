@@ -71,7 +71,13 @@ module.exports = ({ t, language, id, title, description, postedBy, published, pu
 			</div>
 
 			<div className="VideoInfo">
-				<h1>{title}</h1>
+				<div className="VideoInfo-toolbar">
+					<h1>{title}</h1>
+
+					<div className="VideoInfo-buttons control">
+						<a className="button is-primary is-light" rel="nofollow" href={`/edit/${usid}`}>{t('viewpage.edit')}</a>
+					</div>
+				</div>
 				<span className="view-publishedBy">
 					<DateTime datetime={published && publishedBy ? publishedBy : postedBy} />
 				</span>

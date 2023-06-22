@@ -54,6 +54,13 @@ $VideoInfo-narrow-spacing: 12px
 	padding: 0 $VideoInfo-narrow-spacing
 	+widely
 		padding: 0
+	&-toolbar
+		display: flex
+		flex-direction: column
+		align-items: flex-start
+		justify-content: space-between
+		+widely
+			flex-direction: row
 	h1
 		+clip
 		margin-bottom: 0.28em
@@ -61,3 +68,8 @@ $VideoInfo-narrow-spacing: 12px
 		font-weight: bold
 		letter-spacing: _clamp(-.01em, -.026667vmin, -.02em)
 		line-height: 1.25
+	&-buttons
+		display: flex
+		+widely
+			margin-left: 1em
+			margin-bottom: 1em

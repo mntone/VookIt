@@ -11,27 +11,27 @@ const Root = require('../components/Root')
  * @param   {object}                   props
  * @param   {function(string): string} props.t
  * @param   {string}                   props.language
- * @param                              props.uuid
+ * @param   {string}                   props.uuid
  * @returns
  */
 function PostPage({ t, language, uuid }) {
-	const title = t('postpage.pagetitle')
+	const pageTitle = t('postpage.pagetitle')
 	return (
 		<Root
 			t={t}
-			title={title}
+			title={pageTitle}
 			language={language}
 			stylesheets="/a/form.css">
 			<div className="c">
-				<h1>{title}</h1>
+				<h1>{pageTitle}</h1>
 
 				<form action="/api/post.html" method="POST">
 					<Forms.Hidden id="uuid" content={uuid} />
 					<Forms.TextInput id="title" title={t('postpage.title')} content={uuid} required={true} />
 					<Forms.TextArea id="description" title={t('postpage.description')} content={'説明文です!\n' + uuid} />
 					<Forms.Select id="visibility" title={t('postpage.visibility')} items={[
-						t('postpage.visibility_private'),
-						t('postpage.visibility_publicIfAvailable'),
+						{ value: 'private', content: t('postpage.visibility_private') },
+						{ value: 'public', content: t('postpage.visibility_publicIfAvailable') },
 					]} />
 
 					<div className="field is-horizontal">

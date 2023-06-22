@@ -1,32 +1,27 @@
 const { urlencoded } = require('express')
 
 const env = require('../../../../constants/env')
-const { numToUsid } = require('../../../../utils/IdSupport')
-const scheme = require('../../../schemas/api/post/create')
-const createPost = require('../../../usecase/posts/create')
+const { numToUsid, toIdAsNumber } = require('../../../../utils/IdSupport')
+const scheme = require('../../../schemas/api/post/update.html')
+const updatePost = require('../../../usecase/posts/update')
 const { cachecontrol } = require('../../../utils/express/cachecontrol')
 const ResponseBuilder = require('../../utils/ResponseBuilder')
 
-class PostDefaultResponseBuilder extends ResponseBuilder {
+class PostUpdateResponseBuilder extends ResponseBuilder {
 	/**
 	 * @param {import('express').Request}  req
 	 * @param {import('express').Response} res
 	 */
 	async _onNext(req, res) {
+		const usid = req.params.id
+		const id = toIdAsNumber(usid)
 		const {
-			uuid,
 			title,
 			description,
-			// visibility,
 		} = req.body
 
-		const post = await createPost(uuid, 'dev', title, description)
-		const format = req.params.format
-		if (format === '.html') {
-			res.redirect(302, '/v/' + numToUsid(post.id))
-		} else {
-			res.select(format, post)
-		}
+		const post = await updatePost(id, title, description)
+		res.redirect(302, '/v/' + numToUsid(post.id))
 	}
 
 	get _scheme() {
@@ -48,4 +43,4 @@ class PostDefaultResponseBuilder extends ResponseBuilder {
 	}
 }
 
-module.exports = new PostDefaultResponseBuilder()
+module.exports = new PostUpdateResponseBuilder()

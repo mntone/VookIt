@@ -16,6 +16,7 @@ navbar:
     close: Close
 
 viewpage:
+  edit: Edit
   error:
     id: "The variable `id` should be in url safe base64."
 
@@ -27,6 +28,11 @@ postpage:
   visibility_private: Private
   visibility_publicIfAvailable: Public (if available)
   post: Post
+  cancel: Cancel
+
+editpage:
+  pagetitle: Edit
+  update: Update
   cancel: Cancel
 
 uploadpage:

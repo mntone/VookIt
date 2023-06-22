@@ -16,6 +16,7 @@ navbar:
     close: 閉じる
 
 viewpage:
+  edit: 編集
   error:
     id: "変数 `id` はURL安全BASE64である必要があります。"
 
@@ -27,6 +28,11 @@ postpage:
   visibility_private: 非公開
   visibility_publicIfAvailable: 公開 (可能であれば)
   post: 投稿
+  cancel: キャンセル
+
+editpage:
+  pagetitle: 編集
+  update: 更新
   cancel: キャンセル
 
 uploadpage:
