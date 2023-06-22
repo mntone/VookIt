@@ -1,6 +1,7 @@
 const PropTypes = require('prop-types')
 const React = require('react')
 
+const env = require('../../../constants/env')
 const { numToUsid } = require('../../../utils/IdSupport')
 const Forms = require('../components/HorizontalForms')
 const Root = require('../components/Root')
@@ -20,7 +21,7 @@ function EditPage({ t, language, post }) {
 			t={t}
 			title={pageTitle}
 			language={language}
-			stylesheets="/a/form.css">
+			stylesheets={`${env.styleRelativePath}/form.css`}>
 			<div className="c">
 				<h1>{pageTitle}</h1>
 

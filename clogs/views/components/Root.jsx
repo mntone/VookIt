@@ -1,6 +1,8 @@
 const PropTypes = require('prop-types')
 const React = require('react')
 
+const env = require('../../../constants/env')
+
 const AppearanceModal = require('./AppearanceModal')
 const Footer = require('./Footer')
 const NavBar = require('./NavBar')
@@ -25,7 +27,7 @@ function Root({ t, title, language, className, stylesheets, children }) {
 			<head>
 				<title>{title ? title + ' - ' + t('sitename') : t('sitename')}</title>
 				<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
-				<link rel="stylesheet" href="/a/index.css" referrerPolicy="no-referrer" />
+				<link rel="stylesheet" href={`${env.styleRelativePath}/index.css`} referrerPolicy="no-referrer" />
 				{stylesheets.map((stylesheet, i) => {
 					switch (typeof stylesheet) {
 					case 'string':

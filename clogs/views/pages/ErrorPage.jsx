@@ -1,6 +1,7 @@
 const PropTypes = require('prop-types')
 const React = require('react')
 
+const env = require('../../../constants/env')
 const Root = require('../components/Root')
 
 /**
@@ -16,8 +17,7 @@ function ErrorPage({ t, language, description }) {
 		<Root
 			t={t}
 			title={title}
-			language={language}
-			stylesheets="/a/form.css">
+			language={language}>
 			<div className="c">
 				<h1>{title}</h1>
 				<p>{description}</p>

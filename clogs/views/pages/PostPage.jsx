@@ -2,6 +2,7 @@ const PropTypes = require('prop-types')
 const React = require('react')
 const validator = require('validator')
 
+const env = require('../../../constants/env')
 const Forms = require('../components/HorizontalForms')
 const Root = require('../components/Root')
 
@@ -21,7 +22,7 @@ function PostPage({ t, language, uuid }) {
 			t={t}
 			title={pageTitle}
 			language={language}
-			stylesheets="/a/form.css">
+			stylesheets={`${env.styleRelativePath}/form.css`}>
 			<div className="c">
 				<h1>{pageTitle}</h1>
 

@@ -1,6 +1,10 @@
 // [TODO] JavaScript to yaml file
 module.exports = {
 
+	// --- Path configs
+	scriptRelativePath: '/a',
+	styleRelativePath: '/a',
+
 	// --- Server settings
 	// Defines server config.
 	// [Note] Quickly start with the command "npm run openssl:init"

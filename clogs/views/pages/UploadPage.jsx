@@ -37,7 +37,7 @@ function UploadPage({ t, language }) {
 			t={t}
 			title={title}
 			language={language}
-			stylesheets="/a/form.css">
+			stylesheets={`${env.styleRelativePath}/form.css`}>
 			<div className="c">
 				<h1>{title}</h1>
 
@@ -62,7 +62,7 @@ function UploadPage({ t, language }) {
 						</div>
 					</noscript>
 				</form>
-				<script src="/a/upload.js" />
+				<script src={`${env.scriptRelativePath}/upload.js`} />
 				<script dangerouslySetInnerHTML={{ __html: getInlineScript(t) }} defer={true} />
 			</div>
 		</Root>
