@@ -7,6 +7,7 @@ const env = require('../../../constants/env')
 const { mkdirIfNeeded } = require('../../../utils/FileSupport')
 const { numToUsid } = require('../../../utils/IdSupport')
 const prisma = require('../prisma')
+const ValidationError = require('../ValidationError')
 
 /**
  * Create a post by screenname.
@@ -19,13 +20,13 @@ const prisma = require('../prisma')
 module.exports = async (uuid, screenname, title, description) => {
 	// Validate params.
 	if (!validator.isUUID(uuid)) {
-		throw new Error('uuid')
+		throw ValidationError('uuid')
 	}
 	if (!validator.isLength(title, env.titleLength)) {
-		throw new Error('title')
+		throw ValidationError('title')
 	}
 	if (description && !validator.isLength(description, env.descriptionLength)) {
-		throw new Error('description')
+		throw ValidationError('description')
 	}
 
 	// Find a upload by uuid.
@@ -44,6 +45,12 @@ module.exports = async (uuid, screenname, title, description) => {
 			author: {
 				connect: { screenname: screenname },
 			},
+		},
+		select: {
+			id: true,
+			postedBy: true,
+			published: true,
+			publishedBy: true,
 		},
 	})
 

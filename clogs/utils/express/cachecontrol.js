@@ -29,10 +29,18 @@ function defineCacheControl(options) {
 
 	// Cache-Control: no-store
 	if (options.noStore) {
+		if (options.private) {
+			cacheControlArgs.push('private')
+		}
+
 		cacheControlArgs.push('no-store')
 
 	// Cache-Control: no-cache
 	} else if (options.noCache) {
+		if (options.private) {
+			cacheControlArgs.push('private')
+		}
+
 		cacheControlArgs.push('no-cache')
 
 	// Others
@@ -81,6 +89,6 @@ module.exports = {
 	}),
 
 	nostore: defineCacheControl({
-		maxAge: 0,
+		noStore: true,
 	}),
 }
