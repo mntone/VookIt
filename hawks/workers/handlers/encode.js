@@ -1,4 +1,4 @@
-const { existsSync, writeFileSync } = require('fs')
+const { existsSync } = require('fs')
 const path = require('path')
 
 const env = require('../../../constants/env')
@@ -8,6 +8,7 @@ const FFmpegEncode = require('../../encoders/FFmpegEncode')
 const FFmpegAudioOptions = require('../../encoders/options/ffmpeg-audio')
 const FFmpegImageOptions = require('../../encoders/options/ffmpeg-image')
 const FFmpegVideoOptions = require('../../encoders/options/ffmpeg-video')
+const getAwaiter = require('../../encoders/utils/AwaitSupport')
 
 /**
  * @param   {object}                                     config
@@ -34,11 +35,14 @@ async function getFileOptions(config) {
 }
 
 /**
- * @param {string} id
- * @param          formatName
- * @param {string} formatId
+ * @param   {import('bullmq').Job<any, void, string>}                 job
+ * @param   {string}                                                  job.data.id
+ * @param   {string}                                                  job.data.formatName
+ * @param   {string}                                                  job.data.formatId
+ * @returns {import('child_process').ChildProcessWithoutNullStreams?}
  */
-async function encodeAudio(id, formatName, formatId) {
+async function encodeAudio(job) {
+	const { id, format, formatId } = job.data
 	const config = configStore.formatBy(formatId)
 	const fileOptions = await getFileOptions({
 		id,
@@ -47,21 +51,28 @@ async function encodeAudio(id, formatName, formatId) {
 		outputExt: config.ext,
 		formatId: config.idstr,
 	})
-
-	if (!existsSync(fileOptions.output)) {
-		const bitrate = config.bitrate || 128 * 1024
-		const options = new FFmpegAudioOptions(formatName, bitrate, config.encoder)
-		const encoder = new FFmpegEncode(options)
-		encoder.execSync(fileOptions)
+	if (existsSync(fileOptions.output)) {
+		return null
 	}
+
+	const bitrate = config.bitrate || 128 * 1024
+	const options = new FFmpegAudioOptions(format, bitrate, config.encoder)
+	const encoder = new FFmpegEncode(options)
+	const child = encoder.exec(fileOptions)
+		.on('log', l => job.log(l))
+		.on('progress', p => job.updateProgress(p.time))
+	return child
 }
 
 /**
- * @param {string} id
- * @param          formatName
- * @param {string} formatId
+ * @param   {import('bullmq').Job<any, void, string>}                 job
+ * @param   {string}                                                  job.data.id
+ * @param   {string}                                                  job.data.formatName
+ * @param   {string}                                                  job.data.formatId
+ * @returns {import('child_process').ChildProcessWithoutNullStreams?}
  */
-async function encodeImage(id, formatName, formatId) {
+async function encodeImage(job) {
+	const { id, format, formatId } = job.data
 	const config = configStore.formatBy(formatId)
 	const fileOptions = await getFileOptions({
 		id,
@@ -71,20 +82,27 @@ async function encodeImage(id, formatName, formatId) {
 		outputFilename: config.filename,
 		formatId: config.idstr,
 	})
-
-	if (!existsSync(fileOptions.output)) {
-		const options = new FFmpegImageOptions(formatName, config.encoder)
-		const encoder = new FFmpegEncode(options)
-		encoder.execSync(fileOptions)
+	if (existsSync(fileOptions.output)) {
+		return null
 	}
+
+	const options = new FFmpegImageOptions(format, config.encoder)
+	const encoder = new FFmpegEncode(options)
+	const child = encoder.exec(fileOptions)
+		.on('log', l => job.log(l))
+		.on('progress', p => job.updateProgress(p))
+	return child
 }
 
 /**
- * @param {string} id
- * @param          formatName
- * @param {string} formatId
+ * @param   {import('bullmq').Job<any, void, string>}                 job
+ * @param   {string}                                                  job.data.id
+ * @param   {string}                                                  job.data.formatName
+ * @param   {string}                                                  job.data.formatId
+ * @returns {import('child_process').ChildProcessWithoutNullStreams?}
  */
-async function encodeVideo(id, formatName, formatId) {
+async function encodeVideo(job) {
+	const { id, format, formatId } = job.data
 	const config = configStore.formatBy(formatId)
 	const fileOptions = await getFileOptions({
 		id,
@@ -93,40 +111,50 @@ async function encodeVideo(id, formatName, formatId) {
 		outputExt: config.ext,
 		formatId: config.idstr,
 	})
-
-	if (!existsSync(fileOptions.output)) {
-		const bitrate = config.bitrate || 1 * 1024 * 1024
-		const options = new FFmpegVideoOptions(formatName, bitrate, config.encoder)
-		const encoder = new FFmpegEncode(options)
-		const buffer = encoder.execSync(fileOptions)
-		writeFileSync(fileOptions.output.substring(0, fileOptions.output.length - config.ext.length) + '.log', buffer.stderr)
+	if (existsSync(fileOptions.output)) {
+		return null
 	}
+
+	const bitrate = config.bitrate || 1 * 1024 * 1024
+	const options = new FFmpegVideoOptions(format, bitrate, config.encoder)
+	const encoder = new FFmpegEncode(options)
+	const child = encoder.exec(fileOptions)
+		.on('log', l => job.log(l))
+		.on('progress', p => job.updateProgress(p.frame))
+	return child
 }
 
+
 /**
- * @param {import('bullmq').Job<any, void, string>} job
+ * @param   {import('bullmq').Job<any, void, string>} job
+ * @returns {any}
  */
 async function encodeHandler(job) {
-	const { id, format, formatId } = job.data
-	console.log(`[${job.name}] ${format} / ${formatId} (${job.id})`)
+	const format = job.data.format
 
+	let ffmpeg = null
 	switch (format) {
 	case 'avc1':
 	case 'hvc1':
-		await encodeVideo(id, format, formatId)
+		ffmpeg = await encodeVideo(job)
 		break
 	case 'jpeg':
 	case 'webp':
 	case 'avif':
-		await encodeImage(id, format, formatId)
+		ffmpeg = await encodeImage(job)
 		break
 	case 'mp4a':
 	case 'opus':
-		await encodeAudio(id, format, formatId)
+		ffmpeg = await encodeAudio(job)
 		break
 	default:
 		break
 	}
+	if (!ffmpeg) {
+		return null
+	}
+
+	return await getAwaiter(ffmpeg)
 }
 
 module.exports = encodeHandler

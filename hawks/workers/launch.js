@@ -28,7 +28,7 @@ async function main() {
 	const baseOptions = {
 		autorun: false,
 		connection,
-		useWorkerThreads: true,
+		lockDuration: env.hawksJobStalledDuration,
 	}
 	/**
 	 * @type {import('bullmq').Worker[]}
