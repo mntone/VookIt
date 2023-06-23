@@ -1,15 +1,17 @@
-const fs = require('fs')
+const { mkdir, rename } = require('fs/promises')
 const path = require('path')
 
 const env = require('../../../constants/env')
+const { numToUsid } = require('../../../utils/IdSupport')
 const prisma = require('../prisma')
 
 /**
  * Create upload from temporary file.
- * @param                                              tempfile
- * @returns {Promise<import('@prisma/client').Upload>}
+ * @param                                            tempfile
+ * @param   {string}                                 screenname
+ * @returns {Promise<import('@prisma/client').Post>}
  */
-module.exports = async tempfile => {
+module.exports = async (tempfile, screenname) => {
 	const ext = path.extname(tempfile.originalFilename)
 
 	let savedFilename
@@ -19,23 +21,44 @@ module.exports = async tempfile => {
 		savedFilename = tempfile.originalFilename
 	}
 
-	// Add upload to database.
-	const upload = await prisma.upload.create({
+	// Add post to database.
+	const post = await prisma.post.create({
 		data: {
+			title: '?'.repeat(env.titleLength.min),
 			filename: savedFilename,
-			endedBy: new Date(),
+			author: {
+				connect: { screenname: screenname },
+			},
+		},
+		select: {
+			id: true,
+			postedBy: true,
+			authorId: true,
 		},
 	})
 
-	// Move files from temporary.
-	const filename = upload.uuid + ext
-	const filepath = path.join(env.uploadWorkdir, filename)
-	fs.rename(tempfile.path, filepath, err => {
-		// [TODO] log & delete upload from database
-		if (err) {
-			console.log(err)
-		}
-	})
+	// Create directory
+	const usid = numToUsid(post.id)
+	const dstpath = env.mediaOriginalFile
+		.replace('[id]', usid)
+		.replace('[ext]', ext)
+	const dstdir = path.dirname(dstpath)
+	try {
+		await mkdir(dstdir, { recursive: true })
+	} catch (err) {
+		await prisma.post.delete({
+			select: {},
+			where: {
+				id: post.id,
+			},
+		})
+		return null
+	}
 
-	return upload
+	// Move files from temporary.
+	await rename(tempfile.path, dstpath)
+
+	// [TODO] Dispatch encoding.
+
+	return post
 }

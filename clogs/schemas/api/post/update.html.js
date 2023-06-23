@@ -23,6 +23,12 @@ const schema = {
 		isString: true,
 		isLength: env.descriptionLength,
 	},
+	visibility: {
+		in: 'body',
+		isIn: {
+			options: [['private', 'public']],
+		},
+	},
 }
 
 module.exports = deepFreeze(schema)

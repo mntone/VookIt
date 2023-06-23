@@ -89,11 +89,14 @@ TextArea.defaultProps = {
  * @param   {object}            props
  * @param   {string}            props.id
  * @param   {string}            props.title
- * @param   {string[]}          props.items
+ * @param   {object[]}          props.items
+ * @param   {string}            props.items.value
+ * @param   {string}            props.items.content
+ * @param   {string?}           props.defaultValue
  * @param   {boolean}           props.disabled
  * @returns {React.JSX.Element}
  */
-function Select({ id, title, items, disabled }) {
+function Select({ id, title, items, defaultValue, disabled }) {
 	return (
 		<div className="field is-horizontal">
 			<div className="field-label is-normal">
@@ -103,7 +106,7 @@ function Select({ id, title, items, disabled }) {
 				<div className="field">
 					<div className="control">
 						<div className="select">
-							<select id={id} name={id} disabled={disabled}>
+							<select id={id} name={id} defaultValue={defaultValue} disabled={disabled}>
 								{items.map(({ value, content }, index) => (
 									<option key={index} value={value}>{content}</option>
 								))}
@@ -122,6 +125,7 @@ Select.propTypes = {
 		value: PropTypes.string,
 		content: PropTypes.string.isRequired,
 	})).isRequired,
+	defaultValue: PropTypes.string,
 	disabled: PropTypes.bool.isRequired,
 }
 Select.defaultProps = {

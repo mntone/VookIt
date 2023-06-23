@@ -31,7 +31,7 @@ function EditPage({ t, language, post }) {
 					<Forms.Select id="visibility" title={t('postpage.visibility')} items={[
 						{ value: 'private', content: t('postpage.visibility_private') },
 						{ value: 'public', content: t('postpage.visibility_publicIfAvailable') },
-					]} />
+					]} defaultValue={post.published ? 'public' : 'private'} />
 
 					<div className="field is-horizontal">
 						<div className="field-label is-normal" />
@@ -58,6 +58,7 @@ EditPage.propTypes = {
 		id: PropTypes.number.isRequired,
 		title: PropTypes.string.isRequired,
 		description: PropTypes.string.isRequired,
+		published: PropTypes.bool.isRequired,
 	}),
 }
 

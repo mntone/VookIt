@@ -14,6 +14,7 @@ const ViewBuilder = require('./utils/ViewBuilder')
 const select = {
 	title: true,
 	description: true,
+	published: true,
 }
 
 class EditPageBuilder extends ViewBuilder {

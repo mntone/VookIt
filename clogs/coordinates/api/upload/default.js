@@ -4,6 +4,7 @@ const { isHash } = require('validator')
 
 const env = require('../../../../constants/env')
 const { addSIPrefix } = require('../../../../utils/DataSizeSupport')
+const { numToUsid } = require('../../../../utils/IdSupport')
 const scheme = require('../../../schemas/api/upload/default')
 const createUpload = require('../../../usecase/uploads/create')
 const { getFileHash } = require('../../utils/HashSupport')
@@ -75,12 +76,13 @@ class UploadDefaultResponseBuilder extends ResponseBuilder {
 						}
 					}
 
-					const body = await createUpload(file)
+					const post = await createUpload(file, 'dev')
 					const format = req.params.format
 					if (format === '.html') {
-						res.redirect(302, '/post/' + body.uuid)
+						const usid = numToUsid(post.id)
+						res.redirect(302, '/edit/' + usid)
 					} else {
-						res.select(format, body)
+						res.select(format, post)
 					}
 				} else {
 					const err = createError(400, 'error.file')

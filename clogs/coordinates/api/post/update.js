@@ -15,12 +15,7 @@ class PostUpdateResponseBuilder extends ResponseBuilder {
 	async _onNext(req, res) {
 		const usid = req.params.id
 		const id = toIdAsNumber(usid)
-		const {
-			title,
-			description,
-		} = req.body
-
-		const post = await updatePost(id, title, description)
+		const post = await updatePost(id, req.body)
 		const format = req.params.format
 		res.select(format, post)
 	}
