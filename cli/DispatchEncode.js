@@ -4,7 +4,6 @@ const { Queue } = require('bullmq')
 const IORedis = require('ioredis')
 
 const env = require('../constants/env')
-const { numToUsid } = require('../utils/IdSupport')
 
 function main() {
 	const options = {
@@ -25,7 +24,7 @@ function main() {
 	const args = process.argv.slice(2)
 	const { values: props, positionals } = parseArgs({ args, options, allowPositionals: true })
 
-	const id = numToUsid(Number(positionals[0] || props.id))
+	const id = positionals[0] || props.id
 	const queueName = props.queueName
 	const workflow = props.workflow
 
