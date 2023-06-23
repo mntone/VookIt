@@ -34,10 +34,10 @@ if (env.staticDeployEnabled) {
 
 	// Media files.
 	if (isProd) {
-		app.use(env.mediaForbiddenPath, (_, res) => res.sendStatus(404))
-		app.use(env.mediaRootPath, express.static(env.mediaDir, { immutable: true }))
+		app.use(env.mediaRootPath + '/*/.*', (_, res) => res.sendStatus(404))
+		app.use(env.mediaRootPath, express.static(env.mediaOutputDir, { immutable: true }))
 	} else {
-		app.use(env.mediaRootPath, express.static(env.mediaDir, { dotfiles: 'allow' }))
+		app.use(env.mediaRootPath, express.static(env.mediaOutputDir, { dotfiles: 'allow' }))
 	}
 }
 

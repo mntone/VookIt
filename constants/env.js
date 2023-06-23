@@ -88,10 +88,8 @@ module.exports = {
 	// --- Media configs
 	mediaRootPath: '/m',
 
-	mediaForbiddenPath: '/m/*/.*',
-
 	// Defines the public media dir.
-	mediaDir: './m',
+	mediaOutputDir: './m',
 
 	// Defines the original video file path.
 	mediaOriginalFile: './m/[id]/.org[ext]',
@@ -100,10 +98,12 @@ module.exports = {
 	mediaDashFilename: 'dash.mpd',
 
 	// Defines the dash initial segment filename.
-	mediaDashInitSegmentFilename: '$RepresentationID$-000.m4s',
+	// [Note] require "ceil(log10(ceil((maximumDuration / keyint) + 1)))" digits
+	mediaDashInitSegmentFilename: '$RepresentationID$-00.m4s',
 
 	// Defines the dash initial segment filename.
-	mediaDashMediaSegmentFilename: '$RepresentationID$-$Number%03d$.m4s',
+	// [Note] require "ceil(log10(ceil((maximumDuration / keyint) + 1)))" digits
+	mediaDashMediaSegmentFilename: '$RepresentationID$-$Number%02d$.m4s',
 
 	// Defines the hls video file path.
 	mediaHlsFilename: 'hls.m3u8',
