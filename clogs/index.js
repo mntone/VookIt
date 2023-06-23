@@ -12,6 +12,7 @@ const initConstants = require('../constants/init')
 initConstants()
 
 // Import routers.
+const bull = require('./routes/bull')
 const html = require('./routes/html/index')
 const rest = require('./routes/rest/index')
 
@@ -19,6 +20,7 @@ const rest = require('./routes/rest/index')
 const app = express()
 app.use('/', html)
 app.use('/api', rest)
+app.use('/bull', bull)
 
 // Deploy static assets.
 if (env.staticDeployEnabled) {
