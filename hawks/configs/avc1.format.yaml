@@ -56,7 +56,7 @@ variants:
   enabled: false
   bitrate: 1M
   constraints:
-    height: ">=480"
+    height: ">480"
   encoder:
     maxSize: 1152x480
     maxFramerate: 30
@@ -67,7 +67,7 @@ variants:
   enabled: true
   bitrate: 1.5M
   constraints:
-    height: ">=480"
+    height: "==480"
   encoder:
     maxSize: 1152x480
     maxFramerate: 30
