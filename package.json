@@ -26,6 +26,7 @@
     "redis:ping": "redis-cli ping",
     "webpack": "npx webpack --config ./clogs/webpack.config.js",
     "webpack:serve": "npm run webpack -- --watch",
+    "webpack:build": "NODE_ENV=production npm run webpack",
     "sass": "npx sass --style=compressed --no-source-map clogs/styles/index.sass:.assets/index.css clogs/styles/form.sass:.assets/form.css",
     "sass:serve": "npx sass --watch clogs/styles/index.sass:.assets/index.css clogs/styles/form.sass:.assets/form.css",
     "openssl:init": "openssl req -x509 -newkey rsa:4096 -keyout ./.dev/key.pem -out ./.dev/cert.pem -nodes -days 30",
@@ -56,8 +57,10 @@
     "validator": "^13.9.0"
   },
   "devDependencies": {
+    "@gfx/zopfli": "^1.0.15",
     "bulma": "^0.9.4",
     "bulma-switch": "^2.0.4",
+    "compression-webpack-plugin": "^10.0.0",
     "eslint": "^8.42.0",
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-jest": "^27.2.1",

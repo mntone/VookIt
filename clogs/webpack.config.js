@@ -1,8 +1,33 @@
 const path = require('path')
+const zlib = require('zlib')
 
+const zopfli = require('@gfx/zopfli')
+const CompressionPlugin = require('compression-webpack-plugin')
 const TerserPlugin = require('terser-webpack-plugin')
 
 const environment = process.env.NODE_ENV || 'development'
+const isDev = environment === 'development'
+
+const plugins = []
+if (!isDev) {
+	plugins.push(
+		new CompressionPlugin({
+			compressionOptions: {
+				numiterations: 10,
+			},
+			algorithm(input, compressionOptions, callback) {
+				return zopfli.gzip(input, compressionOptions, callback)
+			},
+		}),
+		new CompressionPlugin({
+			filename: '[path][base].br',
+			algorithm: 'brotliCompress',
+			compressionOptions: {
+				params: { [zlib.constants.BROTLI_PARAM_QUALITY]: 11 },
+			},
+		}),
+	)
+}
 
 module.exports = {
 	mode: environment,
@@ -11,11 +36,11 @@ module.exports = {
 		main: './clogs/scripts/app.js',
 		upload: './clogs/scripts/upload.js',
 	},
-	devtool: environment === 'development'
+	devtool: isDev
 		? 'eval-cheap-module-source-map' // build: slow, rebuild: fast
 		: false,
 	optimization: {
-		minimize: environment !== 'development',
+		minimize: !isDev,
 		minimizer: [new TerserPlugin({
 			terserOptions: {
 				/* eslint-disable camelcase */
@@ -43,4 +68,5 @@ module.exports = {
 		filename: '[name].js',
 		path: path.resolve(process.cwd(), './.assets'),
 	},
+	plugins,
 }

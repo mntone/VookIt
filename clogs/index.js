@@ -3,6 +3,8 @@ const { createServer } = require('https')
 
 const express = require('express')
 
+const staticCompression = require('./utils/express/compression')
+
 const env = require('../constants/env')
 const initConstants = require('../constants/init')
 
@@ -20,16 +22,18 @@ app.use('/api', rest)
 
 // Deploy static assets.
 if (env.staticDeployEnabled) {
+	const isProd = process.env.NODE_ENV !== 'development'
+
 	// Add MimeType
 	express.static.mime.define({ 'image/avif': ['avif'] })
 
 	// Style and script files.
-	app.use('/a', express.static('./.assets'))
+	app.use('/a', staticCompression('./.assets', { enableBrotli: true, immutable: isProd }))
 
 	// Media files.
-	if (process.env.NODE_ENV !== 'development') {
+	if (isProd) {
 		app.use(env.mediaForbiddenPath, (_, res) => res.sendStatus(404))
-		app.use(env.mediaRootPath, express.static(env.mediaDir))
+		app.use(env.mediaRootPath, express.static(env.mediaDir, { immutable: true }))
 	} else {
 		app.use(env.mediaRootPath, express.static(env.mediaDir, { dotfiles: 'allow' }))
 	}
