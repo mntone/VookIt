@@ -1,5 +1,6 @@
 const deepFreeze = require('deep-freeze')
 
+const { termsToMilliseconds } = require('../clogs/utils/texts/DateTimeTermsSupport')
 const { removeSIPrefix } = require('../utils/DataSizeSupport')
 const { mkdirSyncIfNeeded } = require('../utils/FileSupport')
 
@@ -12,17 +13,30 @@ const supplementablePropertyNames = [
 	'uploadMaxSize',
 ]
 
+const durationAsMillisecondsPropertyNames = [
+	'hawksJobStalledDuration',
+]
+
 const placeholderPropertyOperations = {
 	postFetchingLimit: env => env.topMaxCount + 1,
 	maxChunks: env => Math.ceil(env.uploadMaxSize / env.uploadChunkSize),
 }
 
 module.exports = () => {
-	// Remove supplementary unit from size constants.
+	// Remove SI prefix unit from size constants.
 	for (const key in env) {
 		if (supplementablePropertyNames.includes(key)) {
 			if (typeof env[key] === 'string') {
 				env[key] = removeSIPrefix(env[key])
+			}
+		}
+	}
+
+	// Remove time unit.
+	for (const key in env) {
+		if (durationAsMillisecondsPropertyNames.includes(key)) {
+			if (typeof env[key] === 'string') {
+				env[key] = termsToMilliseconds(env[key])
 			}
 		}
 	}

@@ -29,6 +29,15 @@ module.exports = {
 	// Defines static assets/media deploying feature.
 	staticDeployEnabled: true,
 
+	// --- Hawks (backend) settings
+	// Defines duration to stall job.
+	hawksJobStalledDuration: '30min',
+
+	// Defines queue name to init task.
+	// [Note] This value use dispatching encode from clogs (frontend).
+	//        Sync "./hawks/configs/workers.yaml#/queues/init/name"
+	hawksInitTaskQueueName: 'init',
+
 	// --- User configs
 	// Defines the length of screenname
 	screennameLength: {

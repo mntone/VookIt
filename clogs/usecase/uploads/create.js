@@ -1,9 +1,15 @@
 const { mkdir, rename } = require('fs/promises')
 const path = require('path')
 
+const { Queue } = require('bullmq')
+const IORedis = require('ioredis')
+
 const env = require('../../../constants/env')
 const { numToUsid } = require('../../../utils/IdSupport')
 const prisma = require('../prisma')
+
+const connection = new IORedis(env.redisPort, env.redisHost, env.redisOptions)
+const queue = new Queue(env.hawksInitTaskQueueName, { connection })
 
 /**
  * Create upload from temporary file.
@@ -58,7 +64,11 @@ module.exports = async (tempfile, screenname) => {
 	// Move files from temporary.
 	await rename(tempfile.path, dstpath)
 
-	// [TODO] Dispatch encoding.
+	// Dispatch encoding.
+	queue.add('encode:auto', {
+		id: usid,
+		step: 0,
+	})
 
 	return post
 }
