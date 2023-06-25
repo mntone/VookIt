@@ -1,29 +1,28 @@
 # Joint Photographic Experts Group
-id: 0
-idstr: jpeg
 type: image
+id: 100000 # JPEG (0010_0000)
+idstr: jpeg
 enabled: true
+public: true
 use: ffmpeg
 ext: ".jpg"
-singleJob: true # [TODO]
+mime: "image/jpeg"
 
-encoder:
+options:
   quality: 8
   resize: crop
 
 variants:
-- id: 18010
+- id: 100110 # JPEG (0010_0000) + type 1 (0000_0100) + 1x (0000_0010)
   idstr: jpeg_225p_1x
-  enabled: true
   filename: "t@1.jpg"
-  encoder:
+  options:
     maxSize: 400x225
     quality: 8
 
-- id: 18020
+- id: 100120 # JPEG (0010_0000) + type 1 (0000_0100) + 2x (0000_0020)
   idstr: jpeg_225p_2x
-  enabled: true
   filename: "t@2.jpg"
-  encoder:
+  options:
     maxSize: 800x450
     quality: 18

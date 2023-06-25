@@ -14,7 +14,8 @@ const supplementablePropertyNames = [
 ]
 
 const durationAsMillisecondsPropertyNames = [
-	'hawksJobStalledDuration',
+	'hawksDefaultStalledDuration',
+	'hawksEncodeDelayToSaveIntermediateStream',
 ]
 
 const placeholderPropertyOperations = {
@@ -38,6 +39,11 @@ module.exports = () => {
 			if (typeof env[key] === 'string') {
 				env[key] = termsToMilliseconds(env[key])
 			}
+		}
+	}
+	for (const [key, hawksQueue] of Object.entries(env.hawksQueues)) {
+		if (Object.prototype.hasOwnProperty.call(hawksQueue, 'stalledDuration')) {
+			env.hawksQueues[key].stalledDuration = termsToMilliseconds(hawksQueue.stalledDuration)
 		}
 	}
 

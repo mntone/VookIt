@@ -1,12 +1,18 @@
 # MPEG-4 Part 10 Advanced Video Coding
-id: 100000
-idstr: avc1
 type: video
+id: 10000 # AVC1 (0001_0000)
+idstr: avc1
 enabled: true
 use: ffmpeg
 ext: ".mp4"
+mime: "video/mp4; codecs=avc1.6400[levelhex]"
+# Baseline: video/mp4; codecs="avc1.4200[levelhex]"
+# Main:     video/mp4; codecs="avc1.4d00[levelhex]"
+# High 10:  video/mp4; codecs="avc1.6e00[levelhex]"
+audios: mp4a
+useHls: true
 
-encoder:
+options:
   codec: libx264
   pixelFormat: yuv420p
   profile: "high"
@@ -15,92 +21,80 @@ encoder:
   sc_threshold: 0
 
 tune:
+  increase: 0.8
+  decrease: 0.8
 
 variants:
-- id: 100180
+- id: 10180 # AVC1 (0001_0000) + 180p (0000_0180)
   idstr: avc1_180p
-  group: ["ld"]
-  enabled: true
   bitrate: 320k
   constraints:
     height: ">=180"
-  encoder:
+  options:
     maxSize: 432x180
     maxFramerate: 30
 
-- id: 100240
+- id: 10240 # AVC1 (0001_0000) + 240p (0000_0240)
   idstr: avc1_240p
-  group: ["ld"]
-  enabled: false
   bitrate: 426k
   constraints:
-    height: ">=240"
-  encoder:
+    height: "==240"
+  options:
     maxSize: 576x240
     maxFramerate: 30
 
-- id: 100360
+- id: 10360 # AVC1 (0001_0000) + 360p (0000_0360)
   idstr: avc1_360p
-  group: ["ld"]
   enabled: true
   bitrate: 640k
   constraints:
     height: ">=360"
-  encoder:
+  options:
     maxSize: 864x360
     maxFramerate: 30
 
-- id: 100480
+- id: 10480 # AVC1 (0001_0000) + 480p (0000_0480)
   idstr: avc1_480p
-  group: ["sd"]
   enabled: false
   bitrate: 1M
   constraints:
     height: ">480"
-  encoder:
+  options:
     maxSize: 1152x480
     maxFramerate: 30
 
-- id: 100482
+- id: 10482 # AVC1 (0001_0000) + 480p (0000_0480) + variant 2
   idstr: avc1_480p_hq
-  group: ["sd_hq"]
-  enabled: true
   bitrate: 1.5M
   constraints:
     height: "==480"
-  encoder:
+  options:
     maxSize: 1152x480
     maxFramerate: 30
 
-- id: 100540
+- id: 10540 # AVC1 (0001_0000) + 540p (0000_0540)
   idstr: avc1_540p
-  group: ["sd"]
-  enabled: false
   bitrate: 1.25M
   constraints:
-    height: ">=540"
-  encoder:
+    height: "==540"
+  options:
     maxSize: 1296x540
     maxFramerate: 30
 
-- id: 100720
+- id: 10720 # AVC1 (0001_0000) + 720p (0000_0720)
   idstr: avc1_720p
-  group: ["hd"]
-  enabled: true
   bitrate: 2M
   constraints:
     height: ">=720"
-  encoder:
+  options:
     maxSize: 1728x720
     maxFramerate: 30
 
-- id: 101080
+- id: 11080 # AVC1 (0001_0000) + 1080p (0000_1080)
   idstr: avc1_1080p
-  group: ["fhd"]
-  enabled: true
   bitrate: 4M
   constraints:
     height: ">=1080"
-  encoder:
+  options:
     maxSize: 2592x1080
     maxFramerate: 30

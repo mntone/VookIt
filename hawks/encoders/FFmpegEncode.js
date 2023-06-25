@@ -66,7 +66,7 @@ class FFmpegEncode extends Job {
 	static LOG = 'log'
 	static PROGRESS = 'progress'
 
-	static #re = /^(?:frame= *(?<frame>\d+) fps= *(?<framerate>\d+(?:\.\d+)?) q= *(?<q>-?\d+\.\d+) L?)?size= *(?<size>\d+)kB time= *(?<time>\d+:\d{2}:\d{2}\.\d{2}) bitrate= *(?<bitrate>-?\d+\.\d+)kbits\/s (?:dup= *(?<duplicate>\d+) drop= *(?<drop>\d+) )?speed= *(?<speed>\d+(?:\.\d+)?)x *$/g
+	static #re = /^(?:frame= *(?<frame>\d+) fps= *(?<framerate>\d+(?:\.\d+)?) q= *(?<q>-?\d+\.\d+) )?L?size= *(?<size>\d+)kB time= *(?<time>\d+:\d{2}:\d{2}\.\d{2}) bitrate= *(?<bitrate>-?\d+\.\d+)kbits\/s (?:dup= *(?<duplicate>\d+) drop= *(?<drop>\d+) )?speed= *(?<speed>\d+(?:\.\d+)?)x *$/gm
 
 	/**
 	 * @param {import('child_process').ChildProcessWithoutNullStreams} ffmpeg

@@ -11,7 +11,7 @@ extends:
   - plugin:import/errors
   - plugin:jest/recommended
   - plugin:jsdoc/recommended
-  - plugin:react/recommended
+  - plugin:@typescript-eslint/eslint-recommended
 env:
   es2022: true,
   node: true
@@ -46,13 +46,16 @@ rules:
   implicit-arrow-linebreak: ["warn"]
   indent: ["error", "tab"]
   jsx-quotes: ["error", "prefer-double"]
-  key-spacing: ["warn", { "mode": "minimum" }]
+  key-spacing: ["warn", { multiLine: { mode: "minimum" }}]
+  keyword-spacing: ["warn"]
   linebreak-style: ["error", "unix"]
   new-parens: ["error"]
   no-mixed-spaces-and-tabs: ["error", "smart-tabs"]
   no-multi-spaces: ["warn"]
+  no-multiple-empty-lines: ["error", { max: 1, maxBOF: 1, maxEOF: 1 }]
   no-trailing-spaces: ["warn"]
   no-whitespace-before-property: ["error"]
+  object-curly-spacing: ["warn", "always", { arraysInObjects: false, objectsInObjects: false }]
   operator-linebreak: ["error", "before"]
   padded-blocks: ["error", "never"]
   quotes: ["error", "single", { avoidEscape: true }]
@@ -93,5 +96,26 @@ rules:
   "jsdoc/require-property-type": 0
   "jsdoc/require-returns-description": 0
   "jsdoc/require-returns-type": 0
+overrides:
   # React
-  "react/self-closing-comp": ["error"]
+  - files: "*.jsx"
+    extends:
+    - plugin:react/recommended
+    rules:
+      "react/self-closing-comp": ["error"]
+  # TypeScript
+  - files: ["*.ts", "*.cts", "*.mts"]
+    extends:
+    - plugin:@typescript-eslint/recommended
+    rules:
+      # import
+      "import/exports-last": 0
+      # jsdoc
+      "jsdoc/check-tag-names": 0
+      "jsdoc/require-jsdoc": 0
+      # TypeScript
+      "@typescript-eslint/ban-ts-comment": ["error", { ts-ignore: false }]
+    settings:
+      'import/resolver':
+        typescript:
+          extensions: [".ts", ".tsx"]

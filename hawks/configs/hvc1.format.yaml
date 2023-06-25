@@ -1,12 +1,13 @@
 # ISO/IEC 23008-2 High Efficiency Video Coding
-id: 110000
-idstr: hvc1
 type: video
+id: 50000 # HVC1 (0005_0000)
+idstr: hvc1
 enabled: false
 use: ffmpeg
 ext: ".mp4"
+audios: mp4a
 
-encoder:
+options:
   codec: libx265
   tag: hvc1 # Require Apple platforms
   pixelFormat: yuv420p
@@ -16,92 +17,82 @@ encoder:
   sc_threshold: 0
 
 tune:
+  increase: 0.75
+  decrease: 0.75
 
 variants:
-- id: 110180
+- id: 50180 # HVC1 (0005_0000) + 180p (0000_0180)
   idstr: hvc1_180p
-  group: ["ld"]
-  enabled: true
   bitrate: 256k
   constraints:
     height: ">=180"
-  encoder:
+  options:
     maxSize: 432x180
     maxFramerate: 30
 
-- id: 110240
+- id: 50240 # HVC1 (0005_0000) + 240p (0000_0240)
   idstr: hvc1_240p
-  group: ["ld"]
   enabled: false
   bitrate: 341k
   constraints:
-    height: ">=240"
-  encoder:
+    height: ">240"
+  options:
     maxSize: 576x240
     maxFramerate: 30
 
-- id: 110360
+- id: 50360 # HVC1 (0005_0000) + 360p (0000_0360)
   idstr: hvc1_360p
-  group: ["ld"]
-  enabled: true
   bitrate: 512k
   constraints:
     height: ">=360"
-  encoder:
+  options:
     maxSize: 864x360
     maxFramerate: 30
 
-- id: 110480
+- id: 50480 # HVC1 (0005_0000) + 480p (0000_0480)
   idstr: hvc1_480p
-  group: ["sd"]
   enabled: false
   bitrate: 0.8M
   constraints:
     height: ">480"
-  encoder:
+  options:
     maxSize: 1152x480
     maxFramerate: 30
 
-- id: 110482
+- id: 50482 # HVC1 (0005_0000) + 480p (0000_0480) + variant 2
   idstr: hvc1_480p_hq
-  group: ["sd_hq"]
-  enabled: true
   bitrate: 1.2M
   constraints:
     height: "==480"
-  encoder:
+  options:
     maxSize: 1152x480
     maxFramerate: 30
 
-- id: 110540
+- id: 50480 # HVC1 (0005_0000) + 540p (0000_0540)
   idstr: hvc1_540p
-  group: ["sd"]
-  enabled: false
   bitrate: 1M
   constraints:
-    height: ">=540"
-  encoder:
+    height: "==540"
+  options:
     maxSize: 1296x540
     maxFramerate: 30
 
-- id: 110720
+- id: 50720 # HVC1 (0005_0000) + 720p (0000_0720)
   idstr: hvc1_720p
-  group: ["hd"]
   enabled: true
   bitrate: 1.6M
   constraints:
     height: ">=720"
-  encoder:
+  options:
     maxSize: 1728x720
     maxFramerate: 30
 
-- id: 111080
+- id: 51080 # HVC1 (0005_0000) + 1080p (0000_1080)
   idstr: hvc1_1080p
-  group: ["fhd"]
   enabled: true
   bitrate: 3.2M
   constraints:
     height: ">=1080"
-  encoder:
+  options:
     maxSize: 2592x1080
     maxFramerate: 30

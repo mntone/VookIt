@@ -1,0 +1,21 @@
+{
+	"extends": "@tsconfig/node20/tsconfig.json",
+
+	"compilerOptions": {
+		"moduleResolution": "node16",
+		"typeRoots": [
+			"./hawks/__types__"
+		]
+	},
+	"exclude": [
+		"node_modules"
+	],
+	"include": [
+		"**/*.ts",
+		"**/*.mts"
+	],
+	"ts-node": {
+		"skipLibCheck": true,
+		"transpileOnly": true
+	}
+}

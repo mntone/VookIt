@@ -30,13 +30,33 @@ module.exports = {
 	staticDeployEnabled: true,
 
 	// --- Hawks (backend) settings
-	// Defines duration to stall job.
-	hawksJobStalledDuration: '30min',
+	// Defines default queue name.
+	// [Note] Reserved name: 'main' & 'encode'.
+	//        You can use custom queue. Add 'runsOn' for codec or variant to "*.format.yaml".
+	hawksQueues: {
+		main: {
+			concurrency: 1,
+			stalledDuration: '5min',
+		},
+		encode: {
+			concurrency: 2,
+		},
+	},
 
-	// Defines queue name to init task.
-	// [Note] This value use dispatching encode from clogs (frontend).
-	//        Sync "./hawks/configs/workers.yaml#/queues/init/name"
-	hawksInitTaskQueueName: 'init',
+	// Defines default concurrency (fallback).
+	hawksDefaultConcurrency: 1,
+
+	// Defines default duration to stall job (fallback).
+	hawksDefaultStalledDuration: '30min',
+
+	// Defines encode delayed duration to create CMAF intermediate stream.
+	hawksEncodeDelayToSaveIntermediateStream: '1min',
+
+	// Defines the count to keep job log when complete if true.
+	hawksKeepJobCountOnComplete: 10,
+
+	// Defines the count to keep job log when complete if true.
+	hawksKeepJobCountOnFailure: 100,
 
 	// --- User configs
 	// Defines the length of screenname
@@ -91,8 +111,11 @@ module.exports = {
 	// Defines the public media dir.
 	mediaOutputDir: './m',
 
-	// Defines the original video file path.
-	mediaOriginalFile: './m/[id]/.org[ext]',
+	// Defines the original filename.
+	mediaOriginalFilename: '.org[ext]',
+
+	// Defines the private dirname.
+	mediaPrivateDirname: '.enc',
 
 	// Defines the dash video filename.
 	mediaDashFilename: 'dash.mpd',
@@ -108,11 +131,9 @@ module.exports = {
 	// Defines the hls video file path.
 	mediaHlsFilename: 'hls.m3u8',
 
-	// Defines the image dir.
-	mediaImageDir: './m/[id]',
-
-	// Defines the encoded video and audio dir.
-	mediaEncodedDir: './m/[id]/.enc',
+	// for backport
+	mediaOriginalFile: './m/[id]/.org[ext]',
+	// -------------
 
 	// --- Configurable settings
 	// Defines the maximum size of ordinal request body.
@@ -147,9 +168,6 @@ module.exports = {
 
 	// Defines the cache terms to the endpoint `GET /api/version`.
 	apiVersionCacheTerms: '1h',
-
-	// --- Hawks configs
-	hawksConfigsFormat: 'yaml',
 
 	// --- For Development
 	uploadMaxFileSizeMultiplierInDev: 15,

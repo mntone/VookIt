@@ -1,8 +1,6 @@
 {
+	"typescript.tsdk": "./node_modules/typescript/lib",
 	"yaml.schemas": {
-		"./hawks/configs/schemas/workflow.schema.json": [
-			"/hawks/configs/workflows.yaml"
-		],
 		"./hawks/configs/schemas/format.schema.json": [
 			"/hawks/configs/*.format.yaml"
 		]

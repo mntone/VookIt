@@ -1,13 +1,14 @@
 # AV1 Image File Format
-id: 0
-idstr: avif
 type: image
+id: 110000 # AVIF (0012_0000)
+idstr: avif
 enabled: true
+public: true
 use: ffmpeg
 ext: ".avif"
-singleJob: true # [TODO]
+mime: "image/avif"
 
-encoder:
+options:
   codec: libaom-av1
   # recommended: 20-40
   # (--cq-level in aomenc)
@@ -15,30 +16,27 @@ encoder:
   resize: crop
 
 variants:
-- id: 18050
+- id: 110110 # AVIF (0012_0000) + type 1 (0000_0100) + 1x (0000_0010)
   idstr: avif_225p_1x
-  enabled: true
   filename: "t@1.avif"
-  encoder:
+  options:
     maxSize: 400x225
     crf: 38
 
-- id: 18060
+- id: 110120 # AVIF (0012_0000) + type 1 (0000_0100) + 2x (0000_0020)
   idstr: avif_225p_2x
-  enabled: true
   filename: "t@2.avif"
   constraints:
     height: ">=450"
-  encoder:
+  options:
     maxSize: 800x450
     crf: 46
 
-- id: 18070
+- id: 110130 # AVIF (0012_0000) + type 1 (0000_0100) + 3x (0000_0030)
   idstr: avif_225p_3x
-  enabled: true
   filename: "t@3.avif"
   constraints:
     height: ">=675"
-  encoder:
+  options:
     maxSize: 1200x675
     crf: 52

@@ -1,28 +1,27 @@
 # Opus
-id: 210000
-idstr: opus
 type: audio
+id: 2000000 # Opus (0200_0000)
+idstr: opus
 enabled: true
 use: ffmpeg
 ext: ".webm"
+mime: "audio/webm; codecs=opus"
 
-encoder:
+options:
   codec: libopus
   channel: 2
 
 variants:
-- id: 210048
+- id: 2000048 # Opus (0200_0000) + 48 kbps (0000_0048)
   idstr: opus_48k
-  enabled: true
   bitrate: 46k
-  encoder:
+  options:
     sampleRate: [16000, 22050, 24000, 32000, 44100, 48000]
 
-- id: 210096
+- id: 2000096 # Opus (0200_0000) + 96 kbps (0000_0096)
   idstr: opus_96k
-  enabled: true
   bitrate: 92k
   constraints:
     sampleRate: ">=32000"
-  encoder:
+  options:
     sampleRate: [32000, 44100, 48000]

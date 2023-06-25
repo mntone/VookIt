@@ -67,7 +67,9 @@ module.exports = async (tempfile, screenname) => {
 	// Dispatch encoding.
 	queue.add('encode:auto', {
 		id: usid,
-		step: 0,
+		ext: path.extname(dstpath),
+		cursor: -1,
+		phase: 'pending',
 	})
 
 	return post

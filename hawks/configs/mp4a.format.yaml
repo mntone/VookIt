@@ -1,42 +1,37 @@
 # MPEG-4 Advanced Audio Coding
-id: 200000
-idstr: mp4a
 type: audio
+id: 1000000 # MP4A (0100_0000)
+idstr: mp4a
 enabled: true
 use: ffmpeg
 ext: ".m4a"
+mime: "audio/mp4; codecs=mp4a.40.2"
 
-encoder:
+options:
   codec: aac_at
   channel: 2
 
 variants:
-- id: 200064
+- id: 1000064 # MP4A (0100_0000) + 64 kbps (0000_0064)
   idstr: mp4a_64k
-  group: ["sq"]
-  enabled: true
   bitrate: 32k
-  encoder:
+  options:
     sampleRate: [16000, 22050, 24000, 32000, 44100, 48000]
 
-- id: 200128
+- id: 1000128 # MP4A (0100_0000) + 128 kbps (0000_0128)
   idstr: mp4a_128k
-  group: ["sq"]
-  enabled: true
   bitrate: 128k
   constraints:
     bitrate: ">=131072"
     sampleRate: ">=32000"
-  encoder:
+  options:
     sampleRate: [32000, 44100, 48000]
 
-- id: 200256
+- id: 1000256 # MP4A (0100_0000) + 256 kbps (0000_0256)
   idstr: mp4a_256k
-  group: ["hq"]
-  enabled: true
   bitrate: 256k
   constraints:
     bitrate: ">=262144"
     sampleRate: ">=48000"
-  encoder:
+  options:
     sampleRate: 48000

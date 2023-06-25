@@ -1,31 +1,30 @@
 # WebP
-id: 0
-idstr: webp
 type: image
+id: 130000 # WebP (0013_0000)
+idstr: webp
 enabled: true
+public: true
 use: ffmpeg
 ext: ".webp"
-singleJob: true # [TODO]
+mime: "image/webp"
 
-encoder:
+options:
   quality: 85
   resize: crop
 
 variants:
-- id: 18030
+- id: 130110 # WebP (0013_0000) + type 1 (0000_0100) + 1x (0000_0010)
   idstr: webp_225p_1x
-  enabled: true
   filename: "t@1.webp"
-  encoder:
+  options:
     maxSize: 400x225
     quality: 25
 
-- id: 18040
+- id: 130120 # WebP (0013_0000) + type 1 (0000_0100) + 2x (0000_0020)
   idstr: webp_225p_2x
-  enabled: true
   filename: "t@2.webp"
   constraints:
     height: ">=450"
-  encoder:
+  options:
     maxSize: 800x450
     quality: 12

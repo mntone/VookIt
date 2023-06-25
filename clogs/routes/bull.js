@@ -6,13 +6,11 @@ const express = require('express')
 const IORedis = require('ioredis')
 
 const env = require('../../constants/env')
-const { loadYamlSync } = require('../../hawks/utils/yaml-loader')
 
-const workersConfig = loadYamlSync(__dirname, '../../hawks/configs/workers')
 const connection = new IORedis(env.redisPort, env.redisHost, env.redisOptions)
 const serverAdapter = new ExpressAdapter().setBasePath('/bull')
 createBullBoard({
-	queues: Object.values(workersConfig.queues).map(queue => new BullMQAdapter(new Queue(queue.name, { connection }))),
+	queues: Object.keys(env.hawksQueues).map(queue => new BullMQAdapter(new Queue(queue, { connection }))),
 	serverAdapter,
 })
 

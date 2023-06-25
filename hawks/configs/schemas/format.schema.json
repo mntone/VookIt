@@ -1,15 +1,7 @@
 {
-	"title": "Format schema",
+	"title": "Codec schema",
 	"type": "object",
 	"properties": {
-		"id": {
-			"title": "Format ID",
-			"type": "number"
-		},
-		"idstr": {
-			"title": "Readable Format ID",
-			"type": "string"
-		},
 		"type": {
 			"title": "Media type",
 			"type": "string",
@@ -19,12 +11,31 @@
 				"video"
 			]
 		},
+		"id": {
+			"title": "Codec ID",
+			"type": "number"
+		},
+		"idstr": {
+			"title": "Readable Codec ID",
+			"type": "string"
+		},
 		"enabled": {
-			"title": "Enable Format if True",
+			"title": "Enable Codec if True",
+			"description": "Default is \"true\".",
 			"type": "boolean",
 			"default": true
 		},
-		"use": {
+		"public": {
+			"title": "Save on Public Directory if True",
+			"type": "boolean",
+			"default": false
+		},
+		"runsOn": {
+			"title": "Runs on Queue Name",
+			"type": "string",
+			"default": "encode"
+		},
+		"uses": {
 			"title": "Use Encoder if True",
 			"type": "string",
 			"enum": [
@@ -49,8 +60,11 @@
 			],
 			"default": ".mp4"
 		},
-		"encoder": {
-			"$ref": "#/$defs/encoder"
+		"options": {
+			"$ref": "#/$defs/options"
+		},
+		"tune": {
+			"$ref": "#/$defs/tune"
 		},
 		"variants": {
 			"title": "Variants",
@@ -68,20 +82,16 @@
 						"title": "Readable Variant ID",
 						"type": "string"
 					},
-					"group": {
-						"title": "Variant Group IDs",
-						"type": "array",
-						"minItems": 1,
-						"items": {
-							"title": "Variant Group ID",
-							"type": "string"
-						},
-						"uniqueItems": true
-					},
 					"enabled": {
 						"title": "Enable Variant if True",
+						"description": "Default is \"true\".",
 						"type": "boolean",
 						"default": true
+					},
+					"runsOn": {
+						"title": "Runs on Queue Name",
+						"type": "string",
+						"default": "encode"
 					},
 					"bitrate": {
 						"title": "Bitrate",
@@ -97,14 +107,16 @@
 						"title": "Filename",
 						"description": "Default is \"[idstr][ext]\"."
 					},
-					"encoder": {
-						"$ref": "#/$defs/encoder"
+					"options": {
+						"$ref": "#/$defs/options"
+					},
+					"tune": {
+						"$ref": "#/$defs/tune"
 					}
 				},
 				"required": [
 					"id",
-					"idstr",
-					"enabled"
+					"idstr"
 				]
 			}
 		}
@@ -118,8 +130,8 @@
 		"enabled"
 	],
 	"$defs": {
-		"encoder": {
-			"title": "Encoder Config",
+		"options": {
+			"title": "Encoder Options",
 			"type": "object",
 			"properties": {
 				"codec": {
@@ -200,6 +212,22 @@
 				}
 			},
 			"additionalProperties": true
+		},
+		"tune": {
+			"title": "Tune",
+			"type": "object",
+			"properties": {
+				"increase": {
+					"title": "Increasing Multiplier to Bitrate for Pixel Ratio Relative to 16:9 (Video) or Channels Relative to Stereo (Audio).",
+					"type": "number",
+					"default": 1.0
+				},
+				"decrease": {
+					"title": "Increasing Multiplier to Bitrate for Pixel Ratio Relative to 16:9 (Video) or Channels Relative to Stereo (Audio).",
+					"type": "number",
+					"default": 1.0
+				}
+			}
 		}
 	}
 }

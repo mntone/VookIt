@@ -46,12 +46,16 @@
 				"<node_internals>/**"
 			],
 			"runtimeExecutable": "${workspaceFolder}/node_modules/nodemon/bin/nodemon.js",
-			"program": "${workspaceFolder}/hawks/workers/launch.js",
+			"runtimeArgs": [
+				"--loader",
+				"ts-node/esm"
+			],
+			"program": "${workspaceFolder}/hawks/main.mts",
 			"args": [
 				"--watch",
-				"./hawks",
+				"./hawks,./constants",
 				"--ext",
-				"js,yaml",
+				"js,ts,yaml",
 				"--ignore",
 				"**/__test__/**",
 				"--delay",
@@ -68,7 +72,11 @@
 			"skipFiles": [
 				"<node_internals>/**"
 			],
-			"program": "${workspaceFolder}/hawks/workers/launch.js",
+			"runtimeArgs": [
+				"--loader",
+				"ts-node/esm"
+			],
+			"program": "${workspaceFolder}/hawks/main.mts",
 			"env": {
 				"NODE_ENV": "development"
 			}
