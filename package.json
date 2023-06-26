@@ -87,6 +87,7 @@
     "lodash.isequal": "^4.5.0",
     "nodemon": "^2.0.22",
     "prisma": "^4.16.1",
+    "react-loadable-ssr-addon": "^1.0.2",
     "sass": "^1.63.6",
     "terser-webpack-plugin": "^5.3.9",
     "ts-jest": "^29.1.0",

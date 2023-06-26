@@ -2,6 +2,7 @@ const PropTypes = require('prop-types')
 const React = require('react')
 
 const env = require('../../../constants/env')
+const AppScript = require('../components/AppScript')
 
 const AppearanceModal = require('./AppearanceModal')
 const Footer = require('./Footer')
@@ -52,7 +53,7 @@ function Root({ t, title, language, className, stylesheets, children }) {
 
 				<Footer t={t} />
 				<AppearanceModal t={t} />
-				<script src="/a/main.js" />
+				<AppScript name="main" />
 			</body>
 		</html>
 	)

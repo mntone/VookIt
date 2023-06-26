@@ -3,6 +3,7 @@ const zlib = require('zlib')
 
 const zopfli = require('@gfx/zopfli')
 const CompressionPlugin = require('compression-webpack-plugin')
+const ReactLoadableSSRAddon = require('react-loadable-ssr-addon')
 const TerserPlugin = require('terser-webpack-plugin')
 
 const environment = process.env.NODE_ENV || 'development'
@@ -28,6 +29,11 @@ if (!isDev) {
 		}),
 	)
 }
+plugins.push(new ReactLoadableSSRAddon({
+	filename: 'assets-manifest.json',
+	integrity: true,
+	integrityAlgorithms: ['sha256'],
+}))
 
 module.exports = {
 	mode: environment,

@@ -3,6 +3,7 @@ const React = require('react')
 
 const env = require('../../../constants/env')
 const { addSIPrefix } = require('../../../utils/DataSizeSupport')
+const AppScript = require('../components/AppScript')
 const Root = require('../components/Root')
 
 const getInlineScript = t => {
@@ -62,7 +63,7 @@ function UploadPage({ t, language }) {
 						</div>
 					</noscript>
 				</form>
-				<script src={`${env.scriptRelativePath}/upload.js`} />
+				<AppScript name="upload" />
 				<script dangerouslySetInnerHTML={{ __html: getInlineScript(t) }} defer={true} />
 			</div>
 		</Root>
