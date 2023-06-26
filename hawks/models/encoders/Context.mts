@@ -1,3 +1,4 @@
+import { FractionFramerate } from '../Framerate.mjs'
 
 type EncodeContext = {
 	/**
@@ -7,6 +8,11 @@ type EncodeContext = {
 }
 
 type FrameEncodeContext = EncodeContext & {
+	/**
+	 * Is valid video stream.
+	 */
+	hasVideo: boolean
+
 	/**
 	 * Original video width
 	 */
@@ -33,6 +39,11 @@ export type AudioEncodeContext = StreamEncodeContext & {
 }
 
 export type ImageEncodeContext = FrameEncodeContext
-export type VideoEncodeContext = StreamEncodeContext & FrameEncodeContext
+export type VideoEncodeContext = StreamEncodeContext & FrameEncodeContext & {
+	/**
+	 * Original video framerate
+	 */
+	framerate: FractionFramerate
+}
 
 export type SuperEncodeContext = AudioEncodeContext & ImageEncodeContext & VideoEncodeContext

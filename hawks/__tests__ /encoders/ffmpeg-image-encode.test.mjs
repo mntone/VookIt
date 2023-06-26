@@ -1,10 +1,10 @@
-const { existsSync, rmdirSync } = require('fs')
+import { existsSync, rmdirSync } from 'fs'
 
-const { mkdirIfNeeded } = require('../../../utils/FileSupport')
-const FFmpegEncode = require('../../encoders/FFmpegEncode')
-const { execSyncAsJson: execFFproveSyncAsJson } = require('../../encoders/FFprobe')
-const FFmpegOptions = require('../../encoders/options/ffmpeg')
-const FFmpegImageOptions = require('../../encoders/options/ffmpeg-image')
+import { mkdirIfNeeded } from '../../../utils/FileSupport.js'
+import FFmpegEncode from '../../encoders/FFmpegEncode.js'
+import FFmpegImageOptions from '../../encoders/options/ffmpeg-image.js'
+import FFmpegOptions from '../../encoders/options/ffmpeg.js'
+import { ffproveSync } from '../../usecases/trampolines/ffprobe.mjs'
 
 class FFmpegTestImageOptions extends FFmpegOptions {
 	#width
@@ -82,7 +82,6 @@ function getResultFilename(width, height, target, mode) {
 		.replace('[mode]', mode)
 }
 
-describe('FFmpegEncode:Image', () => {
 	beforeAll(() => {
 		mkdirIfNeeded(TEST_IMAGE_OUTPUT_PATH)
 		mkdirIfNeeded(TEST_IMAGE_RESULT_PATH)
@@ -92,7 +91,7 @@ describe('FFmpegEncode:Image', () => {
 		rmdirSync(TEST_IMAGE_OUTPUT_PATH, { recursive: true })
 	})
 
-	test.each([
+	test.concurrent.each([
 		// input size, target size, mode, expected size
 		[[1440, 1080] /* 12    :9 ( 4:3)   */, '400x225', 'crop', [400, 225]],
 		[[1620, 1080] /* 13.5  :9 ( 3:2)   */, '400x225', 'crop', [400, 225]],
@@ -137,7 +136,7 @@ describe('FFmpegEncode:Image', () => {
 		}).stderr.toString()
 		console.log(log)
 
-		const fileinfo = execFFproveSyncAsJson({
+		const fileinfo = ffproveSync({
 			input: outputFilename,
 			showStreams: true,
 		})

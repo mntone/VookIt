@@ -52,7 +52,7 @@ rules:
   new-parens: ["error"]
   no-mixed-spaces-and-tabs: ["error", "smart-tabs"]
   no-multi-spaces: ["warn"]
-  no-multiple-empty-lines: ["error", { max: 1, maxBOF: 1, maxEOF: 1 }]
+  no-multiple-empty-lines: ["warn", { max: 1, maxBOF: 1, maxEOF: 0 }]
   no-trailing-spaces: ["warn"]
   no-whitespace-before-property: ["error"]
   object-curly-spacing: ["warn", "always", { arraysInObjects: false, objectsInObjects: false }]
@@ -97,6 +97,14 @@ rules:
   "jsdoc/require-returns-description": 0
   "jsdoc/require-returns-type": 0
 overrides:
+  # ESM
+  - files: "*.mjs"
+    parserOptions:
+      sourceType: "module"
+    settings:
+      'import/resolver':
+        typescript:
+          extensions: [".cts", ".mts"]
   # React
   - files: "*.jsx"
     extends:
@@ -118,4 +126,4 @@ overrides:
     settings:
       'import/resolver':
         typescript:
-          extensions: [".ts", ".tsx"]
+          extensions: [".js", ".cts", ".mts"]
