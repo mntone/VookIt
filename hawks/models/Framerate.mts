@@ -15,9 +15,13 @@ export function parseFramerate(str: string): FractionFramerate {
 }
 
 export type FractionFramerate = {
-	numerator: number,
+	numerator: number
 
 	denominator: number
+}
+
+export function getFramerate(frac: FractionFramerate) {
+	return frac.numerator / frac.denominator
 }
 
 export type Framerate = FractionFramerate | string | number

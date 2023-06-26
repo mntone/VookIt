@@ -3,10 +3,11 @@ import { removeSIPrefixIfNeeded } from '../../../utils/DataSizeSupport.js'
 import { CodecConfig } from '../../models/configs/CodecConfig.mjs'
 import { VariantConfig } from '../../models/configs/VariantConfig.mjs'
 import { Variant } from '../../models/encoders/Variant.mjs'
+import { MapperOptions } from '../../models/mappers/MapperOptions.mjs'
 
 import { mapTune } from './tune.mjs'
 
-export function mapVariant(config: VariantConfig, base: CodecConfig) {
+export function mapVariant(config: VariantConfig, base: CodecConfig, options?: MapperOptions) {
 	const ret: Variant = {
 		type: base.type,
 		id: config.id,
@@ -20,9 +21,9 @@ export function mapVariant(config: VariantConfig, base: CodecConfig) {
 		mimeType: base.mime,
 		audioCodecIds: Array.isArray(base.audios) ? base.audios : [base.audios],
 		useHls: base.useHls ?? false,
-		bitrate: removeSIPrefixIfNeeded(config.bitrate),
+		bitrate: config.bitrate ? removeSIPrefixIfNeeded(config.bitrate) : undefined,
 		encodeOptions: { ...base.options, ...config.options },
-		tune: mapTune(config.tune, base.tune),
+		tune: mapTune(config.tune, base.tune, options),
 	}
 	return Object.freeze(ret)
 }

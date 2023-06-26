@@ -1,24 +1,68 @@
 {
 	"$defs": {
-		"title": "Constraints",
-		"description": "Enable if cond is All True.",
-		"type": "object",
-		"properties": {
-			"width": {
-				"title": "Constraint for Width",
-				"type": "string",
-				"pattern": "^(==|!=|<|<=|>|>=)[1-9][0-9]{0,4}$"
-			},
-			"height": {
-				"title": "Constraint for Height",
-				"type": "string",
-				"pattern": "^(==|!=|<|<=|>|>=)[1-9][0-9]{0,3}$"
-			},
-			"bitrate": {
-				"title": "Constraint for Bitrate",
-				"type": "string",
-				"pattern": "^(==|!=|<|<=|>|>=)[1-9][0-9]*$"
+		"root": {
+			"title": "Constraints",
+			"description": "Enable if cond is All True.",
+			"type": "object",
+			"properties": {
+				"width": {
+					"title": "Constraint for Width",
+					"anyOf": [
+						{
+							"type": "array",
+							"minItems": 1,
+							"items": {
+								"$ref": "#/$defs/constraint5Digits"
+							}
+						},
+						{
+							"$ref": "#/$defs/constraint5Digits"
+						}
+					]
+				},
+				"height": {
+					"title": "Constraint for Height",
+					"anyOf": [
+						{
+							"type": "array",
+							"minItems": 1,
+							"items": {
+								"$ref": "#/$defs/constraint4Digits"
+							}
+						},
+						{
+							"$ref": "#/$defs/constraint4Digits"
+						}
+					]
+				},
+				"bitrate": {
+					"title": "Constraint for Bitrate",
+					"anyOf": [
+						{
+							"type": "array",
+							"minItems": 1,
+							"items": {
+								"$ref": "#/$defs/constraintDigits"
+							}
+						},
+						{
+							"$ref": "#/$defs/constraintDigits"
+						}
+					]
+				}
 			}
+		},
+		"constraintDigits": {
+			"type": "string",
+			"pattern": "^(==|!=|<|<=|>|>=)[1-9][0-9]*$"
+		},
+		"constraint4Digits": {
+			"type": "string",
+			"pattern": "^(==|!=|<|<=|>|>=)[1-9][0-9]{0,3}$"
+		},
+		"constraint5Digits": {
+			"type": "string",
+			"pattern": "^(==|!=|<|<=|>|>=)[1-9][0-9]{0,4}$"
 		}
 	}
 }

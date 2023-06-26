@@ -1,4 +1,5 @@
 import { Media } from './Codec.mjs'
+import { EncodeOptions } from './EncodeOptions.mjs'
 import { Tune } from './Tune.mjs'
 
 export type Extension = '.jpg' | '.jpeg' | '.m4a' | '.m4v' | '.mp4' | '.opus' | '.webm' | '.webp'
@@ -67,12 +68,12 @@ export type Variant = {
 	/**
 	 * Bitrate
 	 */
-	bitrate: number
+	bitrate?: number
 
 	/**
 	 * Encode options
 	 */
-	encodeOptions: { [name: string]: string | number | boolean }
+	encodeOptions: EncodeOptions & Record<string, string|number|boolean>
 
 	/**
 	 * Tune

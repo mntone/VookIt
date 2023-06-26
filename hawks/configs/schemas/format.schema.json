@@ -101,7 +101,7 @@
 						"default": "1M"
 					},
 					"constraints": {
-						"$ref": "constraints.schema.json#/$defs"
+						"$ref": "constraints.schema.json#/$defs/root"
 					},
 					"filename": {
 						"title": "Filename",
@@ -168,6 +168,13 @@
 					"maximum": 99999,
 					"default": 1280
 				},
+				"maxHeight": {
+					"title": "Maximum Height",
+					"type": "number",
+					"minimum": 1,
+					"maximum": 9999,
+					"default": 720
+				},
 				"maxSize": {
 					"title": "Maximum Resolution",
 					"type": "string",
@@ -217,6 +224,12 @@
 			"title": "Tune",
 			"type": "object",
 			"properties": {
+				"bpp": {
+					"title": "Bits per Pixel",
+					"description": "Default is \"0.11\" (H.264/AVC) and \"0.055\" (AV1).",
+					"type": "number",
+					"default": 0.11
+				},
 				"increase": {
 					"title": "Increasing Multiplier to Bitrate for Pixel Ratio Relative to 16:9 (Video) or Channels Relative to Stereo (Audio).",
 					"type": "number",

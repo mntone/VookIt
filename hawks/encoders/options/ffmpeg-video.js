@@ -33,7 +33,7 @@ class FFmpegVideoOptions extends FFmpegOptions {
 
 	/**
 	 * @param {symbol|string|null|undefined} codec
-	 * @param {string}                       bitrate
+	 * @param {number}                       bitrate
 	 * @param {object}                       params
 	 * @param {string?}                      params.maxSize
 	 * @param {number?}                      params.maxFramerate

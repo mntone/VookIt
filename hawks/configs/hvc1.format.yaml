@@ -17,6 +17,7 @@ options:
   sc_threshold: 0
 
 tune:
+  bpp: 0.075
   increase: 0.75
   decrease: 0.75
 
@@ -25,74 +26,31 @@ variants:
   idstr: hvc1_180p
   bitrate: 256k
   constraints:
-    height: ">=180"
+    height: ">180"
   options:
     maxSize: 432x180
-    maxFramerate: 30
-
-- id: 50240 # HVC1 (0005_0000) + 240p (0000_0240)
-  idstr: hvc1_240p
-  enabled: false
-  bitrate: 341k
-  constraints:
-    height: ">240"
-  options:
-    maxSize: 576x240
     maxFramerate: 30
 
 - id: 50360 # HVC1 (0005_0000) + 360p (0000_0360)
   idstr: hvc1_360p
   bitrate: 512k
   constraints:
-    height: ">=360"
+    height: ">360"
   options:
     maxSize: 864x360
     maxFramerate: 30
 
-- id: 50480 # HVC1 (0005_0000) + 480p (0000_0480)
-  idstr: hvc1_480p
-  enabled: false
-  bitrate: 0.8M
-  constraints:
-    height: ">480"
-  options:
-    maxSize: 1152x480
-    maxFramerate: 30
-
-- id: 50482 # HVC1 (0005_0000) + 480p (0000_0480) + variant 2
-  idstr: hvc1_480p_hq
-  bitrate: 1.2M
-  constraints:
-    height: "==480"
-  options:
-    maxSize: 1152x480
-    maxFramerate: 30
-
-- id: 50480 # HVC1 (0005_0000) + 540p (0000_0540)
-  idstr: hvc1_540p
-  bitrate: 1M
-  constraints:
-    height: "==540"
-  options:
-    maxSize: 1296x540
-    maxFramerate: 30
-
 - id: 50720 # HVC1 (0005_0000) + 720p (0000_0720)
   idstr: hvc1_720p
-  enabled: true
   bitrate: 1.6M
   constraints:
-    height: ">=720"
+    height: ">720"
   options:
     maxSize: 1728x720
     maxFramerate: 30
 
-- id: 51080 # HVC1 (0005_0000) + 1080p (0000_1080)
-  idstr: hvc1_1080p
-  enabled: true
-  bitrate: 3.2M
-  constraints:
-    height: ">=1080"
+- id: 59999 # HVC1 (0005_0000) + (native)p (0000_9999)
+  idstr: hvc1_ntvp
+  # DO NOT USE "bitrate" ATTRIBUTE!!
   options:
-    maxSize: 2592x1080
-    maxFramerate: 30
+    maxFramerate: 120

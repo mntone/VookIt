@@ -21,6 +21,7 @@ options:
   sc_threshold: 0
 
 tune:
+  bpp: 0.11
   increase: 0.8
   decrease: 0.8
 
@@ -29,72 +30,31 @@ variants:
   idstr: avc1_180p
   bitrate: 320k
   constraints:
-    height: ">=180"
+    height: ">180"
   options:
     maxSize: 432x180
     maxFramerate: 30
 
-- id: 10240 # AVC1 (0001_0000) + 240p (0000_0240)
-  idstr: avc1_240p
-  bitrate: 426k
-  constraints:
-    height: "==240"
-  options:
-    maxSize: 576x240
-    maxFramerate: 30
-
 - id: 10360 # AVC1 (0001_0000) + 360p (0000_0360)
   idstr: avc1_360p
-  enabled: true
   bitrate: 640k
   constraints:
-    height: ">=360"
+    height: ">360"
   options:
     maxSize: 864x360
-    maxFramerate: 30
-
-- id: 10480 # AVC1 (0001_0000) + 480p (0000_0480)
-  idstr: avc1_480p
-  enabled: false
-  bitrate: 1M
-  constraints:
-    height: ">480"
-  options:
-    maxSize: 1152x480
-    maxFramerate: 30
-
-- id: 10482 # AVC1 (0001_0000) + 480p (0000_0480) + variant 2
-  idstr: avc1_480p_hq
-  bitrate: 1.5M
-  constraints:
-    height: "==480"
-  options:
-    maxSize: 1152x480
-    maxFramerate: 30
-
-- id: 10540 # AVC1 (0001_0000) + 540p (0000_0540)
-  idstr: avc1_540p
-  bitrate: 1.25M
-  constraints:
-    height: "==540"
-  options:
-    maxSize: 1296x540
     maxFramerate: 30
 
 - id: 10720 # AVC1 (0001_0000) + 720p (0000_0720)
   idstr: avc1_720p
   bitrate: 2M
   constraints:
-    height: ">=720"
+    height: ">720"
   options:
     maxSize: 1728x720
     maxFramerate: 30
 
-- id: 11080 # AVC1 (0001_0000) + 1080p (0000_1080)
-  idstr: avc1_1080p
-  bitrate: 4M
-  constraints:
-    height: ">=1080"
+- id: 19999 # AVC1 (0001_0000) + (native)p (0000_9999)
+  idstr: avc1_ntvp
+  # DO NOT USE "bitrate" ATTRIBUTE!!
   options:
-    maxSize: 2592x1080
-    maxFramerate: 30
+    maxFramerate: 120
