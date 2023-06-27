@@ -9,10 +9,11 @@ const VideoCard = require('../components/VideoCard')
  * @param   {function(string): string}        props.t
  * @param   {string}                          props.language
  * @param   {number}                          props.limit
+ * @param   {boolean}                         props.firstPage
  * @param   {import('@prisma/client').Post[]} props.posts
  * @returns {React.JSX.Element}
  */
-function TopPage({ t, language, limit, posts }) {
+function TopPage({ t, language, limit, firstPage, posts }) {
 	const isAdmin = false
 	const count = posts.length
 
@@ -34,7 +35,8 @@ function TopPage({ t, language, limit, posts }) {
 		<Root
 			t={t}
 			language={language}
-			className={`cc-max${Math.max(2, Math.ceil(count / 3))}`}>
+			className={`cc-max${Math.max(2, Math.ceil(count / 3))}`}
+			toppageLinkEnabled={!firstPage}>
 			<div className="cc">
 				{posts.map((post, index) => (
 					<VideoCard key={index} post={post} isAdmin={isAdmin} />
@@ -49,6 +51,7 @@ TopPage.propTypes = {
 	t: PropTypes.func.isRequired,
 	language: PropTypes.string.isRequired,
 	limit: PropTypes.number.isRequired,
+	firstPage: PropTypes.bool.isRequired,
 	posts: PropTypes.array.isRequired,
 }
 

@@ -34,6 +34,7 @@ class TopPageBuilder extends ViewBuilder {
 			t: req.t,
 			language: req.language,
 			limit,
+			firstPage: !req.query.until,
 			posts,
 		}, res)
 	}

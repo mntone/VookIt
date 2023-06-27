@@ -14,11 +14,12 @@ const NavBar = require('./NavBar')
  * @param   {string?}                           props.title
  * @param   {string}                            props.language
  * @param   {string|undefined}                  props.className
+ * @param   {boolean}                           props.toppageLinkEnabled
  * @param   {React.ReactNode[]|React.ReactNode} props.children
  * @param   {(string|object)[]|string}          props.stylesheets
  * @returns {React.JSX.Element}
  */
-function Root({ t, title, language, className, stylesheets, children }) {
+function Root({ t, title, language, className, toppageLinkEnabled, stylesheets, children }) {
 	if (typeof stylesheets === 'string') {
 		stylesheets = [stylesheets]
 	}
@@ -47,7 +48,7 @@ function Root({ t, title, language, className, stylesheets, children }) {
 				})}
 			</head>
 			<body className={className}>
-				<NavBar t={t} />
+				<NavBar t={t} linkEnabled={toppageLinkEnabled} />
 
 				{children}
 
@@ -63,6 +64,7 @@ Root.propTypes = {
 	title: PropTypes.string,
 	language: PropTypes.string.isRequired,
 	className: PropTypes.string,
+	toppageLinkEnabled: PropTypes.bool,
 	stylesheets: PropTypes.oneOfType([
 		PropTypes.string,
 		PropTypes.arrayOf(PropTypes.string),

@@ -3,8 +3,6 @@
 @use "../mixins" as *
 @use "../base/variables" as *
 
-$navbar-height: 56px
-
 $navbar-item-color: $black
 $navbar-item-hover-color: $accent-dark1
 
@@ -15,6 +13,7 @@ $navbar-title-color: $black-dark1
 	contain: strict
 	display: flex
 	+widely-container
+	padding-bottom: $navbar-spacing
 	align-items: flex-end
 	height: $navbar-height
 
@@ -31,11 +30,10 @@ $navbar-title-color: $black-dark1
 	display: block
 	padding-inline: 0.75rem
 
-a.n-item
+a[href].n-item
 	&:focus,
 	&:focus-within,
-	&:hover,
-	&.is-active
+	&:hover
 		color: $navbar-item-hover-color // TODO move to paint
 
 .n-brand
@@ -55,5 +53,10 @@ a.n-item
 	font-size: min(floor(math.div($navbar-height, 1.125) - $content-spacing), 2rem)
 	font-weight: 900
 	line-height: 1.125
-	&:hover 
-		filter: drop-shadow(0 0 0.75rem #DC143C)
+	transition: filter .25s ease-in-out
+	+reduced-motion
+		transition: none 0s
+	&[href]:focus,
+	&[href]:focus-within,
+	&[href]:hover 
+		filter: drop-shadow(0 0 .5rem #DC143C)

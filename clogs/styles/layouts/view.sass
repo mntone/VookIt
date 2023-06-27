@@ -2,10 +2,7 @@
 @use "../base/variables" as *
 @use "../elements/glass" as *
 
-$navbar-height: 56px
-
 $radius: 8px
-$shadow: 0 0.5em 1em -0.125em rgba(0, 0, 0, .1), 0 0px 0 1px rgba(0, 0, 0, .02)
 
 $VideoPlayer-minimum-spacing: 24px
 
@@ -37,6 +34,7 @@ $VideoInfo-narrow-spacing: 12px
 .VideoPlayer
 	contain: content
 	+clip
+	margin-top: max(0, $content-spacing - $navbar-spacing)
 	+glass(#F4F4F4)
 	box-shadow: $shadow16
 	+widely

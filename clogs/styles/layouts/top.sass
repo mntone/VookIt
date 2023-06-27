@@ -1,6 +1,5 @@
 @use "../mixins"
-
-$content-spacing: 16px
+@use "../base/variables" as *
 
 $column-margin-x: 24px
 $column-margin-x-mobile: calc($column-margin-x / 2)
@@ -44,7 +43,7 @@ $column-gap: 16px
 // columns
 .cc
 	display: flex
-	padding: calc($content-spacing / 2) calc($column-margin-x-mobile - $column-gap / 2)
+	padding: max(0, $content-spacing / 2 - $navbar-spacing) calc($column-margin-x-mobile - $column-gap / 2) calc($content-spacing / 2)
 	flex-wrap: wrap
 	+snap-width(2)
 		padding-left: calc($column-margin-x - $column-gap / 2)

@@ -4,14 +4,15 @@ const React = require('react')
 /**
  * @param   {object}                   props
  * @param   {function(string): string} props.t
+ * @param   {boolean}                  props.linkEnabled
  * @returns {React.JSX.Element}
  */
-function NavBar({ t }) {
+function NavBar({ t, linkEnabled }) {
 	return (
 		<div className="nnc">
 			<nav className="nn" role="navigation" aria-label="main navigation">
 				<div className="n-brand">
-					<a className="n-item n-title" href="/">{t('sitename')}</a>
+					<a className="n-item n-title" href={linkEnabled !== false && '/'}>{t('sitename')}</a>
 				</div>
 
 				<div className="n-end">
@@ -30,6 +31,7 @@ function NavBar({ t }) {
 }
 NavBar.propTypes = {
 	t: PropTypes.func.isRequired,
+	linkEnabled: PropTypes.bool,
 }
 
 module.exports = NavBar
