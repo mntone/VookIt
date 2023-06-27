@@ -1,6 +1,6 @@
 const createError = require('http-errors')
 const { Form } = require('multiparty')
-const { isHash } = require('validator')
+const { isBase64 } = require('validator')
 
 const env = require('../../../../constants/env')
 const { addSIPrefix } = require('../../../../utils/DataSizeSupport')
@@ -45,14 +45,14 @@ class UploadDefaultResponseBuilder extends ResponseBuilder {
 
 			let hash = null
 			if (fields.hash) {
-				const [algorithm, hash2] = fields.hash[0].split(':', 2)
+				const [algorithm, hash2] = fields.hash[0].split('-', 2)
 				if (!useAlgorithm.includes(algorithm)) {
 					const err = createError(422, 'This hash algorithm is unknown.')
 					next(err)
 					return
 				}
 
-				if (!isHash(hash2, algorithm)) {
+				if (!isBase64(hash2)) {
 					const err = createError(422, 'The hash is invalid format.')
 					next(err)
 					return

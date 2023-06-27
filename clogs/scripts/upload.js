@@ -8,6 +8,20 @@ const ALGORITHM_DICT = {
 let info = null
 
 /**
+ * Get hash as base64 string
+ * @param   {Uint8Array} binary Array of UInt8
+ * @returns {string}            Hash as Base64 String
+ */
+function binaryToBase64String(binary) {
+	const hashAsBinaryString = Array
+		.from(binary)
+		.map(binary => String.fromCharCode(binary))
+		.join('')
+	const hashAsBase64String = btoa(hashAsBinaryString)
+	return hashAsBase64String
+}
+
+/**
  * Get file hash as hex string
  * @param {string}                 hash
  * @param {File}                   file
@@ -18,10 +32,7 @@ function getFileHash(hash, file, callback, error) {
 	file.arrayBuffer().then(buffer => {
 		crypto.subtle.digest(ALGORITHM_DICT[hash], buffer).then(hashAsArrayBuffer => {
 			const hashAsUint8Array = new Uint8Array(hashAsArrayBuffer)
-			const hashAsString = Array
-				.from(hashAsUint8Array)
-				.map(binary => binary.toString(16).padStart(2, '0'))
-				.join('')
+			const hashAsString = binaryToBase64String(hashAsUint8Array)
 			callback(hashAsString)
 		})
 	}, err => error?.(err))
@@ -62,7 +73,7 @@ function onFileChange() {
 			Object.assign(hashElem, {
 				type: 'hidden',
 				name: 'hash',
-				value: info.useHashAlgorithm + ':' + hash,
+				value: info.useHashAlgorithm + '-' + hash,
 			})
 			form.appendChild(hashElem)
 			form.submit(form)
