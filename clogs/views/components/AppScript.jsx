@@ -13,7 +13,7 @@ function AppScript({ name }) {
 	return (
 		<script
 			src={`${env.scriptRelativePath}/${name}.js`}
-			integrity={manifest.assets[name].js[0].integrity}
+			integrity={manifest.assets[manifest.origins[name]].js[0].integrity}
 			crossOrigin="anonymous" />
 	)
 }

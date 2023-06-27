@@ -1,0 +1,20 @@
+{
+	"delay": 1000,
+	"env": {
+		"NODE_ENV": "development"
+	},
+	"ext": "json,js,jsx,mjs",
+	"ignore": [
+		"**/__test__/**",
+		".test.js",
+		"./.assets/**/*.css",
+		"./.assets/**/*.js",
+		"./clogs/scripts/**/*",
+		"./clogs/styles/**/*"
+	],
+	"watch": [
+		"./.assets",
+		"./clogs",
+		"./utils"
+	]
+}

@@ -11,20 +11,11 @@
 			"runtimeExecutable": "${workspaceFolder}/node_modules/nodemon/bin/nodemon.js",
 			"program": "${workspaceFolder}/clogs/index.js",
 			"args": [
-				"--watch",
-				"./clogs",
-				"--watch",
-				"./utils",
-				"--ext",
-				"js,jsx,yaml",
-				"--ignore",
-				"**/__test__/**,./clogs/scripts/**,./clogs/styles/**",
-				"--delay",
-				"1"
-			],
-			"env": {
-				"NODE_ENV": "development"
-			}
+				"-r",
+				"dotenv/config",
+				"--config",
+				"clogs/nodemon.config.json"
+			]
 		},
 		{
 			"type": "node",

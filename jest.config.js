@@ -8,7 +8,7 @@ module.exports = {
 	],
 	testMatch: [
 		'**/__tests__/**/*.+(js|mjs|cts|mts)',
-		'**/?(*.)+(spec|test).+(js|mjs|cts|mts)',
+		'**/?(*.)+test.+(js|mjs|cts|mts)',
 	],
 	transform: {
 		'^.+\\.(ts|cts)$': 'ts-jest',
