@@ -57,7 +57,7 @@ EditPage.propTypes = {
 	post: PropTypes.shape({
 		id: PropTypes.number.isRequired,
 		title: PropTypes.string.isRequired,
-		description: PropTypes.string.isRequired,
+		description: PropTypes.string,
 		published: PropTypes.bool.isRequired,
 	}),
 }

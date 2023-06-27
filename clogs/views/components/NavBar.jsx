@@ -12,7 +12,7 @@ function NavBar({ t, linkEnabled }) {
 		<div className="nnc">
 			<nav className="nn" role="navigation" aria-label="main navigation">
 				<div className="n-brand">
-					<a className="n-item n-title" href={linkEnabled !== false && '/'}>{t('sitename')}</a>
+					<a className="n-item n-title" href={linkEnabled !== false ? '/' : undefined}>{t('sitename')}</a>
 				</div>
 
 				<div className="n-end">
