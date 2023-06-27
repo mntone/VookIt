@@ -24,7 +24,7 @@ jsx.install({
 	extension: '.jsx',
 })
 
-const { edit, error, top, post, upload, view } = require('../../coordinates/index')
+const { edit, error, top, upload, view } = require('../../coordinates/index')
 
 const router = express
 	.Router({
@@ -40,8 +40,6 @@ router.get(
 router.get('/v/:id', view.handlers)
 
 router.get('/edit/:id', edit.handlers)
-
-router.get('/post/:uuid', post.handlers)
 
 router.use('/upload', (req, res) => upload(req, res))
 
