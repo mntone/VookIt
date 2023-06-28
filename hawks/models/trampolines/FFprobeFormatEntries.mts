@@ -20,5 +20,5 @@ export type FFprobeFormatEntries = {
 
 	probeScore: number
 
-	tags?: { [key: string]: string }
+	tags?: Record<string, string>
 }

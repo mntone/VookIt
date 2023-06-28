@@ -3,13 +3,13 @@ import { join } from 'path'
 
 import { Job } from 'bullmq'
 
-// @ts-ignore
+// @ts-expect-error
 import env from '../../../constants/env.js'
-// @ts-ignore
+// @ts-expect-error
 import FFmpegEncode from '../../encoders/FFmpegEncode.js'
-// @ts-ignore
+// @ts-expect-error
 import FFmpegDashOptions from '../../encoders/options/ffmpeg-dash.js'
-// @ts-ignore
+// @ts-expect-error
 import getAwaiter from '../../encoders/utils/AwaitSupport.js'
 import { DeployContext } from '../../models/encoders/DeployContext.mjs'
 import { EncodeData } from '../../models/encoders/EncodeData.mjs'

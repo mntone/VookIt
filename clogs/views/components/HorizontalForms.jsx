@@ -75,7 +75,7 @@ TextInput.defaultProps = {
  * @param   {TextAreaProps}     props
  * @returns {React.JSX.Element}
  */
-function TextArea({ id, title, content, placeholder, minimumLength, maximumLength, required, disabled, validation, cols, rows, children }) {
+function TextArea({ id, title, content, placeholder, minimumLength, maximumLength, required, disabled, cols, rows, children }) {
 	return (
 		<div className="field is-horizontal">
 			<div className="field-label is-normal">
@@ -114,14 +114,12 @@ TextArea.defaultProps = {
 
 /**
  * Tag select
- * @param   {object}            props
- * @param   {string}            props.id
- * @param   {string}            props.title
- * @param   {object[]}          props.items
- * @param   {string}            props.items.value
- * @param   {string}            props.items.content
- * @param   {string?}           props.defaultValue
- * @param   {boolean}           props.disabled
+ * @param   {object}                               props
+ * @param   {string}                               props.id
+ * @param   {string}                               props.title
+ * @param   {{ value: string, content: string }[]} props.items
+ * @param   {string?}                              props.defaultValue
+ * @param   {boolean}                              props.disabled
  * @returns {React.JSX.Element}
  */
 function Select({ id, title, items, defaultValue, disabled }) {

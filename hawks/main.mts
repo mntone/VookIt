@@ -1,9 +1,9 @@
 import { Processor, Worker, WorkerOptions } from 'bullmq'
 import IORedis from 'ioredis'
 
-// @ts-ignore
+// @ts-expect-error
 import env from '../constants/env.js'
-// @ts-ignore
+// @ts-expect-error
 import initConstants from '../constants/init.js'
 
 import { CodecConfigLoader } from './usecases/workers/CodecConfigLoader.mjs'
@@ -29,7 +29,7 @@ export async function main() {
 	}
 	const workers = CodecConfigLoader.instance.queues.map(name => {
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		const handler: Processor<any, void, string> = name === 'main' ? mainHandler : encodeHandler
+		const handler: Processor<any, void> = name === 'main' ? mainHandler : encodeHandler
 		const options = Object.assign({}, baseOptions)
 		const queueConfig = env.hawksQueues[name]
 		if (typeof queueConfig === 'object') {

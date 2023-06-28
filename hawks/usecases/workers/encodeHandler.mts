@@ -27,8 +27,5 @@ export async function encodeHandler(job: Job<SpecifiedFlowEncodeData>) {
 		await encodePrefer(job, filepath, variant)
 		break
 	}
-	default: {
-		throw Error('Unreachable')
-	}
 	}
 }

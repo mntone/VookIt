@@ -22,10 +22,6 @@ export function encodePrefer(job: Job<EncodeData>, filepath: string, vnt: Varian
 	case 'video':
 		task = encodeVideo(job, context, vnt)
 		break
-	default: {
-		const _exhaustiveCheck: never = vnt.type
-		throw Error('Unreachable: ' + _exhaustiveCheck)
-	}
 	}
 	return task
 }

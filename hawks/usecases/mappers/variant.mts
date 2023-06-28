@@ -1,4 +1,4 @@
-// @ts-ignore
+// @ts-expect-error
 import { removeSIPrefixIfNeeded } from '../../../utils/DataSizeSupport.js'
 import { CodecConfig } from '../../models/configs/CodecConfig.mjs'
 import { VariantConfig } from '../../models/configs/VariantConfig.mjs'

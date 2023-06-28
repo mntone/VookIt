@@ -39,7 +39,7 @@ export type FFprobeStreamEntries = {
 
 	disposition: FFprobeDispositionEntries
 
-	tags?: { [key: string]: string }
+	tags?: Record<string, string>
 }
 
 export type FFprobeVideoStreamEntries = FFprobeStreamEntries & {

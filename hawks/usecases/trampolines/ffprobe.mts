@@ -2,13 +2,13 @@ import { spawnSync } from 'child_process'
 
 import snakeCase from 'lodash.snakecase'
 
-// @ts-ignore
+// @ts-expect-error
 import toCommand from '../../encoders/utils/command.js'
 import { FFprobeEntries, FFprobeOptions } from '../../models/trampolines/FFprobeOptions.mjs'
 
 import { camelCasify } from './camelCasify.util.mjs'
 
-function toFlags(flags: { [key: string]: boolean }) {
+function toFlags(flags: Record<string, boolean>) {
 	return Object.entries(flags).filter(f => f[1]).map(f => snakeCase(f[0]))
 }
 

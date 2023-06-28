@@ -34,18 +34,19 @@ rules:
   radix: ["error"]
   spaced-comment: ["error", "always"]
   # Layout & Formatting
-  array-bracket-spacing: ["error"]
-  arrow-spacing: ["error"]
+  array-bracket-spacing: ["warn"]
+  arrow-spacing: ["warn"]
   arrow-parens: ["warn", "as-needed"]
-  block-spacing: ["error"]
-  comma-dangle: ["error", "always-multiline"]
-  comma-spacing: ["error"]
-  computed-property-spacing: ["error"]
+  block-spacing: ["warn"]
+  brace-style: ["warn"]
+  comma-dangle: ["warn", "always-multiline"]
+  comma-spacing: ["warn"]
+  computed-property-spacing: ["warn"]
   eol-last: ["warn", "always"]
   func-call-spacing: ["warn"]
   implicit-arrow-linebreak: ["warn"]
   indent: ["error", "tab"]
-  jsx-quotes: ["error", "prefer-double"]
+  jsx-quotes: ["warn", "prefer-double"]
   key-spacing: ["warn", { multiLine: { mode: "minimum" }}]
   keyword-spacing: ["warn"]
   linebreak-style: ["error", "unix"]
@@ -57,14 +58,18 @@ rules:
   no-whitespace-before-property: ["error"]
   object-curly-spacing: ["warn", "always", { arraysInObjects: false, objectsInObjects: false }]
   operator-linebreak: ["error", "before"]
-  padded-blocks: ["error", "never"]
-  quotes: ["error", "single", { avoidEscape: true }]
-  semi: ["error", "never"]
-  semi-spacing: ["error"]
+  padded-blocks: ["warn", "never"]
+  quotes: ["warn", "single", { avoidEscape: true }]
+  semi: ["warn", "never"]
+  semi-spacing: ["warn"]
   semi-style: ["error", "last"]
-  space-in-parens: ["error", "never"]
+  space-before-blocks: ["warn"]
+  space-in-parens: ["warn", "never"]
   space-infix-ops: ["error", { int32Hint: true }]
   space-unary-ops: ["error"]
+  switch-colon-spacing: ["warn"]
+  template-curly-spacing: ["warn"]
+  template-tag-spacing: ["warn"]
   # import
   "import/exports-last": ["error"]
   "import/first": ["error"]
@@ -111,18 +116,62 @@ overrides:
     - plugin:react/recommended
     rules:
       "react/self-closing-comp": ["error"]
+    settings:
+      react:
+        version: detect
   # TypeScript
   - files: ["*.ts", "*.cts", "*.mts"]
     extends:
     - plugin:@typescript-eslint/recommended
+    - plugin:@typescript-eslint/strict
+    parserOptions:
+      parser: "@typescript-eslint/parser"
+      project: tsconfig.json
     rules:
+      default-case: 0
       # import
       "import/exports-last": 0
       # jsdoc
       "jsdoc/check-tag-names": 0
       "jsdoc/require-jsdoc": 0
       # TypeScript
+      "@typescript-eslint/adjacent-overload-signatures": ["error"]
       "@typescript-eslint/ban-ts-comment": ["error", { ts-ignore: false }]
+      "@typescript-eslint/ban-types": ["error"]
+      "@typescript-eslint/consistent-indexed-object-style": ["error"]
+      "@typescript-eslint/consistent-type-definitions": ["error", "type"]
+      "@typescript-eslint/no-confusing-void-expression": ["error"]
+      "@typescript-eslint/no-duplicate-type-constituents": ["error"]
+      "@typescript-eslint/no-empty-interface": ["warn"]
+      "@typescript-eslint/no-extra-non-null-assertion": ["error"]
+      "@typescript-eslint/no-extraneous-class": ["error"]
+      "@typescript-eslint/no-for-in-array": ["error"]
+      "@typescript-eslint/no-import-type-side-effects": ["error"]
+      "@typescript-eslint/no-inferrable-types": ["error"]
+      "@typescript-eslint/no-invalid-void-type": ["error"]
+      "@typescript-eslint/no-meaningless-void-operator": ["error"]
+      "@typescript-eslint/no-misused-new": ["error"]
+      "@typescript-eslint/no-misused-promises": ["error", { checksVoidReturn: false }]
+      "@typescript-eslint/no-redundant-type-constituents": ["error"]
+      "@typescript-eslint/no-require-imports": ["error"]
+      "@typescript-eslint/no-this-alias": ["error"]
+      "@typescript-eslint/no-unnecessary-boolean-literal-compare": ["error"]
+      "@typescript-eslint/no-unnecessary-condition": ["error"]
+      "@typescript-eslint/no-unsafe-enum-comparison": ["error"]
+      "@typescript-eslint/no-unsafe-return": ["warn"]
+      "@typescript-eslint/no-useless-empty-export": ["error"]
+      "@typescript-eslint/no-var-requires": ["error"]
+      "@typescript-eslint/non-nullable-type-assertion-style": ["error"]
+      "@typescript-eslint/prefer-for-of": ["error"]
+      "@typescript-eslint/prefer-includes": ["error"]
+      "@typescript-eslint/prefer-nullish-coalescing": 0
+      "@typescript-eslint/prefer-optional-chain": ["error"]
+      "@typescript-eslint/prefer-readonly": ["error"]
+      "@typescript-eslint/prefer-reduce-type-parameter": ["error"]
+      "@typescript-eslint/prefer-regexp-exec": ["error"]
+      "@typescript-eslint/prefer-string-starts-ends-with": ["error"]
+      "@typescript-eslint/restrict-plus-operands": ["error"]
+      "@typescript-eslint/switch-exhaustiveness-check": ["error"]
     settings:
       'import/resolver':
         typescript:

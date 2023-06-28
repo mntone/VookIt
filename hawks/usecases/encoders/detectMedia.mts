@@ -1,4 +1,3 @@
-// @ts-ignore
 import { SuperEncodeContext } from '../../models/encoders/Context.mjs'
 import { initFramerate, parseFramerate } from '../../models/Framerate.mjs'
 import { FFprobeStreamEntriesOptions } from '../../models/trampolines/FFprobeOptions.mjs'

@@ -3,7 +3,7 @@ import { readFile } from 'fs/promises'
 import { glob } from 'glob'
 import { load as yamlLoad } from 'js-yaml'
 
-// @ts-ignore
+// @ts-expect-error
 import env from '../../../constants/env.js'
 import { CodecConfig } from '../../models/configs/CodecConfig.mjs'
 import { AudioCodec, Codec, ImageCodec, Media, VideoCodec } from '../../models/encoders/Codec.mjs'
@@ -29,9 +29,9 @@ export class CodecConfigLoader {
 		image: [],
 		video: [],
 	}
-	#codecById: Readonly<{ [key: number]: Codec }> = {}
-	#codecByFriendlyId: Readonly<{ [key: string]: Codec }> = {}
-	#variantById: Readonly<{ [key: number]: Variant }> = {}
+	#codecById: Readonly<Record<number, Codec>> = {}
+	#codecByFriendlyId: Readonly<Record<string, Codec>> = {}
+	#variantById: Readonly<Record<number, Variant>> = {}
 	#queues: readonly string[] = []
 
 	private constructor(options?: FormatConfigLoaderOptions) {
@@ -71,10 +71,6 @@ export class CodecConfigLoader {
 			case 'video':
 				codecByType.video.push(codec)
 				break
-			default: {
-				const _exhaustiveCheck: never = codec
-				throw Error('Unreachable: ' + _exhaustiveCheck)
-			}
 			}
 		}
 
@@ -113,7 +109,7 @@ export class CodecConfigLoader {
 				.map(v => v.queueName)
 				.filter((q): q is NonNullable<typeof q> => q != null))
 			.reduce((ary: string[], queueName) => {
-				if (queueName && ary.indexOf(queueName) === -1) {
+				if (queueName && !ary.includes(queueName)) {
 					ary.push(queueName)
 				}
 				return ary

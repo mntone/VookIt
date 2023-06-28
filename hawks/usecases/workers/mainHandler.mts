@@ -15,7 +15,7 @@ type MainJobData = FlowEncodeData & {
 	phase: Phase
 }
 
-const queueCache: { [key: string]: Queue } = {}
+const queueCache: Record<string, Queue> = {}
 
 async function updatePhase(job: Job<MainJobData>, next: Phase, resetCursor = false) {
 	const data = Object.assign({}, job.data)
@@ -54,7 +54,7 @@ export async function mainHandler(job: Job<MainJobData>) {
 			const videoCodecs = CodecConfigLoader.instance.video.filter(c => c.enabled)
 			for (const codec of videoCodecs) {
 				const queueName = codec.queueName
-				if (!queueCache[queueName]) {
+				if (!Object.prototype.hasOwnProperty.call(queueCache, queueName)) {
 					queueCache[queueName] = new Queue(queueName)
 				}
 

@@ -1,6 +1,6 @@
 import { Job } from 'bullmq'
 
-// @ts-ignore
+// @ts-expect-error
 import env from '../../../constants/env.js'
 import { Codec } from '../../models/encoders/Codec.mjs'
 import { FlowEncodeData } from '../../models/encoders/EncodeData.mjs'

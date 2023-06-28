@@ -42,7 +42,6 @@ describe('Mp3LameOptions', () => {
 		})
 	})
 
-
 	describe('property "abr"', () => {
 		test('set true', () => {
 			const options = new Mp3LameOptions()

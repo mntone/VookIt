@@ -7,7 +7,6 @@ const constants = require('../../../constants/env')
  * @property {number} parallels
  */
 
-
 /**
  * @typedef UploadInfo
  * @property {UploadChunkInfo} chunk

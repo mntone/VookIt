@@ -2,7 +2,7 @@ import { existsSync } from 'fs'
 import { mkdir } from 'fs/promises'
 import { join } from 'path'
 
-// @ts-ignore
+// @ts-expect-error
 import env from '../../constants/env.js'
 import { EncodeData } from '../models/encoders/EncodeData.mjs'
 import { Variant } from '../models/encoders/Variant.mjs'

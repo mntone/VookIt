@@ -2,11 +2,11 @@ import { existsSync } from 'fs'
 
 import { Job } from 'bullmq'
 
-// @ts-ignore
+// @ts-expect-error
 import FFmpegEncode from '../../encoders/FFmpegEncode.js'
-// @ts-ignore
+// @ts-expect-error
 import FFmpegVideoOptions from '../../encoders/options/ffmpeg-video.js'
-// @ts-ignore
+// @ts-expect-error
 import getAwaiter from '../../encoders/utils/AwaitSupport.js'
 import { VideoEncodeContext } from '../../models/encoders/Context.mjs'
 import { EncodeData } from '../../models/encoders/EncodeData.mjs'
@@ -18,11 +18,11 @@ const EPSILON = 0.000001
 const BASE_LOG_PIXELS = Math.log(1280 * 720)
 const BASE_FRAMERATE = 30
 
-function compareNumber(a, b) {
+function compareNumber(a: number, b: number) {
 	return Math.abs(a - b) < EPSILON
 }
 
-function calcWidthAs16over9(height) {
+function calcWidthAs16over9(height: number) {
 	return 2 * Math.round(height * 8 / 9)
 }
 
@@ -30,7 +30,7 @@ function calcWidthAs16over9(height) {
 function adjustBitrate(ctx: VideoEncodeContext, vnt: Variant) {
 	if (vnt.bitrate) {
 		let expectedWidth, expectedHeight, basePixels
-		if (typeof vnt.encodeOptions.maxSize === 'string' && vnt.encodeOptions.maxSize.indexOf('x') !== -1) {
+		if (typeof vnt.encodeOptions.maxSize === 'string' && vnt.encodeOptions.maxSize.includes('x')) {
 			[expectedWidth, expectedHeight] = vnt.encodeOptions.maxSize.split('x', 2).map(l => Number(l))
 			basePixels = calcWidthAs16over9(expectedHeight) * expectedHeight
 

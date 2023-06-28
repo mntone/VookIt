@@ -1,7 +1,6 @@
 const PropTypes = require('prop-types')
 const React = require('react')
 
-const env = require('../../../constants/env')
 const Root = require('../components/Root')
 
 /**

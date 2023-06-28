@@ -37,7 +37,6 @@ describe('FFmpegDashOptions', () => {
 		})
 	})
 
-
 	describe('property "initSegmentName"', () => {
 		test('set "$RepresentationID$-000.m4s"', () => {
 			const options = new FFmpegDashOptions(DEFAULT_SEGMENT_DURATION)

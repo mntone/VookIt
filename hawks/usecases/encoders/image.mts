@@ -2,11 +2,11 @@ import { existsSync } from 'fs'
 
 import { Job } from 'bullmq'
 
-// @ts-ignore
+// @ts-expect-error
 import FFmpegEncode from '../../encoders/FFmpegEncode.js'
-// @ts-ignore
+// @ts-expect-error
 import FFmpegImageOptions from '../../encoders/options/ffmpeg-image.js'
-// @ts-ignore
+// @ts-expect-error
 import getAwaiter from '../../encoders/utils/AwaitSupport.js'
 import { ImageEncodeContext } from '../../models/encoders/Context.mjs'
 import { EncodeData } from '../../models/encoders/EncodeData.mjs'
