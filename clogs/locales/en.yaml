@@ -20,20 +20,18 @@ viewpage:
   error:
     id: "The variable `id` should be in url safe base64."
 
-postpage:
-  pagetitle: Post
+editpage:
+  pagetitle: Edit
   title: Title (required)
   description: Description
   visibility: Visibility
   visibility_private: Private
   visibility_publicIfAvailable: Public (if available)
-  post: Post
-  cancel: Cancel
-
-editpage:
-  pagetitle: Edit
   update: Update
   cancel: Cancel
+  validation:
+    title: Title must be between {{minimum}} and {{maximum}} characters.
+    description: Description must be up to {{maximum}} character.
 
 uploadpage:
   pagetitle: Upload

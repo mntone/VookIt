@@ -20,20 +20,18 @@ viewpage:
   error:
     id: "変数 `id` はURL安全BASE64である必要があります。"
 
-postpage:
-  pagetitle: 投稿
+editpage:
+  pagetitle: 編集
   title: 題名 (必須)
   description: 説明
   visibility: 公開範囲
   visibility_private: 非公開
   visibility_publicIfAvailable: 公開 (可能であれば)
-  post: 投稿
-  cancel: キャンセル
-
-editpage:
-  pagetitle: 編集
   update: 更新
   cancel: キャンセル
+  validation:
+    title: 題名は{{minimum}}～{{maximum}}文字にする必要があります
+    description: 説明は{{maximum}}文字以内にする必要があります
 
 uploadpage:
   pagetitle: アップロード

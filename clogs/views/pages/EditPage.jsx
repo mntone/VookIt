@@ -6,6 +6,31 @@ const { numToUsid } = require('../../../utils/IdSupport')
 const Forms = require('../components/HorizontalForms')
 const Root = require('../components/Root')
 
+const getInlineScript = t => {
+	const titleValidation = t('editpage.validation.title')
+		.replace('{{minimum}}', env.titleLength.min)
+		.replace('{{maximum}}', env.titleLength.max)
+	const descriptionValidation = t('editpage.validation.description')
+		.replace('{{maximum}}', env.descriptionLength.max)
+	return `
+'use strict'
+new window.EditForm({
+	title: ['title', {
+		invalidClassName: 'is-danger',
+		messageElementId: 'title-validation',
+		validationMessage: '${titleValidation}',
+	}],
+	description: ['description', {
+		invalidClassName: 'is-danger',
+		messageElementId: 'description-validation',
+		validationMessage: '${descriptionValidation}',
+	}],
+	visibility: 'visibility',
+	update: 'update',
+})
+`
+}
+
 /**
  * @param   {object}                        props
  * @param   {function(string): string}      props.t
@@ -21,16 +46,34 @@ function EditPage({ t, language, post }) {
 			t={t}
 			title={pageTitle}
 			language={language}
-			stylesheets={`${env.styleRelativePath}/form.css`}>
+			stylesheets={`${env.styleRelativePath}/form.css`}
+			scripts="edit"
+			lastChild={<script dangerouslySetInnerHTML={{ __html: getInlineScript(t) }} defer={true} />}>
 			<div className="c">
 				<h1>{pageTitle}</h1>
 
 				<form action={`/api/post/${usid}.html`} method="POST">
-					<Forms.TextInput id="title" title={t('postpage.title')} content={post.title} required={true} />
-					<Forms.TextArea id="description" title={t('postpage.description')} content={post.description} />
-					<Forms.Select id="visibility" title={t('postpage.visibility')} items={[
-						{ value: 'private', content: t('postpage.visibility_private') },
-						{ value: 'public', content: t('postpage.visibility_publicIfAvailable') },
+					<Forms.TextInput
+						id="title"
+						title={t('editpage.title')}
+						content={post.title}
+						minimumLength={env.titleLength.min}
+						maximumLength={env.titleLength.max}
+						required={true}>
+						<p id="title-validation" className="help is-danger" />
+					</Forms.TextInput>
+
+					<Forms.TextArea
+						id="description"
+						title={t('editpage.description')}
+						content={post.description}
+						maximumLength={env.descriptionLength.max}>
+						<p id="description-validation" className="help is-danger" />
+					</Forms.TextArea>
+
+					<Forms.Select id="visibility" title={t('editpage.visibility')} items={[
+						{ value: 'private', content: t('editpage.visibility_private') },
+						{ value: 'public', content: t('editpage.visibility_publicIfAvailable') },
 					]} defaultValue={post.published ? 'public' : 'private'} />
 
 					<div className="field is-horizontal">
@@ -38,7 +81,7 @@ function EditPage({ t, language, post }) {
 						<div className="field-body">
 							<div className="field is-grouped">
 								<div className="control">
-									<button className="button is-link" style={{ width: '7.5em' }}>{t('editpage.update')}</button>
+									<button id="update" className="button is-link" style={{ width: '7.5em' }}>{t('editpage.update')}</button>
 								</div>
 								<div className="control">
 									<a className="button is-light" style={{ width: '7.5em' }} rel="nofollow" href={`/v/${usid}`}>{t('editpage.cancel')}</a>

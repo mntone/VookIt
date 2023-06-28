@@ -17,11 +17,16 @@ const NavBar = require('./NavBar')
  * @param   {boolean}                           props.toppageLinkEnabled
  * @param   {React.ReactNode[]|React.ReactNode} props.children
  * @param   {(string|object)[]|string}          props.stylesheets
+ * @param   {string[]|string}                   props.scripts
+ * @param   {React.ReactNode[]|React.ReactNode} props.lastChild
  * @returns {React.JSX.Element}
  */
-function Root({ t, title, language, className, toppageLinkEnabled, stylesheets, children }) {
+function Root({ t, title, language, className, toppageLinkEnabled, stylesheets, scripts, lastChild, children }) {
 	if (typeof stylesheets === 'string') {
 		stylesheets = [stylesheets]
+	}
+	if (typeof scripts === 'string') {
+		scripts = [scripts]
 	}
 
 	return (
@@ -55,6 +60,8 @@ function Root({ t, title, language, className, toppageLinkEnabled, stylesheets, 
 				<Footer t={t} />
 				<AppearanceModal t={t} />
 				<AppScript name="main" />
+				{scripts.map((s, i) => <AppScript key={i} name={s} />)}
+				{lastChild}
 			</body>
 		</html>
 	)
@@ -84,10 +91,16 @@ Root.propTypes = {
 			]),
 		})),
 	]).isRequired,
+	scripts: PropTypes.oneOfType([
+		PropTypes.string,
+		PropTypes.arrayOf(PropTypes.string),
+	]),
+	lastChild: PropTypes.node,
 	children: PropTypes.node.isRequired,
 }
 Root.defaultProps = {
 	stylesheets: [],
+	scripts: [],
 }
 
 module.exports = Root

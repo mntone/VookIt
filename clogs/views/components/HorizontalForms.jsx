@@ -5,12 +5,15 @@ const { Hidden } = require('./Forms')
 
 /**
  * @typedef TextInputProps
- * @property {string}  id
- * @property {string}  title
- * @property {string?} content
- * @property {string?} placeholder
- * @property {boolean} required
- * @property {boolean} disabled
+ * @property {string}                            id
+ * @property {string}                            title
+ * @property {string?}                           content
+ * @property {string?}                           placeholder
+ * @property {number}                            minimumLength
+ * @property {number}                            maximumLength
+ * @property {boolean}                           required
+ * @property {boolean}                           disabled
+ * @property {React.ReactNode[]|React.ReactNode} children
  */
 
 /**
@@ -18,7 +21,7 @@ const { Hidden } = require('./Forms')
  * @param   {TextInputProps}    props
  * @returns {React.JSX.Element}
  */
-function TextInput({ id, title, content, placeholder, required, disabled }) {
+function TextInput({ id, title, content, placeholder, minimumLength, maximumLength, required, disabled, children }) {
 	return (
 		<div className="field is-horizontal">
 			<div className="field-label is-normal">
@@ -27,8 +30,18 @@ function TextInput({ id, title, content, placeholder, required, disabled }) {
 			<div className="field-body">
 				<div className="field">
 					<div className="control">
-						<input className="input" id={id} name={id} defaultValue={content} placeholder={placeholder} required={required} disabled={disabled} />
+						<input
+							className="input"
+							id={id}
+							name={id}
+							defaultValue={content}
+							placeholder={placeholder}
+							minLength={minimumLength}
+							maxLength={maximumLength}
+							required={required}
+							disabled={disabled} />
 					</div>
+					{children}
 				</div>
 			</div>
 		</div>
@@ -39,8 +52,11 @@ TextInput.propTypes = {
 	title: PropTypes.string.isRequired,
 	content: PropTypes.string,
 	placeholder: PropTypes.string,
+	minimumLength: PropTypes.number,
+	maximumLength: PropTypes.number,
 	required: PropTypes.bool.isRequired,
 	disabled: PropTypes.bool.isRequired,
+	children: PropTypes.node,
 }
 TextInput.defaultProps = {
 	required: false,
@@ -59,7 +75,7 @@ TextInput.defaultProps = {
  * @param   {TextAreaProps}     props
  * @returns {React.JSX.Element}
  */
-function TextArea({ id, title, content, placeholder, required, disabled, cols, rows }) {
+function TextArea({ id, title, content, placeholder, minimumLength, maximumLength, required, disabled, validation, cols, rows, children }) {
 	return (
 		<div className="field is-horizontal">
 			<div className="field-label is-normal">
@@ -68,8 +84,20 @@ function TextArea({ id, title, content, placeholder, required, disabled, cols, r
 			<div className="field-body">
 				<div className="field">
 					<div className="control">
-						<textarea className="textarea" id={id} name={id} cols={cols} rows={rows} placeholder={placeholder} required={required} disabled={disabled} defaultValue={content} />
+						<textarea
+							className="textarea"
+							id={id}
+							name={id}
+							cols={cols}
+							rows={rows}
+							defaultValue={content}
+							placeholder={placeholder}
+							minLength={minimumLength}
+							maxLength={maximumLength}
+							required={required}
+							disabled={disabled} />
 					</div>
+					{children}
 				</div>
 			</div>
 		</div>

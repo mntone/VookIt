@@ -1,7 +1,6 @@
 import ModalSupport from '../utils/ModalSupport'
 import { preferredReducedMotion } from '../utils/StyleStateHelpers'
-
-import VirtualCheckBox from './VirtualCheckBox'
+import { VirtualCheckBox } from '../virtuals/inputs/VirtualCheckBox'
 
 const FALSE_VALUE = ''
 const TRUE_VALUE = 'T'

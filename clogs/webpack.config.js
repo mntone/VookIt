@@ -40,6 +40,10 @@ module.exports = {
 	name: 'commonjs',
 	entry: {
 		main: './clogs/scripts/app.js',
+		edit: {
+			dependOn: 'main',
+			import: './clogs/scripts/edit.js',
+		},
 		upload: './clogs/scripts/upload.js',
 	},
 	devtool: isDev
