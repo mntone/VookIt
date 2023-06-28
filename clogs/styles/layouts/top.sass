@@ -1,9 +1,11 @@
 @use "../mixins"
 @use "../base/variables" as *
+@use "../components/VideoCard"
 
 $column-margin-x: 24px
 $column-margin-x-mobile: calc($column-margin-x / 2)
 $column-width: 400px
+$column-height: 225px
 $column-gap: 16px
 
 @function columns-width($n)
@@ -38,7 +40,9 @@ $column-gap: 16px
 	@media screen and (min-width: 540px)
 		width: calc(50% - $column-gap)
 	@media screen and (min-width: columns-width(2)), print
+		contain: strict
 		width: $column-width
+		height: calc($column-height + VideoCard.$VideoCard-content-height)
 
 // columns
 .cc

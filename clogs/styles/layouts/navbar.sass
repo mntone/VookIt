@@ -1,34 +1,30 @@
 @use "sass:math"
 
 @use "../mixins" as *
+@use "../base/backport" as *
 @use "../base/variables" as *
 
 $navbar-item-color: $black
 $navbar-item-hover-color: $accent-dark1
 
-$navbar-title-color: $black-dark1
-
-// navbar-container
-.nnc
+// navbar
+.nn
 	contain: strict
 	display: flex
 	+widely-container
-	padding-bottom: $navbar-spacing
-	align-items: flex-end
+	+padding-block($navbar-spacing)
 	height: $navbar-height
-
-// navbar
-.nn
-	display: flex
-	width: 100%
-	max-height: $navbar-height
 	align-items: center
 	justify-content: space-between
 	+unselectable
 
 .n-item
 	display: block
-	padding-inline: 0.75rem
+	+padding-inline(0.75rem)
+	&:first-child
+		padding-left: 0
+	&:last-child
+		padding-right: 0
 
 a[href].n-item
 	&:focus,
@@ -37,25 +33,13 @@ a[href].n-item
 		color: $navbar-item-hover-color // TODO move to paint
 
 .n-brand
-	.n-item
-		padding-left: 0
-
-.n-end
-	justify-content: flex-end
-	.n-item
-		padding-right: 0
-
-.n-title
 	color: transparent !important
 	background-image: linear-gradient(-65deg, #FF1F4C, #FF1F96)
 	-webkit-background-clip: text
 	background-clip: text
-	font-size: min(floor(math.div($navbar-height, 1.125) - $content-spacing), 2rem)
+	font-size: calc(($navbar-height - 2 * $navbar-spacing) / 1.5)
 	font-weight: 900
-	line-height: 1.125
-	transition: filter .25s ease-in-out
-	+reduced-motion
-		transition: none 0s
+	+default-transition(filter)
 	&[href]:focus,
 	&[href]:focus-within,
 	&[href]:hover 

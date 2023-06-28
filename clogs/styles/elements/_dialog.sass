@@ -1,10 +1,12 @@
+@use "sass:math"
+
 @use "../mixins" as *
 @use "../base/variables" as *
 @use "./glass" as *
 @use "./title"
 
 $dialog-margin-x-mobile: $container-margin-mobile
-$dialog-max-width: 640px
+$dialog-max-width: #{math.div(640px, $fontsize)}em
 $dialog-spacing-x: 1.5em !default
 $dialog-spacing-y: 2em !default
 $dialog-radius: 1em !default

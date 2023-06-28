@@ -1,3 +1,4 @@
+@use "sass:string"
 
 $widely-breakpoint: 864px
 
@@ -50,3 +51,11 @@ $widely-breakpoint: 864px
 		padding-right: max(calc(24px - var(--scrollbar-width)), calc(var(--scrollbar-width) - 22px))
 		.is-popover-active &
 			padding-right: 24px
+
+=default-transition($properties...)
+	$values: ''
+	@each $property in $properties
+		$values: $values + ', ' + $property + ' .25s ease-in-out'
+	transition: string.unquote(string.slice($values, 2))
+	+reduced-motion
+		transition: none 0s

@@ -9,24 +9,18 @@ const React = require('react')
  */
 function NavBar({ t, linkEnabled }) {
 	return (
-		<div className="nnc">
-			<nav className="nn" role="navigation" aria-label="main navigation">
-				<div className="n-brand">
-					<a className="n-item n-title" href={linkEnabled !== false ? '/' : undefined}>{t('sitename')}</a>
-				</div>
+		<nav className="nn" role="navigation" aria-label="main navigation">
+			<a className="n-brand n-item" href={linkEnabled !== false ? '/' : undefined}>{t('sitename')}</a>
 
-				<div className="n-end">
-					<div className="n-item buttons">
-						<a className="button is-primary" rel="nofollow" href="/upload">
-							<strong>{t('navbar.upload')}</strong>
-						</a>
-						<button className="button is-light hint-popoverable" data-target="AppearanceModal" disabled={true}>
-							<strong>{t('navbar.settings')}</strong>
-						</button>
-					</div>
-				</div>
-			</nav>
-		</div>
+			<div className="n-item buttons">
+				<a className="button is-primary" rel="nofollow" href="/upload">
+					<strong>{t('navbar.upload')}</strong>
+				</a>
+				<button className="button is-light hint-popoverable" data-target="AppearanceModal" disabled={true}>
+					<strong>{t('navbar.settings')}</strong>
+				</button>
+			</div>
+		</nav>
 	)
 }
 NavBar.propTypes = {
