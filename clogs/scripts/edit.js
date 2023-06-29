@@ -5,7 +5,7 @@ import { VirtualTextBox } from './virtuals/inputs/VirtualTextBox'
 import { VirtualButton } from './virtuals/VirtualButton'
 
 const asCallbackObject = (callback, eventName = 'input') => {
-	const callbacks = Object.create(null)
+	const callbacks = {}
 	callbacks[eventName] = [callback]
 	return callbacks
 }
@@ -32,10 +32,16 @@ class EditForm {
 	#update
 
 	/**
+	 * @type {VirtualButton}
+	 */
+	#cancel
+
+	/**
 	 * @param {object}            info
 	 * @param {(string|object)[]} info.title
 	 * @param {(string|object)[]} info.description
 	 * @param {string}            info.update
+	 * @param {string}            info.cancel
 	 */
 	constructor(info) {
 		const callback = debounce(this.#onInput.bind(this), 120)
@@ -55,12 +61,20 @@ class EditForm {
 			asCallbackObject(callback),
 		)
 		this.#update = new VirtualButton(document.getElementById(info.update), true)
+		this.#cancel = new VirtualButton(document.getElementById(info.cancel), true)
 	}
 
 	#onInput() {
+		const isDirty = this.#visibility.isDirty || this.#title.isDirty || this.#description.isDirty
 		this.#update.disabled = this.#title.hasError
 			|| this.#description.hasError
-			|| !this.#visibility.isDirty && !this.#title.isDirty && !this.#description.isDirty
+			|| !isDirty
+
+		if (isDirty) {
+			this.#cancel.element.classList.add('error')
+		} else {
+			this.#cancel.element.classList.remove('error')
+		}
 	}
 }
 

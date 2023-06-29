@@ -1,8 +1,7 @@
 @use "../mixins" as *
+@use "../base/backport" as *
 @use "../base/variables" as *
 @use "../elements/glass" as *
-
-$radius: 8px
 
 $VideoPlayer-minimum-spacing: 24px
 
@@ -55,12 +54,12 @@ $VideoInfo-narrow-spacing: 12px
 	+widely
 		padding: 0
 	&-toolbar
-		display: flex
-		flex-direction: column
-		align-items: flex-start
-		justify-content: space-between
+		+display-flex
+		+flex-direction(column)
+		+align-items(flex-start)
+		+justify-content(space-between)
 		+widely
-			flex-direction: row
+			+flex-direction(row)
 	h1
 		+clip
 		margin-bottom: 0.28em
@@ -73,7 +72,7 @@ $VideoInfo-narrow-spacing: 12px
 		line-height: 1.25
 		text-shadow: 2px 2px .1em rgba(255, 255, 255, .8)
 	&-buttons
-		display: flex
+		+display-flex
 		+widely
 			margin-left: 1em
 			margin-bottom: 1em

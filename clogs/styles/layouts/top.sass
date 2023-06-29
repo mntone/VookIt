@@ -1,4 +1,5 @@
 @use "../mixins"
+@use "../base/backport" as *
 @use "../base/variables" as *
 @use "../components/VideoCard"
 
@@ -46,9 +47,9 @@ $column-gap: 16px
 
 // columns
 .cc
-	display: flex
+	+display-flex
 	padding: max(0, $content-spacing / 2 - $navbar-spacing) calc($column-margin-x-mobile - $column-gap / 2) calc($content-spacing / 2)
-	flex-wrap: wrap
+	+flex-wrap(wrap)
 	+snap-width(2)
 		padding-left: calc($column-margin-x - $column-gap / 2)
 		padding-right: calc($column-margin-x - $column-gap / 2)

@@ -14,3 +14,30 @@
 =padding-inline($value)
 	padding-left: $value
 	padding-right: $value
+
+=display-flex
+	display: -ms-flexbox
+	display: flex
+
+=align-items($value)
+	-ms-flex-align: $value
+	align-items: $value
+
+=flex-direction($value)
+	-ms-flex-direction: $value
+	flex-direction: $value
+
+=flex-wrap($value)
+	-ms-flex-wrap: $value
+	flex-wrap: $value
+
+=justify-content($value)
+	@if $value == 'flex-start'
+		-ms-flex-pack: start
+	@else if $value == 'space-between'
+		-ms-flex-pack: justify
+	@else if $value == 'flex-end'
+		-ms-flex-pack: end
+	@else
+		-ms-flex-pack: $value
+	justify-content: $value

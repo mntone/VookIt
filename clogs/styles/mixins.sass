@@ -32,6 +32,20 @@ $widely-breakpoint: 864px
 	-ms-user-select: none // 0.37%
 	user-select: none
 
+=dark
+	@if #{&} == ':root' or #{&} == html or #{&} == body
+		@at-root .is-dark
+			@content
+		@media (prefers-color-scheme: dark)
+			@at-root body:not(.is-light)
+				@content
+	@else
+		.is-dark &
+			@content
+		@media (prefers-color-scheme: dark)
+			body:not(.is-light) &
+				@content
+
 =reduced-motion
 	.use-reduced-motion &
 		@content

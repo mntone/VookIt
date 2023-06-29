@@ -9,6 +9,9 @@
 @use "./layouts/view"
 @use "./layouts/standard"
 
+// Elements
+@use "./elements/button"
+
 // Components
 @use "./components/VideoCard"
 @use "./components/Footer"
@@ -20,11 +23,9 @@ $primary: variables.$accent
 
 // TODO: move to initial-variables.sass
 $radius-small: 4px
-$radius: 8px
 $radius-large: 8px
 
 @import "../../node_modules/bulma/sass/elements/other"
-@import "../../node_modules/bulma/sass/elements/button"
 
 $modal-background-background-color: bulmaRgba($scheme-invert, 0.86)
 @import "../../node_modules/bulma/sass/components/modal"

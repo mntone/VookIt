@@ -43,7 +43,7 @@ function AppearanceModal({ t }) {
 				</section>
 
 				<footer className="modal-card-foot">
-					<button className="button is-primary" id="AppearanceModal-save">{t('navbar.modal.save')}</button>
+					<button className="b b-accent" id="AppearanceModal-save">{t('navbar.modal.save')}</button>
 				</footer>
 			</div>
 		</div>

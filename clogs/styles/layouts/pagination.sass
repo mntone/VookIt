@@ -1,6 +1,8 @@
-.pp
-	display: flex
-	flex-wrap: wrap
+@use "../base/backport" as *
+
+pp
+	+display-flex
+	+flex-wrap(wrap)
 
 .p-next
 	margin-left: auto

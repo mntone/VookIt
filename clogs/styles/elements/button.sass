@@ -1,0 +1,141 @@
+@use "sass:color"
+
+@use "../mixins" as *
+@use "../base/backport" as *
+@use "../base/variables" as *
+
+// SASS Variables
+$button-radius: $radius
+$button-height: 2.5em
+$button-border-width: 1px
+$button-padding-x: 1em
+$button-padding-y: .5em
+
+// - Container styles
+$buttons-gap: .5em
+
+// - Light colors
+$button-light-foreground: $black
+$button-light-foreground--hover: $black-dark1
+$button-light-background: color.adjust($white-dark1, $alpha: -0.25)
+$button-light-background--hover: color.scale(color.adjust($button-light-background, $alpha: 0.15), $lightness: -5%)
+
+// - Dark colors
+$button-dark-foreground: $white
+$button-dark-foreground--hover: $white-dark1
+$button-dark-background: color.adjust($black2, $alpha: -0.25)
+$button-dark-background--hover: color.scale(color.adjust($button-dark-background, $alpha: 0.15), $lightness: 7.5%)
+
+// - Accent colors
+$button-accent-foreground: $white
+$button-accent-foreground--hover: $white-dark1
+$button-accent-background: $accent
+$button-accent-background--hover: color.adjust($button-accent-background, $blackness: 10%)
+
+// - Dark Accent colors
+$button-accent-dark-background--hover: color.scale($button-accent-background, $whiteness: 15%)
+
+// CSS Variables
+:root
+	// Light
+	--c-foreground: #{$button-light-foreground}
+	--c-foreground--hover: #{$button-light-foreground--hover}
+	--c-foreground--disabled: #{color.adjust($button-light-foreground, $alpha: -0.6)}
+	--c-background: #{$button-light-background}
+	--c-background--hover: #{$button-light-background--hover}
+	--c-background--disabled: #{color.adjust($button-light-background, $alpha: -0.35)}
+	// Dark
+	+dark
+		--c-foreground: #{$button-dark-foreground}
+		--c-foreground--hover: #{$button-dark-foreground--hover}
+		--c-foreground--disabled: #{color.adjust($button-dark-foreground, $alpha: -0.6)}
+		--c-background: #{$button-dark-background}
+		--c-background--hover: #{$button-dark-background--hover}
+		--c-background--disabled: #{color.adjust($button-dark-background, $alpha: -0.35)}
+	// Accent
+	--c-a-foreground: #{$button-accent-foreground}
+	--c-a-foreground--hover: #{$button-accent-foreground--hover}
+	--c-a-background: #{$button-accent-background}
+	--c-a-background--hover: #{$button-accent-background--hover}
+	+dark
+		--c-a-background--hover: #{$button-accent-dark-background--hover}
+
+// Mix-ins
+=button
+	// Layout
+	+display-flex
+	+align-items(center)
+	+justify-content(center)
+	border: $button-border-width solid transparent
+	+padding-inline(calc($button-padding-x - $button-border-width))
+	+padding-block(calc($button-padding-y - $button-border-width))
+	min-height: $button-height
+
+	// Visual
+	border-radius: $button-radius
+	&:focus:not(:focus-visible)
+		outline-width: 0
+
+	// Color
+	color: var(--c-foreground)
+	background-color: var(--c-background)
+	+backdrop-filter(blur(.25em))
+	&:hover:not([disabled]),
+	&:focus:not(:focus-within):not([disabled])
+		color: var(--c-foreground--hover)
+		background-color: var(--c-background--hover)
+	&[disabled]
+		color: var(--c-foreground--disabled)
+		background-color: var(--c-background--disabled)
+		b, strong
+			font-weight: inherit
+
+	// Text
+	line-height: 1
+
+// Normalize
+button
+	overflow: visible		// Fix IE
+	margin: 0				// Fix Safari and Firefox
+	font-family: inherit	// Fix all
+	font-size: 100%			// Fix all
+	text-transform: none	// Fix Edge, Firefox and IE
+
+a.b
+	outline-offset: 0
+	cursor: default
+
+// Fix Firefox
+button,
+[type=button],
+[type=reset],
+[type=submit]
+	&::-moz-focus-inner
+		padding: 0
+		border-style: none
+	&:-moz-focusring
+		outline: 1px dotted ButtonText
+
+// Define default
+.b
+	+button
+
+// Define accent
+.b-accent:not([disabled])
+	color: var(--c-a-foreground)
+	background-color: var(--c-a-background)
+	&:hover,
+	&:focus:not(:focus-within)
+		color: var(--c-a-foreground--hover)
+		background-color: var(--c-a-background--hover)
+
+// Define containers
+.bb
+	+display-flex
+	+align-items(stretch)
+	.b
+		+margin-inline(calc($buttons-gap / 2))
+		&:first-child
+			margin-left: 0
+		&:last-child
+			margin-right: 0

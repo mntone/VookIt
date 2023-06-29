@@ -59,7 +59,7 @@ function UploadPage({ t, language }) {
 					</ul></p>
 					<noscript>
 						<div className="control">
-							<button className="button is-primary">{t('uploadpage.upload')}</button>
+							<button className="b">{t('uploadpage.upload')}</button>
 						</div>
 					</noscript>
 				</form>

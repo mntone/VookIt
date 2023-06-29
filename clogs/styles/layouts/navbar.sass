@@ -10,12 +10,12 @@ $navbar-item-hover-color: $accent-dark1
 // navbar
 .nn
 	contain: strict
-	display: flex
+	+display-flex
 	+widely-container
 	+padding-block($navbar-spacing)
 	height: $navbar-height
-	align-items: center
-	justify-content: space-between
+	+align-items(center)
+	+justify-content(space-between)
 	+unselectable
 
 .n-item

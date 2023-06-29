@@ -27,6 +27,7 @@ new window.EditForm({
 	}],
 	visibility: 'visibility',
 	update: 'update',
+	cancel: 'cancel',
 })
 `
 }
@@ -81,10 +82,10 @@ function EditPage({ t, language, post }) {
 						<div className="field-body">
 							<div className="field is-grouped">
 								<div className="control">
-									<button id="update" className="button is-link" style={{ width: '7.5em' }}>{t('editpage.update')}</button>
+									<button id="update" className="b" style={{ width: '7.5em' }}><strong>{t('editpage.update')}</strong></button>
 								</div>
 								<div className="control">
-									<a className="button is-light" style={{ width: '7.5em' }} rel="nofollow" href={`/v/${usid}`}>{t('editpage.cancel')}</a>
+									<a id="cancel" className="b" style={{ width: '7.5em' }} rel="nofollow" href={`/v/${usid}`}>{t('editpage.cancel')}</a>
 								</div>
 							</div>
 						</div>

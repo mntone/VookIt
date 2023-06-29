@@ -1,5 +1,7 @@
+@use "sass:color"
 
 $fontsize: 16px // Use em based layout
+$radius: .5em
 
 $navbar-height: 4em
 $navbar-spacing: .5em
@@ -10,15 +12,25 @@ $container-padding: 16px
 
 $content-spacing: 1em
 
-$black: #1A1A1A
-$black-dark1: #0F0F0F
-$black-dark2: #080808
-$black-dark3: #000000
+$black: #1A1A1C
+$black-dark1: color.scale($black, $lightness: -30%)
+$black-dark2: color.scale($black, $lightness: -60%)
+$black-dark3: color.scale($black, $lightness: -90%)
+
+$black2: #595961
+$black2-dark1: color.scale($black2, $lightness: -30%)
+$black2-dark2: color.scale($black2, $lightness: -60%)
+$black2-dark3: color.scale($black2, $lightness: -90%)
+
+$white: #FFFFFF
+$white-dark1: #EEEEEE
+$white-dark2: #DDDDDD
+$white-dark3: #CCCCCC
 
 $accent: #FF1F96
-$accent-dark1: darken($accent, 10%)
-$accent-dark2: darken($accent, 20%)
-$accent-dark3: darken($accent, 30%)
+$accent-dark1: darken($accent, 5%)
+$accent-dark2: darken($accent, 10%)
+$accent-dark3: darken($accent, 15%)
 
 $font: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Segoe UI Variable", "Segoe UI", "Roboto", "Yu Gothic UI", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"
 $font-title: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Segoe UI Variable", "Segoe UI", "Roboto", Meiryo, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"
