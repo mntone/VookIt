@@ -3,6 +3,12 @@ const IS_POPOVER_ACTIVE_STATE_CLASS = 'is-popover-active'
 const MODAL_TRIGGER_QUERY = '.hint-popoverable'
 
 export default class ModalSupport {
+	/**
+	 * Is initialized
+	 * @type {boolean}
+	 */
+	static #initialized = false
+
 	static #keyboardHooked = false
 	static #controlHooked = false
 
@@ -12,12 +18,30 @@ export default class ModalSupport {
 	static #modals = {}
 
 	/**
+	 * Nav element
+	 * @type {HTMLElement}
+	 */
+	static #nav
+
+	/**
+	 * Main element
+	 * @type {HTMLElement}
+	 */
+	static #main
+
+	/**
 	 * Modal element
 	 * @type {HTMLElement}
 	 */
 	#modal
 
 	constructor(modalId) {
+		if (!ModalSupport.#initialized) {
+			ModalSupport.#initialized = true
+			ModalSupport.#nav = document.getElementById('n')
+			ModalSupport.#main = document.getElementById('m')
+		}
+
 		const modal = document.getElementById(modalId)
 		this.#modal = modal
 
@@ -35,6 +59,8 @@ export default class ModalSupport {
 	}
 
 	_onControlClick() {
+		ModalSupport.#nav.inert = true
+		ModalSupport.#main.inert = true
 		document.body.classList.add(IS_POPOVER_ACTIVE_STATE_CLASS)
 		this.#modal.classList.add(IS_ACTIVE_STATE_CLASS)
 	}
@@ -42,6 +68,8 @@ export default class ModalSupport {
 	_closeModal() {
 		document.body.classList.remove(IS_POPOVER_ACTIVE_STATE_CLASS)
 		this.#modal.classList.remove(IS_ACTIVE_STATE_CLASS)
+		ModalSupport.#nav.inert = false
+		ModalSupport.#main.inert = false
 	}
 
 	/**

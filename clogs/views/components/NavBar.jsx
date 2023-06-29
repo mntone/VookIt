@@ -9,7 +9,7 @@ const React = require('react')
  */
 function NavBar({ t, linkEnabled }) {
 	return (
-		<nav className="nn" role="navigation" aria-label="main navigation">
+		<nav id="n" className="nn" role="navigation" aria-label="main navigation">
 			<a className="n-brand n-item" href={linkEnabled !== false ? '/' : undefined}>{t('sitename')}</a>
 
 			<div className="n-item bb">

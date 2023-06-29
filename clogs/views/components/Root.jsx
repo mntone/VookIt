@@ -55,7 +55,9 @@ function Root({ t, title, language, className, toppageLinkEnabled, stylesheets, 
 			<body className={className}>
 				<NavBar t={t} linkEnabled={toppageLinkEnabled} />
 
-				{children}
+				<main id="m">
+					{children}
+				</main>
 
 				<Footer t={t} />
 				<AppearanceModal t={t} />
