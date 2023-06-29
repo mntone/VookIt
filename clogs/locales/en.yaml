@@ -15,6 +15,9 @@ navbar:
     cancel: Cancel
     close: Close
 
+toppage:
+  next: Next
+
 viewpage:
   edit: Edit
   error:

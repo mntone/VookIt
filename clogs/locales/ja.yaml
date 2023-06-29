@@ -15,6 +15,9 @@ navbar:
     cancel: キャンセル
     close: 閉じる
 
+toppage:
+  next: 次へ
+
 viewpage:
   edit: 編集
   error:
