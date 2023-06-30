@@ -43,7 +43,7 @@ function toUsid(id) {
 		id >>= 8n
 	}
 
-	const buffer = Buffer.from(new Uint8Array(chunk).buffer)
+	const buffer = Buffer.from(chunk.buffer)
 	const base64url = buffer.toString('base64url')
 	return base64url
 }

@@ -1,7 +1,7 @@
 const React = require('react')
 
 const env = require('../../../constants/env')
-const { numToUsid } = require('../../../utils/IdSupport')
+const { numToUsid } = require('../../utils/IdSupport')
 const DateTime = require('../components/DateTime')
 const Root = require('../components/Root')
 

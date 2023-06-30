@@ -1,10 +1,10 @@
 const { urlencoded } = require('express')
 
 const env = require('../../../../constants/env')
-const { toIdAsNumber } = require('../../../../utils/IdSupport')
 const scheme = require('../../../schemas/api/post/update')
 const updatePost = require('../../../usecase/posts/update')
 const { cachecontrol } = require('../../../utils/express/cachecontrol')
+const { toIdAsNumber } = require('../../../utils/IdSupport')
 const ResponseBuilder = require('../../utils/ResponseBuilder')
 
 class PostUpdateResponseBuilder extends ResponseBuilder {

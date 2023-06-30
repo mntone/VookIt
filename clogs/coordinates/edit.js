@@ -1,8 +1,8 @@
 const createError = require('http-errors')
 
-const { toIdAsNumber } = require('../../utils/IdSupport')
 const scheme = require('../schemas/edit')
 const findPostById = require('../usecase/posts/findById')
+const { toIdAsNumber } = require('../utils/IdSupport')
 const EditPage = require('../views/pages/EditPage')
 
 const ViewBuilder = require('./utils/ViewBuilder')

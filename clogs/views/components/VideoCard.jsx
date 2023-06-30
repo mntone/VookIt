@@ -2,7 +2,7 @@ const PropTypes = require('prop-types')
 const React = require('react')
 
 const env = require('../../../constants/env')
-const { numToUsid } = require('../../../utils/IdSupport')
+const { numToUsid } = require('../../utils/IdSupport')
 
 const DateTime = require('./DateTime')
 const PictureSet = require('./PictureSet')

@@ -5,7 +5,7 @@ const { Queue } = require('bullmq')
 const IORedis = require('ioredis')
 
 const env = require('../../../constants/env')
-const { numToUsid } = require('../../../utils/IdSupport')
+const { numToUsid } = require('../../utils/IdSupport')
 const prisma = require('../prisma')
 
 const connection = new IORedis(env.redisPort, env.redisHost, env.redisOptions)
