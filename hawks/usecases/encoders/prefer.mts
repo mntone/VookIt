@@ -1,26 +1,26 @@
-import { Job } from 'bullmq'
-
-import { EncodeData } from '../../models/encoders/EncodeData.mjs'
+import { AllMediaData } from '../../models/encoders/MediaData.mjs'
 import { Variant } from '../../models/encoders/Variant.mjs'
+import { EncodeContext } from '../../models/workers/EncodeContext.mjs'
+import { EncodeData } from '../../models/workers/EncodeData.mjs'
 
 import { encodeAudio } from './audio.mjs'
-import { getSuperContext } from './detectMedia.mjs'
 import { encodeImage } from './image.mjs'
 import { encodeVideo } from './video.mjs'
 
-export function encodePrefer(job: Job<EncodeData>, filepath: string, vnt: Variant): Promise<unknown> {
-	const context = getSuperContext(filepath)
-
+export function encodePrefer(
+	ctx: EncodeContext<EncodeData, AllMediaData>,
+	vnt: Variant,
+) {
 	let task = null
 	switch (vnt.type) {
 	case 'audio':
-		task = encodeAudio(job, context, vnt)
+		task = encodeAudio(ctx, vnt)
 		break
 	case 'image':
-		task = encodeImage(job, context, vnt)
+		task = encodeImage(ctx, vnt)
 		break
 	case 'video':
-		task = encodeVideo(job, context, vnt)
+		task = encodeVideo(ctx, vnt)
 		break
 	}
 	return task

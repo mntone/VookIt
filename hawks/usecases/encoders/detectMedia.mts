@@ -1,4 +1,4 @@
-import { SuperEncodeContext } from '../../models/encoders/Context.mjs'
+import { AllMediaData } from '../../models/encoders/MediaData.mjs'
 import { initFramerate, parseFramerate } from '../../models/Framerate.mjs'
 import { FFprobeStreamEntriesOptions } from '../../models/trampolines/FFprobeOptions.mjs'
 import { FFprobeAudioStreamEntries, FFprobeVideoStreamEntries } from '../../models/trampolines/FFprobeStreamEntries.mjs'
@@ -16,6 +16,7 @@ const requireVideoInfo: FFprobeStreamEntriesOptions = {
 	colorSpace: true,
 	colorTransfer: true,
 	colorPrimaries: true,
+	nbFrames: true,
 }
 
 const requireAudioInfo: FFprobeStreamEntriesOptions = {
@@ -47,7 +48,7 @@ export function getMediaInfo(filepath: string) {
 	}
 }
 
-export function getSuperContext(filepath: string) {
+export function getAllMediaData(filepath: string) {
 	const fileInfo = ffproveSync({
 		input: filepath,
 		showEntries: {
@@ -57,6 +58,7 @@ export function getSuperContext(filepath: string) {
 				height: true,
 				channels: true,
 				rFrameRate: true,
+				nbFrames: true,
 			},
 			format: {
 				duration: true,
@@ -72,9 +74,9 @@ export function getSuperContext(filepath: string) {
 
 	const videoInfo = fileInfo.streams.find(s => s.codecType === 'video') as FFprobeVideoStreamEntries|undefined
 
-	let context: SuperEncodeContext
+	let data: AllMediaData
 	if (videoInfo) {
-		context = {
+		data = {
 			filepath,
 			hasVideo: true,
 			width: videoInfo.width,
@@ -82,9 +84,10 @@ export function getSuperContext(filepath: string) {
 			duration: Number(fileInfo.format.duration),
 			channels: audioInfo.channels,
 			framerate: parseFramerate(videoInfo.rFrameRate),
+			frames: Number(videoInfo.nbFrames),
 		}
 	} else {
-		context = {
+		data = {
 			filepath,
 			hasVideo: false,
 			width: -1,
@@ -92,8 +95,9 @@ export function getSuperContext(filepath: string) {
 			duration: Number(fileInfo.format.duration),
 			channels: audioInfo.channels,
 			framerate: initFramerate(),
+			frames: 0,
 		}
 	}
 
-	return context
+	return data
 }

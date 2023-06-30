@@ -1,23 +1,19 @@
 import { existsSync } from 'fs'
 
-import { Job } from 'bullmq'
-
-// @ts-expect-error
-import FFmpegEncode from '../../encoders/FFmpegEncode.js'
 // @ts-expect-error
 import FFmpegAudioOptions from '../../encoders/options/ffmpeg-audio.js'
-// @ts-expect-error
-import getAwaiter from '../../encoders/utils/AwaitSupport.js'
-import { AudioEncodeContext } from '../../models/encoders/Context.mjs'
-import { EncodeData } from '../../models/encoders/EncodeData.mjs'
+import { AudioData } from '../../models/encoders/MediaData.mjs'
 import { Variant } from '../../models/encoders/Variant.mjs'
-import { getEncodeFileinfo } from '../../utils/fileSupport.mjs'
+import { EncodeContext } from '../../models/workers/EncodeContext.mjs'
+import { EncodeData } from '../../models/workers/EncodeData.mjs'
+import { getOutputFilepath } from '../../utils/fileSupport.mjs'
+import { ffmpeg, getAwaiter } from '../trampolines/ffmpeg.mjs'
 
 const BASE_CHANNELS = 2
 
-function adjustBitrate(ctx: AudioEncodeContext, vnt: Variant) {
+function adjustBitrate(data: AudioData, vnt: Variant) {
 	// Compare the channels to it of stereo.
-	const channelRate = ctx.channels / BASE_CHANNELS - 1
+	const channelRate = data.channels / BASE_CHANNELS - 1
 	const multipler = channelRate >= 0
 		? vnt.tune.increaseBitrateMultiplier
 		: vnt.tune.decreaseBitrateMultiplier
@@ -27,22 +23,28 @@ function adjustBitrate(ctx: AudioEncodeContext, vnt: Variant) {
 
 /**
  * Encode audio.
- * @param job - BullMQ.Job
  * @param ctx - Encode Context
  * @param vnt - Variant
- * @returns   - Promise of progress
+ * @returns   - Promise of void
  */
-export async function encodeAudio(job: Job<EncodeData>, ctx: AudioEncodeContext, vnt: Variant): Promise<unknown> {
-	const fileinfo = await getEncodeFileinfo(job.data, vnt)
-	if (existsSync(fileinfo.output)) {
+export async function encodeAudio(
+	ctx: Readonly<EncodeContext<EncodeData, AudioData>>,
+	vnt: Variant,
+) {
+	const output = await getOutputFilepath(ctx.job.data.id, vnt)
+	if (existsSync(output)) {
 		return null
 	}
 
-	const bitrate = adjustBitrate(ctx, vnt)
+	const bitrate = adjustBitrate(ctx.data, vnt)
 	const options = new FFmpegAudioOptions(vnt.friendlyCodecId, bitrate, vnt.encodeOptions)
-	const ffmpeg = new FFmpegEncode(options)
-		.exec(fileinfo)
-		.on('log', (log: string) => job.log(log))
-		.on('progress', (p: any) => job.updateProgress(p.frame))
-	return await getAwaiter(ffmpeg)
+	const command = options.build({
+		inputs: ctx.filepath,
+		output,
+	})
+	await ctx.log('> ffmpeg ' + command.join(' '))
+
+	const ee = ffmpeg(command)
+		.on('log', (log: string) => ctx.log(log))
+	await getAwaiter(ee)
 }

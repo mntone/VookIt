@@ -1,23 +1,23 @@
-import { Job } from 'bullmq'
-
 // @ts-expect-error
 import env from '../../../constants/env.js'
 import { Codec } from '../../models/encoders/Codec.mjs'
-import { FlowEncodeData } from '../../models/encoders/EncodeData.mjs'
+import { AllMediaData } from '../../models/encoders/MediaData.mjs'
 import { Variant } from '../../models/encoders/Variant.mjs'
+import { EncodeContext } from '../../models/workers/EncodeContext.mjs'
+import { FlowEncodeData } from '../../models/workers/EncodeData.mjs'
 import { createCmaf } from '../encoders/deploy.mjs'
 
 import { updateCursor } from './updateCursor.util.mjs'
 
 export async function encodeCodec(
-	job: Job<FlowEncodeData>,
+	ctx: EncodeContext<FlowEncodeData, AllMediaData>,
 	codec: Readonly<Codec>,
 	callback: (variant: Variant) => Promise<unknown>,
 ) {
 	// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 	const maxVariantId = codec.variants.at(-1)!.id
 
-	let cursor = job.data.cursor
+	let cursor = ctx.job.data.cursor
 	if (cursor !== maxVariantId) {
 		let i
 		if (cursor < 0) {
@@ -26,6 +26,10 @@ export async function encodeCodec(
 			// Restore index from cursor
 			i = codec.variants.findIndex(v => v.id === cursor)
 		}
+
+		// Calc progressRatio
+		const allPrograssRatio = ctx.progressRatio
+		ctx.progressRatio /= codec.variants.length
 
 		performance.mark(codec.friendlyId + ':start')
 		while (cursor !== maxVariantId) {
@@ -44,7 +48,7 @@ export async function encodeCodec(
 				)
 				if (nextCursor === maxVariantId || nextCursor !== maxVariantId && entry.duration > env.hawksEncodeDelayToSaveIntermediateStream) {
 					performance.mark('st_' + variant.friendlyId + ':start')
-					await createCmaf(job, {
+					await createCmaf(ctx, {
 						audioCodecFriendlyIds: codec.variants[0].audioCodecIds,
 						videoVariants: codec.variants.slice(0, i + 1),
 					})
@@ -52,12 +56,18 @@ export async function encodeCodec(
 				}
 			}
 
+			// Done this variant
+			await ctx.done()
+
 			// Update index
 			++i
 
 			// Update cursor
-			cursor = await updateCursor(job, variant.id)
+			cursor = await updateCursor(ctx.job, variant.id)
 		}
 		performance.mark(codec.friendlyId + ':end')
+
+		// Restore progressRatio
+		ctx.progressRatio = allPrograssRatio
 	}
 }

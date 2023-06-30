@@ -1,45 +1,47 @@
 import { existsSync } from 'fs'
 import { join } from 'path'
 
-import { Job } from 'bullmq'
-
 // @ts-expect-error
 import env from '../../../constants/env.js'
 // @ts-expect-error
-import FFmpegEncode from '../../encoders/FFmpegEncode.js'
-// @ts-expect-error
 import FFmpegDashOptions from '../../encoders/options/ffmpeg-dash.js'
-// @ts-expect-error
-import getAwaiter from '../../encoders/utils/AwaitSupport.js'
 import { DeployContext } from '../../models/encoders/DeployContext.mjs'
-import { EncodeData } from '../../models/encoders/EncodeData.mjs'
+import { MediaData } from '../../models/encoders/MediaData.mjs'
+import { EncodeContext } from '../../models/workers/EncodeContext.mjs'
+import { EncodeData } from '../../models/workers/EncodeData.mjs'
 import { getCmafFilepath, getOutputDirname, getOutputFilename } from '../../utils/fileSupport.mjs'
+import { ffmpeg, getAwaiter } from '../trampolines/ffmpeg.mjs'
 import { CodecConfigLoader } from '../workers/CodecConfigLoader.mjs'
 
 /**
  * Create cmaf (DASH + HLS).
- * @param job - BullMQ.Job
- * @param ctx - Deploy Context
- * @returns   - Promise of progress
+ * @param ctx  - Encode Context
+ * @param dctx - Deploy Context
+ * @returns    - Promise of void
  */
-export async function createCmaf(job: Job<EncodeData>, ctx: DeployContext): Promise<unknown> {
-	const id = job.data.id
+export async function createCmaf(
+	ctx: Readonly<EncodeContext<EncodeData, MediaData>>,
+	dctx: DeployContext,
+) {
+	const id = ctx.job.data.id
 
 	// Check if dash file exists.
 	// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-	const streamName = 'st_' + ctx.videoVariants.at(-1)!.friendlyId
+	const streamName = 'st_' + dctx.videoVariants.at(-1)!.friendlyId
 	const filepath = await getCmafFilepath(id, streamName)
 	if (existsSync(filepath)) {
 		return null
 	}
 
 	// Check if all input files exist.
-	const audioFiles = ctx.audioCodecFriendlyIds
+	const audioFiles = dctx.audioCodecFriendlyIds
 		.map(id => CodecConfigLoader.instance.codecBy(id))
-		.flatMap(c => c.variants.map(v => { return { v, dirname: getOutputDirname(job.data.id, c.public) } }))
+		.flatMap(c => c.variants.map(v => {
+			return { v, dirname: getOutputDirname(id, c.public) }
+		}))
 		.map(({ v, dirname }) => join(dirname, getOutputFilename(v)))
-	const videoDir = getOutputDirname(id, ctx.videoVariants[0].public)
-	const files = audioFiles.concat(ctx.videoVariants.map(v => join(videoDir, getOutputFilename(v))))
+	const videoDir = getOutputDirname(id, dctx.videoVariants[0].public)
+	const files = audioFiles.concat(dctx.videoVariants.map(v => join(videoDir, getOutputFilename(v))))
 	const existsAll = files.every(p => existsSync(p))
 	if (!existsAll) {
 		throw Error('All media does not exist.')
@@ -49,13 +51,17 @@ export async function createCmaf(job: Job<EncodeData>, ctx: DeployContext): Prom
 	const options = new FFmpegDashOptions(4, {
 		initSegmentName: env.mediaDashInitSegmentFilename,
 		mediaSegmentName: env.mediaDashMediaSegmentFilename,
-		hls: ctx.videoVariants[0].useHls,
+		hls: dctx.videoVariants[0].useHls,
 		hlsPlaylistType: FFmpegDashOptions.HlsPlaylist.VOD,
 		hlsMasterName: env.mediaHlsFilename,
 	})
-	const ffmpeg = new FFmpegEncode(options).exec({
+	const command = options.build({
 		inputs: files,
 		output: filepath,
-	}).on('log', (log: string) => job.log(log))
-	return getAwaiter(ffmpeg)
+	})
+	await ctx.log('> ffmpeg ' + command.join(' '))
+
+	const ee = ffmpeg(command)
+		.on('log', (log: string) => ctx.log(log))
+	await getAwaiter(ee)
 }

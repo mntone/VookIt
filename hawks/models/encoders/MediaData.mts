@@ -1,13 +1,13 @@
 import { FractionFramerate } from '../Framerate.mjs'
 
-type EncodeContext = {
+export type MediaData = {
 	/**
 	 * Original filepath
 	 */
 	filepath: string
 }
 
-type FrameEncodeContext = EncodeContext & {
+type FrameData = MediaData & {
 	/**
 	 * Is valid video stream.
 	 */
@@ -24,26 +24,32 @@ type FrameEncodeContext = EncodeContext & {
 	height: number
 }
 
-type StreamEncodeContext = EncodeContext & {
+type StreamData = MediaData & {
 	/**
 	 * Original video duration
 	 */
 	duration: number
 }
 
-export type AudioEncodeContext = StreamEncodeContext & {
+export type AudioData = StreamData & {
 	/**
 	 * Original audio channel
 	 */
 	channels: number
 }
 
-export type ImageEncodeContext = FrameEncodeContext
-export type VideoEncodeContext = StreamEncodeContext & FrameEncodeContext & {
+export type ImageData = FrameData
+
+export type VideoData = StreamData & FrameData & {
 	/**
 	 * Original video framerate
 	 */
 	framerate: FractionFramerate
+
+	/**
+	 * Total frames
+	 */
+	frames: number
 }
 
-export type SuperEncodeContext = AudioEncodeContext & ImageEncodeContext & VideoEncodeContext
+export type AllMediaData = AudioData & ImageData & VideoData

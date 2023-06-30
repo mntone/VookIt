@@ -9,7 +9,7 @@ const { numToUsid } = require('../../../utils/IdSupport')
 const prisma = require('../prisma')
 
 const connection = new IORedis(env.redisPort, env.redisHost, env.redisOptions)
-const queue = new Queue(env.hawksInitTaskQueueName, { connection })
+const queue = new Queue('main', { connection })
 
 /**
  * Create upload from temporary file.
@@ -65,7 +65,7 @@ module.exports = async (tempfile, screenname) => {
 	await rename(tempfile.path, dstpath)
 
 	// Dispatch encoding.
-	queue.add('encode:auto', {
+	queue.add(`encode-${usid}`, {
 		id: usid,
 		ext: path.extname(dstpath),
 		cursor: -1,

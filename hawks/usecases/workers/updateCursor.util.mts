@@ -1,6 +1,6 @@
 import { Job } from 'bullmq'
 
-import { FlowEncodeData } from '../../models/encoders/EncodeData.mjs'
+import { FlowEncodeData } from '../../models/workers/EncodeData.mjs'
 
 export async function updateCursor(job: Job<FlowEncodeData>, next: number) {
 	const data = Object.assign({}, job.data)

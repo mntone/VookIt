@@ -1,30 +1,31 @@
 import { Job } from 'bullmq'
 
-import { CodecFlowEncodeData, SpecifiedFlowEncodeData } from '../../models/encoders/EncodeData.mjs'
-import { getInputFilepath } from '../../utils/fileSupport.mjs'
-import { getSuperContext } from '../encoders/detectMedia.mjs'
+import { CodecFlowEncodeData, SpecifiedFlowEncodeData, VariantFlowEncodeData } from '../../models/workers/EncodeData.mjs'
+import { getInputFilepathSync } from '../../utils/fileSupport.mjs'
 import { encodePrefer } from '../encoders/prefer.mjs'
-import { encodeVideo } from '../encoders/video.mjs'
 
 import { CodecConfigLoader } from './CodecConfigLoader.mjs'
 import { encodeCodec } from './encodeCodec.mjs'
+import { getSuperContext } from './getSuperContext.mjs'
 
 export async function encodeHandler(job: Job<SpecifiedFlowEncodeData>) {
-	const filepath = await getInputFilepath(job.data, { assumeDirectory: false })
+	const filepath = getInputFilepathSync(job.data)
 
 	switch (job.data.type) {
 	case 'codec': {
-		const context = await getSuperContext(filepath)
+		const context = getSuperContext(job as Job<CodecFlowEncodeData>, filepath)
 		const codec = CodecConfigLoader.instance.codecBy(job.data.codecId)
 		await encodeCodec(
-			job as Job<CodecFlowEncodeData>,
+			context,
 			codec,
-			variant => encodeVideo(job, context, variant))
+			variant => encodePrefer(context, variant))
 		break
 	}
 	case 'variant': {
+		const context = getSuperContext(job as Job<VariantFlowEncodeData>, filepath)
 		const variant = CodecConfigLoader.instance.variantBy(job.data.variantId)
-		await encodePrefer(job, filepath, variant)
+		await encodePrefer(context, variant)
+		await context.done()
 		break
 	}
 	}

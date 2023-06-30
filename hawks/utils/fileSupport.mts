@@ -4,8 +4,8 @@ import { join } from 'path'
 
 // @ts-expect-error
 import env from '../../constants/env.js'
-import { EncodeData } from '../models/encoders/EncodeData.mjs'
 import { Variant } from '../models/encoders/Variant.mjs'
+import { EncodeData } from '../models/workers/EncodeData.mjs'
 
 export type FilepathOptions = {
 	assumeDirectory: boolean
@@ -31,6 +31,12 @@ export async function getInputFilepath(data: EncodeData, options?: FilepathOptio
 	return join(inputDirname, inputFilename)
 }
 
+export function getInputFilepathSync(data: EncodeData) {
+	const inputDirname = getInputDirname(data)
+	const inputFilename = getInputFilename(data)
+	return join(inputDirname, inputFilename)
+}
+
 export function getOutputFilename(variant: Variant) {
 	const outputFilename = variant.filename || variant.friendlyId + variant.fileExtension
 	return outputFilename
@@ -51,15 +57,6 @@ export async function getOutputFilepath(id: string, variant: Variant, options?: 
 
 	const outputFilename = getOutputFilename(variant)
 	return join(outputDirname, outputFilename)
-}
-
-export async function getEncodeFileinfo(data: EncodeData, variant: Variant, options?: FilepathOptions) {
-	const inputFilepath = await getInputFilepath(data, options)
-	const outputFilepath = await getOutputFilepath(data.id, variant, options)
-	return {
-		inputs: inputFilepath,
-		output: outputFilepath,
-	}
 }
 
 export function getCmafDirname(id: string, name: string) {

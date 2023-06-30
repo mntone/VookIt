@@ -1,13 +1,13 @@
 import { Job, Queue } from 'bullmq'
 
-import { CodecFlowEncodeData, FlowEncodeData } from '../../models/encoders/EncodeData.mjs'
+import { CodecFlowEncodeData, FlowEncodeData } from '../../models/workers/EncodeData.mjs'
 import { getInputFilepath } from '../../utils/fileSupport.mjs'
 import { encodeAudio } from '../encoders/audio.mjs'
-import { getSuperContext } from '../encoders/detectMedia.mjs'
 import { encodeImage } from '../encoders/image.mjs'
 
 import { CodecConfigLoader } from './CodecConfigLoader.mjs'
 import { encodeAllCodecs } from './encodeAllCodecs.mjs'
+import { getSuperContext } from './getSuperContext.mjs'
 
 type Phase = 'pending' | 'image' | 'audio' | 'dispatching' | 'finished'
 
@@ -28,7 +28,8 @@ async function updatePhase(job: Job<MainJobData>, next: Phase, resetCursor = fal
 
 export async function mainHandler(job: Job<MainJobData>) {
 	const filepath = await getInputFilepath(job.data, { assumeDirectory: false })
-	const context = await getSuperContext(filepath)
+	const context = getSuperContext(job, filepath)
+	context.progressRatio = 40
 
 	while (job.data.phase !== 'finished') {
 		switch (job.data.phase) {
@@ -38,26 +39,28 @@ export async function mainHandler(job: Job<MainJobData>) {
 
 		case 'image': {
 			const config = CodecConfigLoader.instance.image
-			await encodeAllCodecs(job, config, variant => encodeImage(job, context, variant))
+			await encodeAllCodecs(context, config, variant => encodeImage(context, variant))
 			await updatePhase(job, 'audio', true)
 			break
 		}
 
 		case 'audio': {
 			const config = CodecConfigLoader.instance.audio
-			await encodeAllCodecs(job, config, variant => encodeAudio(job, context, variant))
+			await encodeAllCodecs(context, config, variant => encodeAudio(context, variant))
 			await updatePhase(job, 'dispatching', true)
 			break
 		}
 
 		case 'dispatching': {
 			const videoCodecs = CodecConfigLoader.instance.video.filter(c => c.enabled)
+			context.progressRatio = 20 / videoCodecs.length
 			for (const codec of videoCodecs) {
 				const queueName = codec.queueName
 				if (!Object.prototype.hasOwnProperty.call(queueCache, queueName)) {
 					queueCache[queueName] = new Queue(queueName)
 				}
 
+				// Dispatch encode jobs
 				const encodeData: CodecFlowEncodeData = {
 					id: job.data.id,
 					ext: job.data.ext,
@@ -65,7 +68,11 @@ export async function mainHandler(job: Job<MainJobData>) {
 					type: 'codec',
 					codecId: codec.id,
 				}
-				await Job.create(queueCache[queueName], 'encode:auto:video', encodeData)
+				const name = `encode-${job.data.id}:video-${codec.friendlyId}`
+				await Job.create(queueCache[queueName], name, encodeData)
+
+				// Update progress
+				await context.done()
 			}
 			await updatePhase(job, 'finished', true)
 			break
