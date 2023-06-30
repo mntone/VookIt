@@ -43,6 +43,7 @@ class FFmpegImageOptions extends FFmpegOptions {
 			frames: 1,
 			['b:v']: 0,
 		}
+		Object.assign(args, args2)
 
 		if (typeof this.#params.maxSize === 'string') {
 			// [TODO] Portrait video
@@ -76,6 +77,7 @@ class FFmpegImageOptions extends FFmpegOptions {
 			}
 			break
 		case FFmpegImageOptions.Codec.WEBP:
+			delete args.threads
 			if (typeof this.#params.quality === 'number') {
 				args['quality'] = this.#params.quality
 			}
@@ -91,8 +93,6 @@ class FFmpegImageOptions extends FFmpegOptions {
 		default:
 			break
 		}
-
-		Object.assign(args, args2)
 	}
 
 	/**

@@ -25,10 +25,16 @@ class FFmpegOptions {
 	#tag
 
 	/**
+	 * Use threads
+	 */
+	#threads
+
+	/**
 	 * @param {number}  bitrate
 	 * @param {object?} options
 	 * @param {boolean} options.suppressBitrate
 	 * @param {string?} options.tag
+	 * @param {number?} options.threads
 	 */
 	constructor(bitrate, options) {
 		if (options && options.suppressBitrate) {
@@ -36,6 +42,7 @@ class FFmpegOptions {
 			this.#suppressBitrate = true
 			this.#rateControl = FFmpegOptions.RateControl.CBR
 			this.#tag = null
+			this.#threads = 1
 		} else {
 			const bitrate2 = removeSIPrefixIfNeeded(bitrate)
 			if (bitrate2 <= 0) {
@@ -47,13 +54,21 @@ class FFmpegOptions {
 			this.#suppressBitrate = false
 			this.#rateControl = FFmpegOptions.RateControl.CBR
 
-			if (options && options.tag) {
-				if (options.tag.length !== 4) {
-					throw Error(`This value (${options.tag.toString()}) is invalid length.`)
+			if (options) {
+				if (options.tag) {
+					if (options.tag.length !== 4) {
+						throw Error(`This value (${options.tag.toString()}) is invalid length.`)
+					}
+					this.#tag = options.tag
+				} else {
+					this.#tag = null
 				}
-				this.#tag = options.tag
-			} else {
-				this.#tag = null
+
+				if (typeof options.threads === 'number') {
+					this.#threads = options.threads
+				} else {
+					this.#threads = 1
+				}
 			}
 		}
 	}
@@ -75,6 +90,7 @@ class FFmpegOptions {
 			// eslint-disable-next-line camelcase
 			hide_banner: true,
 			nostdin: true,
+			threads: this.#threads,
 			i: options.inputs,
 		}
 		this._buildOverride(args, options)

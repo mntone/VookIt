@@ -45,6 +45,8 @@ class FFmpegAudioOptions extends FFmpegOptions {
 	 * @param {object} args
 	 */
 	_buildOverride(args) {
+		delete args.threads
+
 		const args2 = {
 			map: '0:a:0',
 			acodec: this.codec.description,

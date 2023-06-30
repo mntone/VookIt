@@ -8,6 +8,7 @@ ext: ".mp4"
 audios: mp4a
 
 options:
+  threads: 2
   codec: libx265
   tag: hvc1 # Require Apple platforms
   pixelFormat: yuv420p

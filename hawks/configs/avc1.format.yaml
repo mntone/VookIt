@@ -13,6 +13,7 @@ audios: mp4a
 useHls: true
 
 options:
+  threads: 2
   codec: libx264
   pixelFormat: yuv420p
   profile: "high"
