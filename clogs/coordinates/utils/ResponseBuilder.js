@@ -1,6 +1,7 @@
 const { checkSchema, validationResult } = require('express-validator')
 const createError = require('http-errors')
 
+const InternalError = require('../../usecase/InternalError')
 const ValidationError = require('../../usecase/ValidationError')
 
 class ResponseBuilder {
@@ -9,7 +10,7 @@ class ResponseBuilder {
 	 * @param {import('express').Response}     res
 	 * @param {import('express').NextFunction} next
 	 */
-	_onNext(req, res, next) {
+	async _onNext(req, res, next) {
 		next()
 	}
 
@@ -18,17 +19,22 @@ class ResponseBuilder {
 	 * @param {import('express').Response}     res
 	 * @param {import('express').NextFunction} next
 	 */
-	#onNext(req, res, next) {
+	async #onNext(req, res, next) {
 		const ret = validationResult(req)
 		if (!ret.isEmpty()) {
 			this._onValidationError(ret, req, res, next)
 		} else {
 			try {
-				this._onNext(req, res, next)
+				await this._onNext(req, res, next)
 			} catch (err) {
 				if (err instanceof ValidationError) {
-					const err = createError(404, 'error.' + err.paramName)
-					next(err)
+					const key = 'error.' + err.paramName
+					const newErr = createError(400, req.t(key))
+					next(newErr)
+				} else if (err instanceof InternalError) {
+					const key = 'error.' + err.errorName
+					const newErr = createError(err.statusCode, req.t(key))
+					next(newErr)
 				} else {
 					next(err)
 				}
@@ -43,7 +49,8 @@ class ResponseBuilder {
 	 * @param {import('express').NextFunction}                                                  next
 	 */
 	_onValidationError(ret, req, res, next) {
-		const err = createError(422, 'error.' + ret.array({ onlyFirstError: true })[0].path)
+		const key = 'error.' + ret.array({ onlyFirstError: true })[0].path
+		const err = createError(400, req.t(key))
 		next(err)
 	}
 

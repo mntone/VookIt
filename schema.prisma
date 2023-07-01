@@ -32,12 +32,11 @@ model Post {
 }
 
 model Upload {
-  uuid      String    @id @default(uuid())
-  count     Int       @default(0)
+  cuid      String   @id @default(cuid())
   filename  String?
-  hash      String?
-  startedBy DateTime  @default(now())
-  endedBy   DateTime?
+  filesize  Int      @default(-1)
+  filehash  String
+  startedAt DateTime @default(now()) @map("started_at")
   //author      User      @relation(fields: [authorId], references: [id])
   //authorId    Int
 }

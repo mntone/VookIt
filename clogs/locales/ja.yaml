@@ -48,6 +48,7 @@ errorpage:
 
 error:
   id: 不正なIDです
+  cuid: 不正なCUIDです
   uuid: 不正なUUIDです
   title: 不正な題名です
   description: 不正な説明です
@@ -57,6 +58,15 @@ error:
   notfound: 動画が見つかりません
   options:
     limit: 指定された件数が制限値を超えています
+  upload:
+    failed: アップロードが失敗しました
+    internal: 内部サーバー エラーです # 500
+    invalid_hash_format: 不正なハッシュ フォーマットです # 400
+    invalid_hash: 不正なファイル ハッシュです # 400
+    nofile: ファイルが送信されていません # 400
+    nohash: ファイル ハッシュが指定されていません # 400
+    notfound: 進行中のアップロードが見つかりません # 404
+    unknown_hash_algorithm: 不明なハッシュ アルゴリズムが指定されています # 400
 
 formats:
   avc1: H.264/AVC {{height}}p ({{bitrate}}bps)

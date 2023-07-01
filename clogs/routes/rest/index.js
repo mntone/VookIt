@@ -58,7 +58,7 @@ router.use((err, req, res, next) => {
 			body.reason = err.message
 		}
 
-		return res.select(req.params.format, body)
+		return res.status(err.status).select(req.params.format, body)
 	} else {
 		return next(err)
 	}

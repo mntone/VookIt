@@ -131,10 +131,6 @@ module.exports = {
 	// Defines the hls video file path.
 	mediaHlsFilename: 'hls.m3u8',
 
-	// for backport
-	mediaOriginalFile: './m/[id]/.org[ext]',
-	// -------------
-
 	// --- Configurable settings
 	// Defines the maximum size of ordinal request body.
 	requestMaxBodySize: 1024,
@@ -142,17 +138,20 @@ module.exports = {
 	// Defines the upload workdir.
 	uploadWorkdir: './.temp',
 
-	// Defines the maximum size of chunk.
-	uploadChunkSize: '5M',
+	// Defines the maximum size of chunk upload.
+	uploadMaxChunkSize: '5M',
+
+	// Defines the maximum total size of chunk upload.
+	uploadMaxTotalSize: '256M',
 
 	// Defines the maximum size of upload.
 	uploadMaxFileSize: '8M',
 
-	// Defines the maximum size of upload.
-	uploadMaxSize: '512M',
+	// Defines the maximum retry count for chunk upload.
+	uploadMaxRetries: 3,
 
-	// Defines the maximum parallels per upload.
-	uploadMaxParallelsPerUpload: 5,
+	// Defines the maximum connections per chunk upload.
+	uploadMaxConnections: 3,
 
 	// Defines the maximum upload job.
 	uploadMaxJob: 3,

@@ -8,9 +8,9 @@ const env = require('./env')
 
 const supplementablePropertyNames = [
 	'requestMaxBodySize',
-	'uploadChunkSize',
+	'uploadMaxChunkSize',
+	'uploadMaxTotalSize',
 	'uploadMaxFileSize',
-	'uploadMaxSize',
 ]
 
 const durationAsMillisecondsPropertyNames = [

@@ -7,20 +7,29 @@ const AppScript = require('../components/AppScript')
 const Root = require('../components/Root')
 
 const getInlineScript = t => {
-	const friendly = addSIPrefix(env.uploadMaxFileSize, 1)
+	const fileFriendly = addSIPrefix(env.uploadMaxFileSize, 1)
+	const totalFriendly = addSIPrefix(env.uploadMaxTotalSize, 1)
 	return `
 'use strict'
-const info = {
+window.hookUpload(Object.freeze({
 	targetId: 'file',
-	useHashAlgorithm: 'sha256',
-	maxFilesize: ${env.uploadMaxFileSize},
+	validationElementId: 'file-validation',
+	dropFilename: ${env.uploadDeleteOriginalFilename},
+	hashAlgorithm: 'sha256',
+	maxConns: ${env.uploadMaxConnections},
+	maxRetries: ${env.uploadMaxRetries},
+	sizes: Object.freeze({
+		chunk: ${env.uploadMaxChunkSize},
+		file: ${env.uploadMaxFileSize},
+		total: ${env.uploadMaxTotalSize},
+	}),
 	supportedMimeType: [${env.uploadSupportMimeTypes.map(mime => `'${mime}'`).join(',')}],
-	messages: {
+	messages: Object.freeze({
 		mimeType: '${t('error.mediatype')}',
-		fileSize: '${t('error.filesize').replace('{{filesize}}', friendly)}',
-	},
-}
-window.installUpload(info)
+		fileSize: '${t('error.filesize').replace('{{filesize}}', fileFriendly)}',
+		totalSize: '${t('error.filesize').replace('{{filesize}}', totalFriendly)}',
+	}),
+}))
 `
 }
 
@@ -53,6 +62,7 @@ function UploadPage({ t, language }) {
 							</label>
 						</div>
 					</div>
+					<p id="file-validation" className="help is-danger" />
 					<p className="help"><ul>
 						<li>{t('uploadpage.help')}</li>
 						<li>21.6:9までの動画は高さ基準で処理されます</li>

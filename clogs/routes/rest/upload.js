@@ -1,12 +1,15 @@
 const express = require('express')
+const createError = require('http-errors')
 
 const env = require('../../../constants/env')
 const { addSIPrefix } = require('../../../utils/DataSizeSupport')
+const chunkUploadInitCoordinate = require('../../coordinates/api/upload/chunk/init')
+const chunkUploadMergeCoordinate = require('../../coordinates/api/upload/chunk/merge')
+const chunkUploadSendCoordinate = require('../../coordinates/api/upload/chunk/send')
 const uploadCoordinate = require('../../coordinates/api/upload/default')
 const info = require('../../usecase/uploads/info')
 const { nostore } = require('../../utils/express/cachecontrol')
 const validators = require('../../utils/express/validators')
-
 
 // Init a router
 const router = express
@@ -15,8 +18,6 @@ const router = express
 	})
 	.use(nostore) // Always write "Cache-Control: no-store"
 
-// [TODO] better impl
-const createError = require('http-errors')
 /**
  *
  * @param maxSize
@@ -39,60 +40,34 @@ function checkContentLength(maxSize, req, _, next) {
 	next()
 }
 
-// Init chunk upload system.
-//
-// [Endpoints]
-// - POST /upload:format?
+// Upload files (without chunk files).
 router.post(
 	'/upload:format',
 	checkContentLength.bind(env.uploadMaxFileSize),
 	uploadCoordinate.handlers,
 )
 
-// Init chunk upload system.
-//
-// [Endpoints]
-// - POST /upload/chunk/init:format?
-/**
- *
- * @param req
- */
-function initChunk(req) {
-	const filesize = req.query.size
-	const filehash = req.query.hash
-	// [TODO] register upload task to usecase, and get uuid
-	const body = { uuid: 'dummy', chunk: 0 }
-	return body
-}
+// Init chunks.
 router.post(
-	'/upload/chunk/init:format?',
-	validators.param.format,
-	(req, res) => {
-		const format = req.params.format
-		const body = initChunk(req)
-		res.select(format, body)
-	})
+	'/upload/init:format?',
+	chunkUploadInitCoordinate.handlers,
+)
 
-router.post('/upload/chunk/:uuid/:id:format?', (req, res) => {
+// Send chunks.
+router.post(
+	'/upload/send:format?',
+	checkContentLength.bind(env.uploadMaxFileSize),
+	chunkUploadSendCoordinate.handlers,
+)
 
-})
+// Merge chunks.
+router.post(
+	'/upload/merge:format?',
+	chunkUploadMergeCoordinate.handlers,
+)
 
-// Check chunk upload progress.
-//
-// [Endpoints]
-// - POST /upload/chunk/:uuid:format?
-router.post('/upload/chunk/:uuid:format?', (req, res) => {
-	const format = req.params.format
-	// [TODO] register upload task to usecase, and get uuid
-	const body = { lacks: [0, 1, 2, 3, 4] }
-	res.select(format, body)
-})
-
-// Cancel chunk upload.
-//
-// [Endpoints]
-// - DELETE /chunk/:uuid:format?
-router.delete('/upload/chunk/:uuid:format?', (_, res) => {
+// Cancel chunks.
+router.delete('/upload/:cuid:format?', (_, res) => {
 
 })
 

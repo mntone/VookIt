@@ -1,39 +1,34 @@
-const { mkdir, rename } = require('fs/promises')
+const { rename } = require('fs/promises')
 const path = require('path')
-
-const { Queue } = require('bullmq')
-const IORedis = require('ioredis')
 
 const env = require('../../../constants/env')
 const { numToUsid } = require('../../utils/IdSupport')
+const InternalError = require('../InternalError')
 const prisma = require('../prisma')
+const { compareFileHash } = require('../utils/file')
 
-const connection = new IORedis(env.redisPort, env.redisHost, env.redisOptions)
-const queue = new Queue('main', { connection })
+const mainQueue = require('./bull')
+const { getOrCreateUploadPath, errors, getPreferredFilename } = require('./utils')
 
 /**
  * Create upload from temporary file.
- * @param                                            tempfile
+ * @param   {string}                                 hashdata
+ * @param                                            file
  * @param   {string}                                 screenname
  * @returns {Promise<import('@prisma/client').Post>}
  */
-module.exports = async (tempfile, screenname) => {
-	const ext = path.extname(tempfile.originalFilename)
-
-	let savedFilename
-	if (env.uploadDeleteOriginalFilename) {
-		savedFilename = 'video' + ext
-	} else {
-		savedFilename = tempfile.originalFilename
-	}
+module.exports = async (hashdata, file, screenname) => {
+	// Compare file hash
+	await compareFileHash(file.path, hashdata)
 
 	// Add post to database.
+	const ext = path.extname(file.originalFilename)
 	const post = await prisma.post.create({
 		data: {
 			title: '?'.repeat(env.titleLength.min),
-			filename: savedFilename,
+			filename: getPreferredFilename(file.originalFilename, ext),
 			author: {
-				connect: { screenname: screenname },
+				connect: { screenname },
 			},
 		},
 		select: {
@@ -43,34 +38,38 @@ module.exports = async (tempfile, screenname) => {
 		},
 	})
 
-	// Create directory
-	const usid = numToUsid(post.id)
-	const dstpath = env.mediaOriginalFile
-		.replace('[id]', usid)
-		.replace('[ext]', ext)
-	const dstdir = path.dirname(dstpath)
+	// Move files from temporary.
 	try {
-		await mkdir(dstdir, { recursive: true })
+		const dstpath = await getOrCreateUploadPath(post.id, ext)
+		await rename(file.path, dstpath)
 	} catch (err) {
-		await prisma.post.delete({
-			select: {},
-			where: {
-				id: post.id,
-			},
-		})
-		return null
+		if (err instanceof InternalError && err.errorName === errors.internal) {
+			await prisma.post.delete({
+				select: {},
+				where: {
+					id: post.id,
+				},
+			})
+			throw new InternalError('upload.failed')
+		}
+		throw err
 	}
 
-	// Move files from temporary.
-	await rename(tempfile.path, dstpath)
-
 	// Dispatch encoding.
-	queue.add(`encode-${usid}`, {
+	const usid = numToUsid(post.id)
+	mainQueue.add(`encode-${usid}`, {
 		id: usid,
-		ext: path.extname(dstpath),
+		ext,
 		cursor: -1,
 		phase: 'pending',
 	})
 
-	return post
+	// Convert JSON type
+	/* eslint-disable camelcase */
+	return {
+		usid: numToUsid(post.id),
+		posted_at: post.postedBy,
+		author_id: post.authorId,
+	}
+	/* eslint-enable camelcase */
 }

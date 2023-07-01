@@ -48,6 +48,7 @@ errorpage:
 
 error:
   id: Invalid ID
+  cuid: Invalid CUID
   uuid: Invalid UUID
   title: Invalid title
   description: Invalid description
@@ -57,6 +58,15 @@ error:
   notfound: Not found media
   options:
     limit: Limit is exceeded
+  upload:
+    failed: Failed to upload.
+    internal: Internal server error # 500
+    invalid_hash_format: Invalid hash format # 400
+    invalid_hash: Invalid file hash # 400
+    nofile: File not sent. # 400
+    nohash: Not found file hash. # 400
+    notfound: Not found upload in progress. # 404
+    unknown_hash_algorithm: Unknown hash algorithm. # 400
 
 formats:
   avc1: H.264/AVC {{height}}p ({{bitrate}}bps)

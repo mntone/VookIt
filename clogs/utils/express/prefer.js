@@ -27,10 +27,7 @@ function prefer(obj) {
  */
 function select(format, obj) {
 	if (format === '.msgpack') {
-		return this.prefer({
-			status: 422,
-			reason: 'Invalid format.',
-		})
+		return this.msgpack(obj)
 	} else if (format === '.json') {
 		return this.json(obj)
 	} else {
