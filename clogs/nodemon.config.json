@@ -15,6 +15,7 @@
 	"watch": [
 		"./.assets",
 		"./clogs",
+		"./constants",
 		"./utils"
 	]
 }

@@ -18,16 +18,20 @@ const rest = require('./routes/rest/index')
 
 // Connect routers.
 const app = express()
-app.use('/', html)
-app.use('/api', rest)
-app.use('/bull', bull)
+	.disable('x-powered-by')
+	.use('/', html)
+	.use('/api', rest)
+	.use('/bull', bull)
 
 // Deploy static assets.
 if (env.staticDeployEnabled) {
 	const isProd = process.env.NODE_ENV !== 'development'
 
 	// Add MimeType
-	express.static.mime.define({ 'image/avif': ['avif'] })
+	express.static.mime.define({
+		'image/avif': ['avif'],
+		'video/iso.segment': ['m4s'],
+	})
 
 	// Style and script files.
 	app.use('/a', staticCompression('./.assets', { enableBrotli: true, immutable: isProd }))

@@ -17,5 +17,5 @@ node_modules/
 # VookIt! (Clogs/Hawks) default asset directories
 .assets/
 .dev/
+.media/
 .temp/
-m/

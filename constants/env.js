@@ -109,7 +109,7 @@ module.exports = {
 	mediaRootPath: '/m',
 
 	// Defines the public media dir.
-	mediaOutputDir: './m',
+	mediaOutputDir: './.media',
 
 	// Defines the original filename.
 	mediaOriginalFilename: '.org[ext]',
