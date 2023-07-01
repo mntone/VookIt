@@ -6,26 +6,31 @@ I really wanted to write a sentence in Japanese. It means “This software is wr
 
   VookIt! = <u>V</u>ideo + B<u>ook</u>mark <u>it!</u>
 
-*VookIt* is short video sharing software.
+*VookIt* is short video sharing software. **In the Development Stages!!**
 
 ~~日本語で「ヴキット！」って発音してほしいけど、字面にするとダサい、草。~~
 
-## Future
+## Features and Future
 
 ### Implemented features
 
-- Ultrawide support
+- Create MPEG-DASH & HLS files automatically
+- Ultrawide (21.6:9) & 120 fps video support
+- Chunk uploading with JavaScript
 
 ### TODO
 
+- **Manage streams** (I'm sorry. Currently, stream name isn't applied automatically.)
+- **User authentication**
+- **AV1 encoding**
 - Tag
-- Chunk uploading with JavaScript
+  - Tune encode settings by game title tag.
 - Bypass audio data (ABR 256 kbps AAC-LC only)
-- 24/48/60 fps detection (30 fps only)
+- Detect device features (120 fps, HDR and supported codec)
 
 ### Planned Features
 
-- Portrait Video support
+- Use [**nest**](https://nestjs.com/).
 - Markdown Description
 - Limited Share (account-based & time-based limit)
 - List view for top page
@@ -33,22 +38,43 @@ I really wanted to write a sentence in Japanese. It means “This software is wr
   - Text-based (use emoji and short word)
     - like "lol", "No Way!", "For Real?", "What?", "(笑)", "笑", "草", "w", "W", "www", "草www", "草に草生やすなwww", "マジで?" and "🤔"
     - DO NOT TRANSLATION. But, show meaning.
+- Portrait video support
+- HDR video support
+  - 10-bit encoding system
+  - SDR color grading
 
 ### Under Consideration
 
 - Change database
-- 120 fps support
-  - detect device refresh rate
-  - preferred bitrate
-- HDR support
-  - 10-bit encoding system
-  - SDR color grading
-  - detect device HDR status
 - Use Open API for REST API Schema
 
 ### Not Planned Features
 
 - **Live streaming**
+
+## How to Use
+
+1. Install nodejs, Redis, ffmpeg and SQLite.
+2. Build static assets.
+  ```shell-session
+  % npm run sass
+  % npm run webpack:build
+  ```
+3. Generate SSL certificate (if use ssl).
+  ```shell-session
+  % npm run openssl:init
+  ```
+4. Start redis, clogs (frontend) and hawks (backend).
+  ```shell-session
+  % npm run redis:start
+  % npm run clogs:start
+  % npm run hawks:start
+  ```
+5. (Tentatively) Create your user. Currently program use screenname "dev" (hard coding on source).
+  ```shell-session
+  % npm run user:new
+  ```
+6. (Manual) Rename directory after encoding. For example, rename "./.media/[usid]/st_avc1_ntvp" to "./.media/[usid]/avc1". In the future, program use as-is stream name like "st_avc1_720p" or "st_avc1_ntvp".
 
 ## Architecture
 
@@ -85,7 +111,7 @@ I really wanted to write a sentence in Japanese. It means “This software is wr
 
 ### Backend: hawks
 
-- Service Workers: dispatch services ([BullMQ](https://docs.bullmq.io/) with [Redis](https://redis.io/))
+- Service Workers: dispatch tasks ([BullMQ](https://docs.bullmq.io/) with [Redis](https://redis.io/))
 - Dispatchers: create jobs (internal)
 - Encoders: encode video and audio (ffmpeg with x264, x265, libvpx, SVT-AV1 and so on…)
 
