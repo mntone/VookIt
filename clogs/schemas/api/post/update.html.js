@@ -16,12 +16,12 @@ const schema = {
 	title: {
 		in: 'body',
 		isString: true,
-		isLength: env.titleLength,
+		isLength: { options: env.titleLength },
 	},
 	description: {
 		in: 'body',
 		isString: true,
-		isLength: env.descriptionLength,
+		isLength: { options: env.descriptionLength },
 	},
 	visibility: {
 		in: 'body',

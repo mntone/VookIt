@@ -28,7 +28,7 @@ const schema = {
 			options: { nullable: true },
 		},
 		isString: true,
-		isLength: env.titleLength,
+		isLength: { options: env.titleLength },
 	},
 	description: {
 		in: 'body',
@@ -36,7 +36,7 @@ const schema = {
 			options: { nullable: true },
 		},
 		isString: true,
-		isLength: env.descriptionLength,
+		isLength: { options: env.descriptionLength },
 	},
 	visibility: {
 		in: 'body',
