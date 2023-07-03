@@ -75,7 +75,7 @@ module.exports = ({ t, language, id, title, description, postedBy, published, pu
 					<h1>{title}</h1>
 
 					<div className="VideoInfo-buttons bb">
-						<a className="b" rel="nofollow" href={`/edit/${usid}`}>{t('viewpage.edit')}</a>
+						<a className="b" rel="nofollow" href={`/e/${usid}`}>{t('viewpage.edit')}</a>
 					</div>
 				</div>
 				<span className="view-publishedBy">

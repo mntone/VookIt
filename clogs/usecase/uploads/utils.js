@@ -3,8 +3,8 @@ const { mkdir } = require('fs/promises')
 const { join, extname } = require('path')
 
 const env = require('../../../constants/env')
+const InternalError = require('../../utils/errors/InternalError.js')
 const { numToUsid } = require('../../utils/IdSupport')
-const InternalError = require('../InternalError')
 
 const errors = {
 	notfound: 'upload.notfound',

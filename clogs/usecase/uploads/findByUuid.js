@@ -11,7 +11,7 @@ const ValidationError = require('../ValidationError')
 module.exports = async uuid => {
 	// Validate params.
 	if (!validator.isUUID(uuid)) {
-		throw ValidationError('uuid')
+		throw new ValidationError('uuid')
 	}
 
 	// Find a upload by uuid.

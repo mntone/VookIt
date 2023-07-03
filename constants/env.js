@@ -77,10 +77,8 @@ module.exports = {
 		max: 64,
 	},
 
-	// Defines the length of description
-	descriptionLength: {
-		max: 1024,
-	},
+	// Defines the maximum length of description
+	descriptionMaximumLength: 1024,
 
 	// --- VideoCard configs
 	// Defines the thumbnail codec list in VideoCard component.

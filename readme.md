@@ -30,7 +30,6 @@ I really wanted to write a sentence in Japanese. It means “This software is wr
 
 ### Planned Features
 
-- Use [**nest**](https://nestjs.com/).
 - Markdown Description
 - Limited Share (account-based & time-based limit)
 - List view for top page
@@ -46,7 +45,6 @@ I really wanted to write a sentence in Japanese. It means “This software is wr
 ### Under Consideration
 
 - Change database
-- Use Open API for REST API Schema
 
 ### Not Planned Features
 
@@ -80,30 +78,24 @@ I really wanted to write a sentence in Japanese. It means “This software is wr
 
 ### Frontend: clogs
 
-- Routers: parse requests ([Express](https://expressjs.com/))
-  - Validators: valid request ([express-validator](https://github.com/express-validator/express-validator))
-- Coordinates: call usecases and render views
+- Controllers: parse requests, invoke usecases and return objects ([nest](https://nestjs.com/) with [fastify](https://fastify.dev/))
 - Views: build views ([React](https://react.dev/) SSR + [Bulma](https://bulma.io/))
 - Usecase: execute jobs
-- Database: read/write data ([Prisma](https://www.prisma.io/) + sqlite)
+- Database: read/write data ([Prisma](https://www.prisma.io/) with sqlite)
 
 ```
 +-------------+
 |   Browser   |
 +-------------+
-  ↓ 1  ↑ 11
+  ↓ 1  ↑ 6
 +-------------+
-|   Routers   |
+| Controllers |
 +-------------+
-  ↓ 2  ↑ 10
-+-------------+  9 +-------------+
-| Coordinates | ⇆ |    Views    |
-+-------------+  8 +-------------+
-  ↓ 3  ↑ 7
+  ↓ 2  ↑ 5
 +-------------+
 |   Usecase   |
 +-------------+
-  ↓ 5  ↑ 6
+  ↓ 3  ↑ 4
 +-------------+
 |  Database   |
 +-------------+

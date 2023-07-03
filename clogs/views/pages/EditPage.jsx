@@ -11,7 +11,7 @@ const getInlineScript = t => {
 		.replace('{{minimum}}', env.titleLength.min)
 		.replace('{{maximum}}', env.titleLength.max)
 	const descriptionValidation = t('editpage.validation.description')
-		.replace('{{maximum}}', env.descriptionLength.max)
+		.replace('{{maximum}}', env.descriptionMaximumLength)
 	return `
 'use strict'
 new window.EditForm({
@@ -68,7 +68,7 @@ function EditPage({ t, language, post }) {
 						id="description"
 						title={t('editpage.description')}
 						content={post.description}
-						maximumLength={env.descriptionLength.max}>
+						maximumLength={env.descriptionMaximumLength}>
 						<p id="description-validation" className="help is-danger" />
 					</Forms.TextArea>
 

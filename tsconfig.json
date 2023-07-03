@@ -3,16 +3,26 @@
 
 	"compilerOptions": {
 		"moduleResolution": "node16",
+
+		"allowJs": true,
+		"emitDecoratorMetadata": true,
+		"experimentalDecorators": true,
+		"jsx": "preserve",
+		"noImplicitOverride": true,
+		"outDir": "./.dst",
 		"typeRoots": [
-			"./hawks/__types__"
+			"./node_modules/@nestjs",
+			"./node_modules/@types",
+			"./node_modules/fastify"
 		]
 	},
 	"exclude": [
-		"node_modules"
+		"node_modules",
+		"**/*.test.js",
+		"**/*.test.mts",
 	],
 	"include": [
-		"**/*.ts",
-		"**/*.mts"
+		"**/*.mts",
 	],
 	"ts-node": {
 		"skipLibCheck": true,

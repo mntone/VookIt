@@ -1,8 +1,8 @@
 const { checkSchema, validationResult } = require('express-validator')
 const createError = require('http-errors')
 
-const InternalError = require('../../usecase/InternalError')
 const ValidationError = require('../../usecase/ValidationError')
+const InternalError = require('../../utils/errors/InternalError.js')
 
 class ResponseBuilder {
 	/**

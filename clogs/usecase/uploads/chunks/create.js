@@ -2,7 +2,7 @@ const { mkdir } = require('fs/promises')
 const { join } = require('path')
 
 const env = require('../../../../constants/env')
-const InternalError = require('../../InternalError')
+const InternalError = require('../../../utils/errors/InternalError')
 const prisma = require('../../prisma')
 const { isHashData } = require('../../utils/file')
 const ValidationError = require('../../ValidationError')

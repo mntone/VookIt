@@ -9,13 +9,16 @@
 				"<node_internals>/**"
 			],
 			"runtimeExecutable": "${workspaceFolder}/node_modules/nodemon/bin/nodemon.js",
-			"program": "${workspaceFolder}/clogs/index.js",
+			"runtimeArgs": [
+				"--loader",
+				"ts-node/esm"
+			],
+			"program": "${workspaceFolder}/clogs/main.mts",
 			"args": [
-				"-r",
-				"dotenv/config",
 				"--config",
 				"clogs/nodemon.config.json"
-			]
+			],
+			"outputCapture": "std"
 		},
 		{
 			"type": "node",
@@ -24,10 +27,15 @@
 			"skipFiles": [
 				"<node_internals>/**"
 			],
-			"program": "${workspaceFolder}/clogs/index.js",
+			"runtimeArgs": [
+				"--loader",
+				"ts-node/esm"
+			],
+			"program": "${workspaceFolder}/clogs/main.mts",
 			"env": {
 				"NODE_ENV": "development"
-			}
+			},
+			"outputCapture": "std"
 		},
 		{
 			"type": "node",

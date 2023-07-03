@@ -34,7 +34,7 @@ editpage:
   cancel: Cancel
   validation:
     title: Title must be between {{minimum}} and {{maximum}} characters.
-    description: Description must be up to {{maximum}} character.
+    description: Description must be up to {{maximum}} characters.
 
 uploadpage:
   pagetitle: Upload

@@ -3,12 +3,11 @@ const { rm } = require('fs/promises')
 const { join, extname } = require('path')
 
 const env = require('../../../../constants/env')
+const { toInternalError } = require('../../../utils/errors/toInternalError')
 const { numToUsid } = require('../../../utils/IdSupport')
 const isCUID = require('../../../utils/isCUID')
-const InternalError = require('../../InternalError')
 const prisma = require('../../prisma')
 const { getReaderStreamAsPromise, compareFileHash } = require('../../utils/file')
-const toInternalErrorOf = require('../../utils/toInternalErrorOf')
 const ValidationError = require('../../ValidationError')
 const mainQueue = require('../bull')
 const { existsTemporaryUploadDir, getOrCreateUploadPath, errors } = require('../utils')
@@ -36,7 +35,7 @@ module.exports = async (cuid, screenname) => {
 		where: {
 			cuid,
 		},
-	}).catch(toInternalErrorOf('upload.notfound', 404))
+	}).catch(toInternalError('upload.notfound', 404))
 
 	// Exist all chunks.
 	const chunks = Math.ceil(upload.filesize / env.uploadMaxChunkSize)

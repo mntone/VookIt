@@ -1,17 +1,20 @@
 module.exports = {
-	moduleFileExtensions: ['js', 'mjs', 'cts', 'mts'],
+	moduleFileExtensions: ['js', 'jsx', 'mts'],
 	moduleNameMapper: {
 		'^(\\.{1,2}/.*)\\.mjs$': '$1',
 	},
+	roots: [
+		'<rootDir>/clogs/',
+		'<rootDir>/hawks/',
+	],
 	setupFilesAfterEnv: [
 		'./utils/tests/setup-jest.js',
 	],
 	testMatch: [
-		'**/__tests__/**/*.+(js|mjs|cts|mts)',
-		'**/?(*.)+test.+(js|mjs|cts|mts)',
+		'**/*.test.?(c|m){j,t}s?(x)',
 	],
 	transform: {
-		'^.+\\.(ts|cts)$': 'ts-jest',
+		'^.+\\.jsx$': 'babel-jest',
 		'^.+\\.mts$': ['ts-jest', { useESM: true }],
 	},
 }

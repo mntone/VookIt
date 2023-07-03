@@ -2,10 +2,10 @@ const { rename } = require('fs/promises')
 const { join } = require('path')
 
 const env = require('../../../../constants/env')
+const { toInternalError } = require('../../../utils/errors/toInternalError')
 const isCUID = require('../../../utils/isCUID')
 const prisma = require('../../prisma')
 const { compareFileHash } = require('../../utils/file')
-const toInternalErrorOf = require('../../utils/toInternalErrorOf')
 const ValidationError = require('../../ValidationError')
 const { existsTemporaryUploadDir } = require('../utils')
 
@@ -35,7 +35,7 @@ module.exports = async (cuid, index, hashdata, file) => {
 		where: {
 			cuid,
 		},
-	}).catch(toInternalErrorOf('upload.notfound', 404))
+	}).catch(toInternalError('upload.notfound', 404))
 
 	// Validate additional params.
 	const chunks = Math.ceil(upload.filesize / env.uploadMaxChunkSize)

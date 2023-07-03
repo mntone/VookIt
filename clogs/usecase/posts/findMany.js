@@ -14,7 +14,7 @@ const ValidationError = require('../ValidationError')
 module.exports = async options => {
 	// Validate params.
 	if (options?.limit && options.limit > env.postFetchingLimit) {
-		throw ValidationError('options.limit')
+		throw new ValidationError('options.limit')
 	}
 
 	// Define params.

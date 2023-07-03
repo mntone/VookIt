@@ -32,6 +32,7 @@ rules:
   prefer-const: ["error"]
   prefer-named-capture-group: ["error"]
   radix: ["error"]
+  sort-imports: ["error", { ignoreDeclarationSort: true, allowSeparatedGroups: true }]
   spaced-comment: ["error", "always"]
   # Layout & Formatting
   array-bracket-spacing: ["warn"]
@@ -120,7 +121,7 @@ overrides:
       react:
         version: detect
   # TypeScript
-  - files: ["*.ts", "*.cts", "*.mts"]
+  - files: ["*.ts", "*.mts"]
     extends:
     - plugin:@typescript-eslint/recommended
     - plugin:@typescript-eslint/strict
@@ -144,7 +145,7 @@ overrides:
       "@typescript-eslint/no-duplicate-type-constituents": ["error"]
       "@typescript-eslint/no-empty-interface": ["warn"]
       "@typescript-eslint/no-extra-non-null-assertion": ["error"]
-      "@typescript-eslint/no-extraneous-class": ["error"]
+      "@typescript-eslint/no-extraneous-class": 0
       "@typescript-eslint/no-for-in-array": ["error"]
       "@typescript-eslint/no-import-type-side-effects": ["error"]
       "@typescript-eslint/no-inferrable-types": ["error"]
@@ -175,4 +176,4 @@ overrides:
     settings:
       'import/resolver':
         typescript:
-          extensions: [".js", ".cts", ".mts"]
+          extensions: [".js", ".mts"]

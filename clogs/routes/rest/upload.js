@@ -3,8 +3,6 @@ const createError = require('http-errors')
 
 const env = require('../../../constants/env')
 const { addSIPrefix } = require('../../../utils/DataSizeSupport')
-const chunkUploadInitCoordinate = require('../../coordinates/api/upload/chunk/init')
-const chunkUploadMergeCoordinate = require('../../coordinates/api/upload/chunk/merge')
 const chunkUploadSendCoordinate = require('../../coordinates/api/upload/chunk/send')
 const uploadCoordinate = require('../../coordinates/api/upload/default')
 const info = require('../../usecase/uploads/info')
@@ -47,29 +45,12 @@ router.post(
 	uploadCoordinate.handlers,
 )
 
-// Init chunks.
-router.post(
-	'/upload/init:format?',
-	chunkUploadInitCoordinate.handlers,
-)
-
 // Send chunks.
 router.post(
 	'/upload/send:format?',
 	checkContentLength.bind(env.uploadMaxFileSize),
 	chunkUploadSendCoordinate.handlers,
 )
-
-// Merge chunks.
-router.post(
-	'/upload/merge:format?',
-	chunkUploadMergeCoordinate.handlers,
-)
-
-// Cancel chunks.
-router.delete('/upload/:cuid:format?', (_, res) => {
-
-})
 
 // Get upload info.
 //

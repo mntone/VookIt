@@ -3,7 +3,7 @@ const { createReadStream } = require('fs')
 
 const { isBase64 } = require('validator')
 
-const InternalError = require('../InternalError')
+const InternalError = require('../../utils/errors/InternalError.js')
 
 const errors = {
 	unknownHashAlgorithm: 'upload.unknown_hash_algorithm',

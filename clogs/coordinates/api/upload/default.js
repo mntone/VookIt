@@ -56,7 +56,7 @@ class UploadDefaultResponseBuilder extends ResponseBuilder {
 			const format = req.params.format
 			if (format === '.html') {
 				const usid = numToUsid(post.id)
-				res.redirect(302, '/edit/' + usid)
+				res.redirect(302, '/e/' + usid)
 			} else {
 				res.select(format, post)
 			}

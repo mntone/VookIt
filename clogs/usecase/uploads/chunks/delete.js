@@ -1,11 +1,9 @@
-const { unlink } = require('fs/promises')
-const path = require('path')
+const { rm } = require('fs/promises')
 
-const env = require('../../../../constants/env')
 const isCUID = require('../../../utils/isCUID')
 const prisma = require('../../prisma')
-const toInternalErrorOf = require('../../utils/toInternalErrorOf')
 const ValidationError = require('../../ValidationError')
+const { existsTemporaryUploadDir } = require('../utils')
 
 /**
  * @param   {string}                          cuid
@@ -17,24 +15,19 @@ module.exports = async cuid => {
 		throw ValidationError('cuid')
 	}
 
-	// Find a upload by cuid.
-	const upload = await prisma.upload.findUniqueOrThrow({
-		where: {
-			cuid,
-		},
-	}).catch(toInternalErrorOf('upload.notfound', 404))
+	// Exist temporary directory.
+	const dirname = existsTemporaryUploadDir(cuid)
 
-	// Delete temporary upload file.
-	const filename = upload.cuid + path.extname(upload.filename)
-	const filepath = path.resolve(env.uploadWorkdir, filename)
-	await unlink(filepath)
+	// Delete temporary upload directory.
+	await rm(dirname, { force: true, recursive: true, maxRetries: 2 })
 
 	// Remove upload from database.
 	await prisma.upload.delete({
+		select: {
+			startedAt: true,
+		},
 		where: {
 			cuid,
 		},
 	})
-
-	return upload
 }

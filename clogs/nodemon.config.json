@@ -3,7 +3,7 @@
 	"env": {
 		"NODE_ENV": "development"
 	},
-	"ext": "json,js,jsx,mjs",
+	"ext": "json,js,jsx,mts",
 	"ignore": [
 		"**/__test__/**",
 		".test.js",
