@@ -1,6 +1,6 @@
 const { rm } = require('fs/promises')
 
-const isCUID = require('../../../utils/isCUID')
+const isCUID = require('../../../utils/validators/isCUID')
 const prisma = require('../../prisma')
 const ValidationError = require('../../ValidationError')
 const { existsTemporaryUploadDir } = require('../utils')

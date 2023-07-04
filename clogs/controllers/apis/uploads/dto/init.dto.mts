@@ -3,6 +3,7 @@ import { Transform } from 'class-transformer'
 import { IsPositive, Length, Max } from 'class-validator'
 
 import env from '../../../../../constants/env.js'
+import { IsHashData } from '../../../../utils/decorators/IsHashData.mjs'
 // import { addSIPrefix } from '../../../../../utils/DataSizeSupport.js'
 
 export class InitDto {
@@ -41,10 +42,10 @@ export class InitDto {
 
 	@ApiProperty({
 		type: String,
-		description: 'The file hash to upload with hash algorithm name',
+		description: 'The hash of file to upload with hash algorithm name',
 	})
-	@Length(51, 51, {
-		message: 'The file hash is invalid length. It should be 51 characters.',
+	@IsHashData({
+		message: 'The file hash is invalid.',
 	})
 	readonly hash!: string
 }

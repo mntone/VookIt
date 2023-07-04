@@ -3,7 +3,7 @@ const { join } = require('path')
 
 const env = require('../../../../constants/env')
 const { toInternalError } = require('../../../utils/errors/toInternalError')
-const isCUID = require('../../../utils/isCUID')
+const isCUID = require('../../../utils/validators/isCUID')
 const prisma = require('../../prisma')
 const { compareBlobHash } = require('../../utils/file')
 const ValidationError = require('../../ValidationError')

@@ -1,13 +1,15 @@
 import { ApiProperty } from '@nestjs/swagger'
-import { Allow, Length } from 'class-validator'
+import { Allow } from 'class-validator'
+
+import { IsHashData } from '../../../../utils/decorators/IsHashData.mjs'
 
 export class SendFileDto {
 	@ApiProperty({
 		type: String,
-		description: 'The a part of chunked file to upload with hash algorithm name',
+		description: 'The hash of file to upload with hash algorithm name',
 	})
-	@Length(51, 95, {
-		message: 'The hash of a part of chunked file is invalid length. It should be betweet 51 and 95 characters.',
+	@IsHashData({
+		message: 'The file hash is invalid.',
 	})
 	readonly hash!: string
 

@@ -1,14 +1,17 @@
 import { ApiProperty } from '@nestjs/swagger'
 import { Transform } from 'class-transformer'
-import { Allow, IsInt, Length } from 'class-validator'
+import { Allow, IsInt } from 'class-validator'
+
+import { IsCUID } from '../../../../utils/decorators/IsCUID.mjs'
+import { IsHashData } from '../../../../utils/decorators/IsHashData.mjs'
 
 export class SendDto {
 	@ApiProperty({
 		type: String,
 		description: 'The current cuid',
 	})
-	@Length(25, 25, {
-		message: 'The cuid is invalid length. It should be 25 characters.',
+	@IsCUID({
+		message: 'The cuid is invalid.',
 	})
 	readonly cuid!: string
 
@@ -26,8 +29,8 @@ export class SendDto {
 		type: String,
 		description: 'The a part of chunked file to upload with hash algorithm name',
 	})
-	@Length(51, 95, {
-		message: 'The hash of a part of chunked file is invalid length. It should be betweet 51 and 95 characters.',
+	@IsHashData({
+		message: 'The file hash is invalid.',
 	})
 	readonly hash!: string
 

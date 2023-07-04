@@ -1,5 +1,5 @@
 {
-	"jest.jestCommandLine": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+	"jest.jestCommandLine": "npm run test --",
 	"typescript.tsdk": "./node_modules/typescript/lib",
 	"yaml.schemas": {
 		"./hawks/configs/schemas/format.schema.json": [
