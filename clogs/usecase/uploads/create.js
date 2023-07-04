@@ -2,8 +2,8 @@ const { rename } = require('fs/promises')
 const path = require('path')
 
 const env = require('../../../constants/env')
+const InternalError = require('../../utils/errors/InternalError')
 const { numToUsid } = require('../../utils/IdSupport')
-const InternalError = require('../InternalError')
 const prisma = require('../prisma')
 const { compareFileHash } = require('../utils/file')
 
@@ -12,10 +12,10 @@ const { getOrCreateUploadPath, errors, getPreferredFilename } = require('./utils
 
 /**
  * Create upload from temporary file.
- * @param   {string}                                 hashdata
- * @param                                            file
- * @param   {string}                                 screenname
- * @returns {Promise<import('@prisma/client').Post>}
+ * @param   {string}                                                        hashdata
+ * @param   {Buffer}                                                        file
+ * @param   {string}                                                        screenname
+ * @returns {Promise<{ usid: string, posted_at: Date, author_id: number }>}
  */
 module.exports = async (hashdata, file, screenname) => {
 	// Compare file hash
@@ -45,7 +45,9 @@ module.exports = async (hashdata, file, screenname) => {
 	} catch (err) {
 		if (err instanceof InternalError && err.errorName === errors.internal) {
 			await prisma.post.delete({
-				select: {},
+				select: {
+					id: true,
+				},
 				where: {
 					id: post.id,
 				},
@@ -57,7 +59,7 @@ module.exports = async (hashdata, file, screenname) => {
 
 	// Dispatch encoding.
 	const usid = numToUsid(post.id)
-	mainQueue.add(`encode-${usid}`, {
+	await mainQueue.add(`encode-${usid}`, {
 		id: usid,
 		ext,
 		cursor: -1,

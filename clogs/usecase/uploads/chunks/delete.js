@@ -6,13 +6,13 @@ const ValidationError = require('../../ValidationError')
 const { existsTemporaryUploadDir } = require('../utils')
 
 /**
- * @param   {string}                          cuid
- * @returns {import('@prisma/client').Upload}
+ * @param   {string}        cuid
+ * @returns {Promise<void>}
  */
 module.exports = async cuid => {
 	// Validate params.
 	if (!isCUID(cuid)) {
-		throw ValidationError('cuid')
+		throw new ValidationError('cuid')
 	}
 
 	// Exist temporary directory.

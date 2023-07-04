@@ -11,6 +11,8 @@
 		"noImplicitOverride": true,
 		"outDir": "./.dst",
 		"typeRoots": [
+			"./node_modules/@fastify/accepts/types",
+			"./node_modules/@fastify/multipart",
 			"./node_modules/@nestjs",
 			"./node_modules/@types",
 			"./node_modules/fastify"

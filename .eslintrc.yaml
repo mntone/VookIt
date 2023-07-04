@@ -26,6 +26,7 @@ rules:
   default-case-last: ["error"]
   default-param-last: ["error"]
   eqeqeq: ["error", "always", { "null": "ignore" }]
+  no-empty: ["warn"]
   no-new-symbol: ["error"]
   no-var: ["error"]
   no-unused-vars: ["warn"]

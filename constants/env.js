@@ -137,7 +137,7 @@ module.exports = {
 	uploadWorkdir: './.temp',
 
 	// Defines the maximum size of chunk upload.
-	uploadMaxChunkSize: '5M',
+	uploadMaxChunkSize: '8M',
 
 	// Defines the maximum total size of chunk upload.
 	uploadMaxTotalSize: '256M',

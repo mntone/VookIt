@@ -57,6 +57,10 @@ export function fastifyReactView(
 		},
 	})
 	instance.decorateReply(propertyName, async function (template: string, args: unknown) {
+		if (args === undefined) {
+			return
+		}
+
 		let elem = cache.get(template)
 		if (!elem) {
 			const path = resolve(process.cwd(), root, template + ext)

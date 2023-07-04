@@ -15,9 +15,9 @@
  */
 
 const ENDPOINTS = Object.freeze({
-	init: '/api/upload/init.json',
-	send: '/api/upload/send.json',
-	merge: '/api/upload/merge.json',
+	init: '/api/upload/init',
+	send: '/api/upload/send',
+	merge: '/api/upload/merge',
 })
 
 const ALGORITHM_DICT = Object.freeze({
@@ -105,6 +105,9 @@ function retryPromise(task, cond) {
 const defaultInit = {
 	method: 'POST',
 	mode: 'same-origin',
+	headers: {
+		'Accept': 'application/json',
+	},
 	redirect: 'manual',
 	referrer: '',
 }
@@ -137,7 +140,7 @@ function submitMerge(progress) {
 		}
 
 		res.json().then(json => {
-			location.href = '/edit/' + json.usid
+			location.href = '/e/' + json.usid
 		})
 	})
 }
@@ -326,7 +329,7 @@ function onFileChange() {
 			if (subtle) {
 				// [Fetch] Edge 14+, Chrome 42, Firefox 39+, Safari 10.1+
 				// https://caniuse.com/fetch
-				if (window.fetch) {
+				if (window.fetch && file.size >= info.sizes.file) {
 					// Submit as chunked files.
 					const errorMessage = checkFile(file, info.sizes.total, info.messages.totalSize)
 					if (errorMessage) {

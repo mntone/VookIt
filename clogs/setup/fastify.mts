@@ -1,6 +1,8 @@
 import { resolve } from 'path'
 
+import fastifyAccepts from '@fastify/accepts'
 import acceptsSerializer from '@fastify/accepts-serializer'
+import fastifyMultipart from '@fastify/multipart'
 import { NestFastifyApplication } from '@nestjs/platform-fastify'
 // import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import i18next from 'i18next'
@@ -40,24 +42,15 @@ export async function setupFastify(app: NestFastifyApplication) {
 		root: './clogs/views/pages',
 	})
 
-	app.register(acceptsSerializer, {
-		default: 'application/msgpack',
-		serializers: [
-			{
-				regex: /^application\/json$/,
-				serializer: body => JSON.stringify(body),
-			},
-			{
-				regex: /^application\/msgpack$/,
-				// @ts-expect-error Returns binary data. But, return type is string only.
-				serializer: body => pack(body),
-			},
-			{
-				regex: /^application\/yaml$/,
-				serializer: body => yaml.dump(body),
-			},
-		],
-		prefix: '/api',
+	app.register(fastifyAccepts)
+
+
+	// Init multipart
+	app.register(fastifyMultipart, {
+		limits: {
+			fileSize: Math.max(env.uploadMaxChunkSize as unknown as number, env.uploadMaxFileSize as unknown as number),
+			headerPairs: 64,
+		},
 	})
 
 	const fastify = app.getHttpAdapter().getInstance()

@@ -3,6 +3,7 @@ const { rm } = require('fs/promises')
 const { join, extname } = require('path')
 
 const env = require('../../../../constants/env')
+const InternalError = require('../../../utils/errors/InternalError')
 const { toInternalError } = require('../../../utils/errors/toInternalError')
 const { numToUsid } = require('../../../utils/IdSupport')
 const isCUID = require('../../../utils/isCUID')
@@ -13,13 +14,14 @@ const mainQueue = require('../bull')
 const { existsTemporaryUploadDir, getOrCreateUploadPath, errors } = require('../utils')
 
 /**
- * @param {string} cuid
- * @param {string} screenname
+ * @param   {string}                                                        cuid
+ * @param   {string}                                                        screenname
+ * @returns {Promise<{ usid: string, posted_at: Date, author_id: number }>}
  */
 module.exports = async (cuid, screenname) => {
 	// Validate params.
 	if (!isCUID(cuid)) {
-		throw ValidationError('cuid')
+		throw new ValidationError('cuid')
 	}
 
 	// Exist temporary directory.
@@ -78,13 +80,12 @@ module.exports = async (cuid, screenname) => {
 
 		// Compare file hash
 		await compareFileHash(dstpath, upload.filehash)
-
-		// Remove temporary files.
-		await rm(dirname, { force: true, recursive: true, maxRetries: 2 })
 	} catch (err) {
 		if (err instanceof InternalError && err.errorName === errors.internal) {
 			await prisma.post.delete({
-				select: {},
+				select: {
+					id: true,
+				},
 				where: {
 					id: post.id,
 				},
@@ -94,9 +95,16 @@ module.exports = async (cuid, screenname) => {
 		throw err
 	}
 
+	try {
+		// Remove temporary files.
+		await rm(dirname, { force: true, recursive: true, maxRetries: 2 })
+	} catch (err) {
+		// [TODO] log
+	}
+
 	// Dispatch encoding.
 	const usid = numToUsid(post.id)
-	mainQueue.add(`encode-${usid}`, {
+	await mainQueue.add(`encode-${usid}`, {
 		id: usid,
 		ext,
 		cursor: -1,

@@ -1,5 +1,6 @@
 const { createHash } = require('crypto')
 const { createReadStream } = require('fs')
+const { Readable } = require('stream')
 
 const { isBase64 } = require('validator')
 
@@ -27,6 +28,24 @@ function getReaderStreamAsPromise(path, action) {
 }
 
 /**
+ * Get blob hash as string.
+ * @param   {import('stream').ReadableStream} stream    Readable stream
+ * @param   {'sha256' | 'sha384' | 'sha512'}  algorithm Hash algorithm
+ * @param   {'hex'|'base64'}                  encoding
+ * @returns {Promise<string>}                           Hash as encoding string
+ */
+function getBlobHash(stream, algorithm, encoding = 'base64') {
+	return new Promise((resolve, reject) => {
+		const hashfunc = createHash(algorithm)
+			.setEncoding(encoding)
+			.once('finish', () => resolve(hashfunc.read()))
+		stream
+			.once('error', err => reject(err))
+			.pipe(hashfunc)
+	})
+}
+
+/**
  * Get file hash as string.
  * @param   {import('fs').PathLike}          filepath  File path
  * @param   {'sha256' | 'sha384' | 'sha512'} algorithm Hash algorithm
@@ -34,14 +53,8 @@ function getReaderStreamAsPromise(path, action) {
  * @returns {Promise<string>}                          Hash as encoding string
  */
 function getFileHash(filepath, algorithm, encoding = 'base64') {
-	return new Promise((resolve, reject) => {
-		const hashfunc = createHash(algorithm)
-			.setEncoding(encoding)
-			.once('finish', () => resolve(hashfunc.read()))
-		createReadStream(filepath)
-			.once('error', err => reject(err))
-			.pipe(hashfunc)
-	})
+	const readable = createReadStream(filepath)
+	return getBlobHash(readable, algorithm, encoding)
 }
 
 const useAlgorithm = ['sha256', 'sha384', 'sha512']
@@ -54,6 +67,30 @@ const useAlgorithm = ['sha256', 'sha384', 'sha512']
 function isHashData(hashdata) {
 	const [algorithm, userhash] = hashdata.split('-', 2)
 	return userhash && useAlgorithm.includes(algorithm) && isBase64(userhash)
+}
+
+/**
+ *
+ * @param {Buffer} buffer   Buffer
+ * @param {string} hashdata Hash data
+ */
+async function compareBlobHash(buffer, hashdata) {
+	const [algorithm, userhash] = hashdata.split('-', 2)
+	if (!userhash) {
+		throw new InternalError(errors.invalidHashFormat, 400)
+	}
+	if (!useAlgorithm.includes(algorithm)) {
+		throw new InternalError(errors.unknownHashAlgorithm, 400)
+	}
+	if (!isBase64(userhash)) {
+		throw new InternalError(errors.invalidHashFormat, 400)
+	}
+
+	const stream = Readable.from(buffer)
+	const filehash = await getBlobHash(stream, algorithm)
+	if (userhash !== filehash) {
+		throw new InternalError(errors.invalidHash, 400)
+	}
 }
 
 /**
@@ -84,5 +121,6 @@ module.exports = {
 	getReaderStreamAsPromise,
 	getFileHash,
 	isHashData,
+	compareBlobHash,
 	compareFileHash,
 }
