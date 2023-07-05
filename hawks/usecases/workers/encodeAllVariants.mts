@@ -23,11 +23,13 @@ export async function encodeAllVariants(
 			i = variants.findIndex(v => v.id === cursor)
 		}
 
-		// Calc progressRatio
-		const allPrograssRatio = ctx.progressRatio
-		ctx.progressRatio /= variants.length
+		// Create new scope
+		ctx.scope(variants.length)
 
 		while (cursor !== maxVariantId) {
+			// Start this variant
+			ctx.start(i)
+
 			const variant = variants[i]
 			await callback(variant)
 
@@ -41,7 +43,7 @@ export async function encodeAllVariants(
 			cursor = await updateCursor(ctx.job, variant.id)
 		}
 
-		// Restore progressRatio
-		ctx.progressRatio = allPrograssRatio
+		// Restore scope
+		ctx.restore()
 	}
 }

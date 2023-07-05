@@ -14,6 +14,9 @@ export async function encodeCodec(
 	codec: Readonly<Codec>,
 	callback: (variant: Variant) => Promise<unknown>,
 ) {
+	// Use weighted progress for video type
+	const isWeighted = codec.type === 'video'
+
 	// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 	const maxVariantId = codec.variants.at(-1)!.id
 
@@ -27,12 +30,14 @@ export async function encodeCodec(
 			i = codec.variants.findIndex(v => v.id === cursor)
 		}
 
-		// Calc progressRatio
-		const allPrograssRatio = ctx.progressRatio
-		ctx.progressRatio /= codec.variants.length
+		// Create new scope
+		ctx.scope(codec.variants.length, isWeighted ? 2.4 /* magic weight */ : 0)
 
 		performance.mark(codec.friendlyId + ':start')
 		while (cursor !== maxVariantId) {
+			// Start this variant
+			ctx.start(i)
+
 			const variant = codec.variants[i]
 
 			performance.mark(variant.friendlyId + ':start')
@@ -67,7 +72,7 @@ export async function encodeCodec(
 		}
 		performance.mark(codec.friendlyId + ':end')
 
-		// Restore progressRatio
-		ctx.progressRatio = allPrograssRatio
+		// Restore scope
+		ctx.restore()
 	}
 }

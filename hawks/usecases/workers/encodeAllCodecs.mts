@@ -32,11 +32,14 @@ export async function encodeAllCodecs(
 			}
 		}
 
-		// Calc progressRatio
-		const allPrograssRatio = ctx.progressRatio
-		ctx.progressRatio /= media.reduce((p, m) => p + m.variants.length, 0)
+		// Create new scope
+		const step = media.reduce((p, m) => p + m.variants.length, 0)
+		ctx.scope(step)
 
 		while (cursor !== maxVariantId) {
+			// Start this variant
+			ctx.start()
+
 			const variant = media[i].variants[j]
 			await callback(variant)
 
@@ -53,7 +56,7 @@ export async function encodeAllCodecs(
 			cursor = await updateCursor(ctx.job, variant.id)
 		}
 
-		// Restore progressRatio
-		ctx.progressRatio = allPrograssRatio
+		// Restore scope
+		ctx.restore()
 	}
 }
