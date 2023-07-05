@@ -10,6 +10,12 @@ import { BusboyConfig } from 'busboy'
 import fastify from 'fastify'
 import { Observable } from 'rxjs'
 
+export class FileData {
+	readonly filename!: string
+	readonly mimetype!: string
+	readonly buffer!: Buffer
+}
+
 export function FileInterceptor(fieldName: string, options?: Omit<BusboyConfig, 'headers'>): Type<NestInterceptor> {
 	class MixinInterceptor implements NestInterceptor {
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -19,13 +25,17 @@ export function FileInterceptor(fieldName: string, options?: Omit<BusboyConfig, 
 				throw new BadRequestException('multipart/form-data expected.')
 			}
 
-			const parts = await req.parts(options)
+			const parts = req.parts(options)
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 			const body: any = { }
 			for await (const part of parts) {
 				if (part.type === 'file') {
 					if (part.fieldname === fieldName) {
-						body[part.fieldname] = await part.toBuffer()
+						body[part.fieldname] = {
+							filename: part.filename,
+							mimetype: part.mimetype,
+							buffer: await part.toBuffer(),
+						}
 					}
 				} else {
 					if (part.fieldname !== '__proto__' && part.fieldname !== 'constructor') {

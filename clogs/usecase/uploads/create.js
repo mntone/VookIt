@@ -1,32 +1,32 @@
-const { rename } = require('fs/promises')
+const { rename, writeFile } = require('fs/promises')
 const path = require('path')
 
 const env = require('../../../constants/env')
 const InternalError = require('../../utils/errors/InternalError')
 const { numToUsid } = require('../../utils/IdSupport')
 const prisma = require('../prisma')
-const { compareFileHash } = require('../utils/file')
+const { compareBlobHash } = require('../utils/file')
 
 const mainQueue = require('./bull')
 const { getOrCreateUploadPath, errors, getPreferredFilename } = require('./utils')
 
 /**
  * Create upload from temporary file.
- * @param   {string}                                                        hashdata
- * @param   {Buffer}                                                        file
- * @param   {string}                                                        screenname
+ * @param   {string}                                                           hashdata
+ * @param   {import('../../utils/interceptors/file.interceptor.mjs').FileData} file
+ * @param   {string}                                                           screenname
  * @returns {Promise<{ usid: string, posted_at: Date, author_id: number }>}
  */
 module.exports = async (hashdata, file, screenname) => {
 	// Compare file hash
-	await compareFileHash(file.path, hashdata)
+	await compareBlobHash(file.buffer, hashdata)
 
 	// Add post to database.
-	const ext = path.extname(file.originalFilename)
+	const ext = path.extname(file.filename)
 	const post = await prisma.post.create({
 		data: {
 			title: '?'.repeat(env.titleLength.min),
-			filename: getPreferredFilename(file.originalFilename, ext),
+			filename: getPreferredFilename(file.filename, ext),
 			author: {
 				connect: { screenname },
 			},
@@ -41,7 +41,7 @@ module.exports = async (hashdata, file, screenname) => {
 	// Move files from temporary.
 	try {
 		const dstpath = await getOrCreateUploadPath(post.id, ext)
-		await rename(file.path, dstpath)
+		await writeFile(dstpath, file.buffer, 'binary')
 	} catch (err) {
 		if (err instanceof InternalError && err.errorName === errors.internal) {
 			await prisma.post.delete({

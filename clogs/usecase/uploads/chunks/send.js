@@ -10,12 +10,12 @@ const ValidationError = require('../../ValidationError')
 const { existsTemporaryUploadDir } = require('../utils')
 
 /**
- * @param {string} cuid
- * @param {number} index
- * @param          hashdata
- * @param {Buffer} buffer
+ * @param {string}                                                              cuid
+ * @param {number}                                                              index
+ * @param                                                                       hashdata
+ * @param {import('../../../utils/interceptors/file.interceptor.mjs').FileData} file
  */
-module.exports = async (cuid, index, hashdata, buffer) => {
+module.exports = async (cuid, index, hashdata, file) => {
 	// Validate params.
 	if (!isCUID(cuid)) {
 		throw new ValidationError('cuid')
@@ -25,7 +25,7 @@ module.exports = async (cuid, index, hashdata, buffer) => {
 	const dirname = existsTemporaryUploadDir(cuid)
 
 	// Compare file hash
-	await compareBlobHash(buffer, hashdata)
+	await compareBlobHash(file.buffer, hashdata)
 
 	// Find a upload by cuid.
 	const upload = await prisma.upload.findUniqueOrThrow({
@@ -45,5 +45,5 @@ module.exports = async (cuid, index, hashdata, buffer) => {
 
 	// Save a file from temporary.
 	const dirpath = join(dirname, index.toString())
-	await writeFile(dirpath, buffer, 'binary')
+	await writeFile(dirpath, file.buffer, 'binary')
 }

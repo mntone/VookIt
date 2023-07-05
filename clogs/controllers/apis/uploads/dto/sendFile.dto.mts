@@ -2,6 +2,7 @@ import { ApiProperty } from '@nestjs/swagger'
 import { Allow } from 'class-validator'
 
 import { IsHashData } from '../../../../utils/decorators/IsHashData.mjs'
+import { FileData } from '../../../../utils/interceptors/file.interceptor.mjs'
 
 export class SendFileDto {
 	@ApiProperty({
@@ -14,10 +15,10 @@ export class SendFileDto {
 	readonly hash!: string
 
 	@ApiProperty({
-		type: Buffer,
+		type: Object,
 		name: 'file',
 		description: 'The a part of chunked file',
 	})
 	@Allow()
-	readonly file!: Buffer
+	readonly file!: FileData
 }

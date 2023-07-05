@@ -4,6 +4,7 @@ import { Allow, IsInt } from 'class-validator'
 
 import { IsCUID } from '../../../../utils/decorators/IsCUID.mjs'
 import { IsHashData } from '../../../../utils/decorators/IsHashData.mjs'
+import { FileData } from '../../../../utils/interceptors/file.interceptor.mjs'
 
 export class SendDto {
 	@ApiProperty({
@@ -35,11 +36,11 @@ export class SendDto {
 	readonly hash!: string
 
 	@ApiProperty({
-		type: Buffer,
+		type: Object,
 		name: 'chunked_file',
 		description: 'The a part of chunked file',
 	})
 	@Allow()
 	// eslint-disable-next-line camelcase
-	readonly chunked_file!: Buffer
+	readonly chunked_file!: FileData
 }

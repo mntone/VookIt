@@ -51,7 +51,7 @@ function UploadPage({ t, language }) {
 			<div className="c">
 				<h1>{title}</h1>
 
-				<form action="/api/upload.html" encType="multipart/form-data" method="POST">
+				<form action="/api/upload" encType="multipart/form-data" method="POST">
 					<div className="control">
 						<div className="file is-large is-boxed is-fullwidth">
 							<label className="file-label">
