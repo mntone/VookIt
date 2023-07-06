@@ -74,10 +74,10 @@ class FFmpegOptions {
 	}
 
 	/**
-	 * @param   {object}          options
-	 * @param   {string[]|string} options.inputs
-	 * @param   {string}          options.output
-	 * @param   {string}          options.keyPrefix
+	 * @param   {object}             options
+	 * @param   {string[] | string}  options.inputs
+	 * @param   {string}             options.output
+	 * @param   {string | undefined} options.keyPrefix
 	 * @returns {string[]}
 	 */
 	build(options) {

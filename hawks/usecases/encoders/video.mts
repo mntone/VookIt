@@ -1,14 +1,14 @@
 import { existsSync } from 'fs'
 
-// @ts-expect-error
 import FFmpegVideoOptions from '../../encoders/options/ffmpeg-video.js'
-import { VideoData } from '../../models/encoders/MediaData.mjs'
+import { ImageData, VideoData } from '../../models/encoders/MediaData.mjs'
 import { Variant } from '../../models/encoders/Variant.mjs'
 import { getFramerate } from '../../models/Framerate.mjs'
 import { EncodeContext } from '../../models/workers/EncodeContext.mjs'
 import { EncodeData } from '../../models/workers/EncodeData.mjs'
 import { getOutputFilepath } from '../../utils/fileSupport.mjs'
-import { ffmpeg, FFmpegProgress, getAwaiter } from '../trampolines/ffmpeg.mjs'
+import { VideoFilter } from '../filters/video.filter.mjs'
+import { FFmpegProgress, ffmpeg, getAwaiter } from '../trampolines/ffmpeg.mjs'
 
 const EPSILON = 0.000001
 const BASE_LOG_PIXELS = Math.log(1280 * 720)
@@ -76,6 +76,37 @@ function adjustBitrate(data: VideoData, vnt: Variant) {
 	}
 }
 
+function normalizeColors(data: ImageData, filter: VideoFilter) {
+	filter.colorRange('tv') // DO NOT USE FULL RANGE
+
+	switch (data.colorPrimaries) {
+	case 'bt709': // BT.709 or sRGB
+		if (data.transferCharacteristics !== 'srgb') {
+			filter.transferCharacteristics('bt709')
+		}
+		filter.matrixCoefficients('bt709')
+		break
+	case 'bt470bg': // BT.601
+		filter.transferCharacteristics('smpte170m').matrixCoefficients('bt470bg')
+		break
+	case 'dcip3': // DCI-P3
+		filter.transferCharacteristics('srgb').matrixCoefficients('bt470bg')
+		break
+	case 'displayp3': // Display P3
+		filter.transferCharacteristics('srgb').matrixCoefficients('bt709')
+		break
+	case 'bt2020': // BT.2020
+		if (data.transferCharacteristics !== 'bt2020-12') {
+			filter.transferCharacteristics('bt2020-10')
+		}
+		filter.matrixCoefficients('bt2020nc')
+		break
+	default: // Force BT.709
+		filter.colorPrimaries('bt709').transferCharacteristics('bt709').matrixCoefficients('bt709')
+		break
+	}
+}
+
 /**
  * Encode video.
  * @param ctx - Encode Context
@@ -92,7 +123,14 @@ export async function encodeVideo(
 	}
 
 	const bitrate = adjustBitrate(ctx.data, vnt)
-	const options = new FFmpegVideoOptions(vnt.friendlyCodecId, bitrate, vnt.encodeOptions)
+	const filter = new VideoFilter(ctx.data)
+	normalizeColors(ctx.data, filter)
+	// @ts-expect-error Fix interop error
+	const options = new FFmpegVideoOptions(vnt.friendlyCodecId, bitrate, {
+		...vnt.encodeOptions,
+		vf: filter.build(),
+	})
+	// @ts-expect-error Fix interop error
 	const command = options.build({
 		inputs: ctx.filepath,
 		output,

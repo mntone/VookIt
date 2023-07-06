@@ -38,6 +38,7 @@ class FFmpegVideoOptions extends FFmpegOptions {
 	 * @param {string?}                      params.maxSize
 	 * @param {number?}                      params.maxFramerate
 	 * @param {symbol|string|null|undefined} params.pixelFormat
+	 * @param {string?}                      params.vf
 	 */
 	constructor(
 		codec,
@@ -61,12 +62,12 @@ class FFmpegVideoOptions extends FFmpegOptions {
 				FFmpegVideoOptions.isPixelFormatValid,
 				FFmpegVideoOptions.parsePixelFormat,
 			)
-			this.params = params
+			this.#params = params
 		} else {
 			this.#maxSize = null
 			this.#maxFramerate = null
 			this.#pixelFormat = FFmpegVideoOptions.PixelFormat.DEFAULT
-			this.params = {}
+			this.#params = {}
 		}
 	}
 
@@ -84,19 +85,24 @@ class FFmpegVideoOptions extends FFmpegOptions {
 
 		// [TODO] move to X264Options or X265Options with symbol
 		if (this.codec === FFmpegVideoOptions.Codec.X264) {
-			args['profile'] = this.params.profile || 'high'
+			args['profile'] = this.#params.profile || 'high'
 		} else if (this.codec === FFmpegVideoOptions.Codec.X265) {
-			args['profile'] = this.params.profile || 'main'
+			args['profile'] = this.#params.profile || 'main'
 		}
 
 		// [TODO] move to X264Options or X265Options with symbol
 		if (this.codec === FFmpegVideoOptions.Codec.X264 || this.codec === FFmpegVideoOptions.Codec.X265) {
-			args['preset'] = this.params.preset || 'slow'
+			args['preset'] = this.#params.preset || 'slow'
 		}
 
 		if (typeof this.#maxSize === 'string') {
 			const [width, height] = this.#maxSize.split('x').map(Number)
 			args['vf'] = `scale=if(lt(${width}/iw\\,${height}/ih)\\,${width}\\,-2):if(lt(${width}/iw\\,${height}/ih)\\,-2\\,${height})`
+		}
+		if (typeof this.#params.vf === 'string') {
+			args['vf'] = args['vf']
+				? args['vf'] + ',' + this.#params.vf
+				: this.#params.vf
 		}
 		if (typeof this.#maxFramerate === 'number') {
 			args['fpsmax'] = this.#maxFramerate

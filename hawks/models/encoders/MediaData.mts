@@ -1,3 +1,9 @@
+import {
+	ColorPrimaries,
+	ColorRange,
+	MatrixCoefficients,
+	TransferCharacteristics,
+} from '../Colors.mjs'
 import { FractionFramerate } from '../Framerate.mjs'
 
 export type MediaData = {
@@ -22,6 +28,26 @@ type FrameData = MediaData & {
 	 * Original video height
 	 */
 	height: number
+
+	/**
+	 * Original color range
+	 */
+	colorRange: ColorRange
+
+	/**
+	 * Original matrix coefficients
+	 */
+	matrixCoefficients: MatrixCoefficients
+
+	/**
+	 * Original color primaries
+	 */
+	colorPrimaries: ColorPrimaries
+
+	/**
+	 * Original transfer characteristics
+	 */
+	transferCharacteristics: TransferCharacteristics
 }
 
 type StreamData = MediaData & {

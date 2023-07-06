@@ -42,6 +42,14 @@ export type FFprobeStreamEntries = {
 	tags?: Record<string, string>
 }
 
+export type FFproveColorRange = 'tv' | 'mpeg' | 'pc' | 'jpeg'
+
+export type FFproveColorSpace = 'bt709' | 'fcc' | 'bt470bg' | 'smpte170m' | 'smpte240m' | 'ycocg' | 'rgb' | 'gbr' | 'bt2020nc' | 'bt2020c' | 'smpte2085'
+
+export type FFproveColorTransfer = 'bt709' | 'bt470m' | 'gamma22' | 'bt470bg' | 'gamma28' | 'smpte170m' | 'smpte240m' | 'linear' | 'log' | 'log100' | 'log_sqrt' | 'log316' | 'iec61966-2-1' | 'srgb' | 'iec61966-2-4' | 'xvycc' | 'bt2020-10' | 'bt2020-12' | 'bt1361' | 'bt1361e' | 'smpte2084' | 'smpte428' | 'smpte428_1' | 'arib-std-b67'
+
+export type FFproveColorPrimaries = 'bt709' | 'bt470m' | 'bt470bg' | 'smpte170m' | 'smpte240m' | 'smpte428' | 'film' | 'smpte431' | 'smpte432' | 'bt2020' | 'jedec-p22' | 'ebu3213'
+
 export type FFprobeVideoStreamEntries = FFprobeStreamEntries & {
 	codecType: 'video'
 
@@ -67,13 +75,13 @@ export type FFprobeVideoStreamEntries = FFprobeStreamEntries & {
 
 	level: number
 
-	colorRange: 'tv' | 'pc'
+	colorRange: FFproveColorRange
 
-	colorSpace?: string
+	colorSpace?: FFproveColorSpace
 
-	colorTransfer?: string
+	colorTransfer?: FFproveColorTransfer
 
-	colorPrimaries?: string
+	colorPrimaries?: FFproveColorPrimaries
 
 	chromaLocation: 'left' | 'center' | 'topleft' | 'top' | 'bottomleft' | 'bottom'
 
