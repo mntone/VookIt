@@ -112,8 +112,8 @@ export class EncodeContext<JobData extends EncodeData, TData extends MediaData> 
 	}
 
 	updateProgress(progress: number): Promise<void> {
-		const progressRatio = 0.1 * Math.round(10 * this.#currentProgressRatio * progress)
-		return this.#job.updateProgress(this.#baseProgress + progressRatio)
+		const totalProgress = 0.1 * Math.round(10 * (this.#baseProgress + this.#currentProgressRatio * progress))
+		return this.#job.updateProgress(totalProgress)
 	}
 
 	/**
