@@ -1,11 +1,10 @@
 import { Processor, Worker, WorkerOptions } from 'bullmq'
 import IORedis from 'ioredis'
 
-// @ts-expect-error
 import env from '../constants/env.js'
-// @ts-expect-error
 import initConstants from '../constants/init.js'
 
+import { detectSystem } from './usecases/startups/detectSystem.mjs'
 import { CodecConfigLoader } from './usecases/workers/CodecConfigLoader.mjs'
 import { encodeHandler } from './usecases/workers/encodeHandler.mjs'
 import { mainHandler } from './usecases/workers/mainHandler.mjs'
@@ -16,6 +15,9 @@ export async function main() {
 
 	// Load configs.
 	await CodecConfigLoader.instance.load()
+
+	// Detect current environment.
+	detectSystem()
 
 	// Init workers.
 	const connection = new IORedis(env.redisPort, env.redisHost, env.redisOptions)

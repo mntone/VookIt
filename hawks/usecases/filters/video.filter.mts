@@ -253,12 +253,12 @@ export class VideoFilter extends BaseFilter {
 		return this.src
 	}
 
-	static #useZImg = true
+	static #useZImg = false
 
-	get useZImg(): boolean {
+	static get useZImg(): boolean {
 		return VideoFilter.#useZImg
 	}
-	set useZImg(value: boolean) {
+	static set useZImg(value: boolean) {
 		VideoFilter.#useZImg = value
 	}
 }
