@@ -140,8 +140,8 @@ export default class AppearanceModal extends ModalSupport {
 		document.getElementById('AppearanceModal-save').addEventListener('click', this.#onSaveClick.bind(this))
 
 		const state = new AppearanceState()
-		this.#animation = new VirtualCheckBox(document.getElementById('AppearanceModal-animation'), true, state.animation)
-		this.#noscale = new VirtualCheckBox(document.getElementById('AppearanceModal-noscale'), true, state.noscale)
+		this.#animation = new VirtualCheckBox(document.getElementById('AppearanceModal-animation'), state.animation, true)
+		this.#noscale = new VirtualCheckBox(document.getElementById('AppearanceModal-noscale'), state.noscale, true)
 		this.#state = state
 	}
 
