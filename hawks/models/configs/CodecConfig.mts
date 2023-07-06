@@ -69,7 +69,7 @@ export type CodecConfig = {
 	/**
 	 * Encode options
 	 */
-	options: Record<string, string | number | boolean>
+	options: Record<string, string | number | boolean | undefined>
 
 	/**
 	 * Specific tune

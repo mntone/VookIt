@@ -73,7 +73,7 @@ export type Variant = {
 	/**
 	 * Encode options
 	 */
-	encodeOptions: EncodeOptions & Record<string, string|number|boolean>
+	encodeOptions: EncodeOptions
 
 	/**
 	 * Tune

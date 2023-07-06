@@ -1,9 +1,10 @@
 import { existsSync } from 'fs'
 
 import FFmpegVideoOptions from '../../encoders/options/ffmpeg-video.js'
-import { ImageData, VideoData } from '../../models/encoders/MediaData.mjs'
+import { VideoData } from '../../models/encoders/MediaData.mjs'
 import { Variant } from '../../models/encoders/Variant.mjs'
 import { getFramerate } from '../../models/Framerate.mjs'
+import { Size } from '../../models/Size.mjs'
 import { EncodeContext } from '../../models/workers/EncodeContext.mjs'
 import { EncodeData } from '../../models/workers/EncodeData.mjs'
 import { getOutputFilepath } from '../../utils/fileSupport.mjs'
@@ -22,34 +23,53 @@ function calcWidthAs16over9(height: number) {
 	return 2 * Math.round(height * 8 / 9)
 }
 
-// Calc "Kashikoi" Bitrate. It means adaptive clever bitrate.
-function adjustBitrate(data: VideoData, vnt: Variant) {
-	if (vnt.bitrate) {
-		let expectedWidth, expectedHeight, basePixels
-		if (typeof vnt.encodeOptions.maxSize === 'string' && vnt.encodeOptions.maxSize.includes('x')) {
-			[expectedWidth, expectedHeight] = vnt.encodeOptions.maxSize.split('x', 2).map(l => Number(l))
-			basePixels = calcWidthAs16over9(expectedHeight) * expectedHeight
+function getExpectedSize(data: VideoData, vnt: Variant): Size {
+	const expectedSize: Size = {
+		width: data.width,
+		height: data.height,
+	}
 
-			if (data.width / expectedWidth < data.height / expectedHeight) {
-				expectedWidth = 2 * Math.round(0.5 * expectedHeight * data.width / data.height)
+	if (vnt.encodeOptions.maxWidth) {
+		if (vnt.encodeOptions.maxHeight) {
+			expectedSize.width = vnt.encodeOptions.maxWidth
+			expectedSize.height = vnt.encodeOptions.maxHeight
+
+			if (data.width / expectedSize.width < data.height / expectedSize.height) {
+				expectedSize.width = 2 * Math.round(0.5 * expectedSize.height * data.width / data.height)
 			} else {
-				expectedHeight = 2 * Math.round(0.5 * expectedWidth * data.height / data.width)
+				expectedSize.height = 2 * Math.round(0.5 * expectedSize.width * data.height / data.width)
 			}
-		} else if (typeof vnt.encodeOptions.maxHeight === 'number') {
-			expectedHeight = vnt.encodeOptions.maxHeight
-			basePixels = calcWidthAs16over9(expectedHeight) * expectedHeight
+		} else {
+			expectedSize.width = vnt.encodeOptions.maxWidth
+			expectedSize.height = 2 * Math.round(0.5 * expectedSize.width * data.height / data.width)
+		}
+	} else if (vnt.encodeOptions.maxHeight) {
+		expectedSize.height = vnt.encodeOptions.maxHeight
+		expectedSize.width = 2 * Math.round(0.5 * expectedSize.height * data.width / data.height)
+	} else {
+		// Nothing.
+	}
 
-			expectedWidth = 2 * Math.round(0.5 * expectedHeight * data.width / data.height)
-		} else if (typeof vnt.encodeOptions.maxWidth === 'number') {
-			expectedWidth = vnt.encodeOptions.maxWidth
-			basePixels = expectedWidth * (2 * Math.round(expectedWidth * 9 / 32))
+	return expectedSize
+}
 
-			expectedHeight = 2 * Math.round(0.5 * expectedWidth * data.height / data.width)
+// Calc "Kashikoi" Bitrate. It means adaptive clever bitrate.
+function adjustBitrate(expectedSize: Size, data: VideoData, vnt: Variant) {
+	if (vnt.bitrate) {
+		let basePixels
+		if (vnt.encodeOptions.maxWidth) {
+			if (vnt.encodeOptions.maxHeight) {
+				basePixels = calcWidthAs16over9(expectedSize.height) * expectedSize.height
+			} else {
+				basePixels = expectedSize.width * (2 * Math.round(expectedSize.width * 9 / 32))
+			}
+		} else if (vnt.encodeOptions.maxHeight) {
+			basePixels = calcWidthAs16over9(expectedSize.height) * expectedSize.height
 		} else {
 			throw Error('Unknown constraint.')
 		}
 
-		let pixelRate = expectedWidth * expectedHeight / basePixels - 1
+		let pixelRate = expectedSize.width * expectedSize.height / basePixels - 1
 		if (!compareNumber(pixelRate, 1)) {
 			pixelRate *= pixelRate > 0
 				? vnt.tune.decreaseBitrateMultiplier
@@ -76,37 +96,6 @@ function adjustBitrate(data: VideoData, vnt: Variant) {
 	}
 }
 
-function normalizeColors(data: ImageData, filter: VideoFilter) {
-	filter.colorRange('tv') // DO NOT USE FULL RANGE
-
-	switch (data.colorPrimaries) {
-	case 'bt709': // BT.709 or sRGB
-		if (data.transferCharacteristics !== 'srgb') {
-			filter.transferCharacteristics('bt709')
-		}
-		filter.matrixCoefficients('bt709')
-		break
-	case 'bt470bg': // BT.601
-		filter.transferCharacteristics('smpte170m').matrixCoefficients('bt470bg')
-		break
-	case 'dcip3': // DCI-P3
-		filter.transferCharacteristics('srgb').matrixCoefficients('bt470bg')
-		break
-	case 'displayp3': // Display P3
-		filter.transferCharacteristics('srgb').matrixCoefficients('bt709')
-		break
-	case 'bt2020': // BT.2020
-		if (data.transferCharacteristics !== 'bt2020-12') {
-			filter.transferCharacteristics('bt2020-10')
-		}
-		filter.matrixCoefficients('bt2020nc')
-		break
-	default: // Force BT.709
-		filter.colorPrimaries('bt709').transferCharacteristics('bt709').matrixCoefficients('bt709')
-		break
-	}
-}
-
 /**
  * Encode video.
  * @param ctx - Encode Context
@@ -122,13 +111,17 @@ export async function encodeVideo(
 		return null
 	}
 
-	const bitrate = adjustBitrate(ctx.data, vnt)
+	const expectedSize = getExpectedSize(ctx.data, vnt)
+	const bitrate = adjustBitrate(expectedSize, ctx.data, vnt)
 	const filter = new VideoFilter(ctx.data)
-	normalizeColors(ctx.data, filter)
+		.resizeMethod(vnt.encodeOptions.resizeMethod)
+		.size(expectedSize)
+		.colorRange('tv') // DO NOT USE FULL RANGE
+		.normalizeColors(ctx.data)
 	// @ts-expect-error Fix interop error
 	const options = new FFmpegVideoOptions(vnt.friendlyCodecId, bitrate, {
 		...vnt.encodeOptions,
-		vf: filter.build(),
+		filters: filter.build(),
 	})
 	// @ts-expect-error Fix interop error
 	const command = options.build({

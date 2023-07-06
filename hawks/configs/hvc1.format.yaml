@@ -9,6 +9,7 @@ audios: mp4a
 
 options:
   threads: 2
+  resizeMethod: bicubic
   codec: libx265
   tag: hvc1 # Require Apple platforms
   pixelFormat: yuv420p

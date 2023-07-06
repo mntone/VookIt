@@ -134,6 +134,81 @@
 			"title": "Encoder Options",
 			"type": "object",
 			"properties": {
+				"resizeMode": {
+					"title": "Resize mode",
+					"description": "Use this by image only.",
+					"type": "string",
+					"enum": [
+						"fit",
+						"fill",
+						"crop"
+					],
+					"default": "crop"
+				},
+				"resizeMethod": {
+					"title": "Resize method",
+					"description": "Use this by zimg only.",
+					"type": "string",
+					"enum": [
+						"nearest",
+						"bilinear",
+						"bicubic",
+						"spline16",
+						"spline36",
+						"lanczos"
+					],
+					"default": "bilinear"
+				},
+				"colorRange": {
+					"title": "Color range",
+					"type": "string",
+					"enum": [
+						"tv",
+						"pc"
+					],
+					"default": "tv"
+				},
+				"transferCharacteristics": {
+					"title": "Transfer characteristics",
+					"type": "string",
+					"enum": [
+						"bt709",
+						"bt470m",
+						"bt470bg",
+						"smpte170m",
+						"smpte240m",
+						"linear",
+						"log100",
+						"log316",
+						"xvycc",
+						"bt1361",
+						"srgb",
+						"bt2020-10",
+						"bt2020-12",
+						"smpte2085",
+						"pq",
+						"smpte428",
+						"hlg"
+					],
+					"default": "bt709"
+				},
+				"matrixCoefficients": {
+					"title": "Matrix coefficients",
+					"type": "string",
+					"enum": [
+						"bt709",
+						"fcc",
+						"bt470bg",
+						"smpte170m",
+						"smpte240m",
+						"ycocg",
+						"gbr",
+						"bt2020nc",
+						"bt2020c",
+						"smpte2085"
+					],
+					"default": "bt709"
+				},
 				"codec": {
 					"title": "Codec",
 					"description": "\"vcodec\" in Video, \"acodec\" in Audio.",

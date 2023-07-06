@@ -10,7 +10,11 @@ mime: "image/webp"
 
 options:
   quality: 85
-  resize: crop
+  resizeMethod: bicubic
+  resizeMode: crop
+  colorRange: tv # IT SHOULD BE LIMITED RANGE. PLEASE DO NOT CHANGE.
+  transferCharacteristics: srgb
+  matrixCoefficients: bt470bg # IT SHOULD BE BT.601. PLEASE DO NOT CHANGE.
 
 variants:
 - id: 130110 # WebP (0013_0000) + type 1 (0000_0100) + 1x (0000_0010)
@@ -27,4 +31,4 @@ variants:
     height: ">=450"
   options:
     maxSize: 800x450
-    quality: 12
+    quality: 10

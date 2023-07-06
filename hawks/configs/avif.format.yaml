@@ -12,8 +12,12 @@ options:
   codec: libaom-av1
   # recommended: 20-40
   # (--cq-level in aomenc)
-  crf: 38
-  resize: crop
+  crf: 37
+  resizeMethod: bicubic
+  resizeMode: crop
+  colorRange: tv
+  transferCharacteristics: bt709
+  matrixCoefficients: bt709
 
 variants:
 - id: 110110 # AVIF (0012_0000) + type 1 (0000_0100) + 1x (0000_0010)
@@ -21,7 +25,7 @@ variants:
   filename: "t@1.avif"
   options:
     maxSize: 400x225
-    crf: 38
+    crf: 37
 
 - id: 110120 # AVIF (0012_0000) + type 1 (0000_0100) + 2x (0000_0020)
   idstr: avif_225p_2x

@@ -11,34 +11,13 @@ class FFmpegVideoOptions extends FFmpegOptions {
 	 */
 	#codec
 
-	/**
-	 * Video maximum resolution
-	 * @type {string?}
-	 */
-	#maxSize
-
-	/**
-	 * Video maximum framerate
-	 * @type {number?}
-	 */
-	#maxFramerate
-
-	/**
-	 * Pixel format
-	 * @type {symbol}
-	 */
-	#pixelFormat
-
 	#params
 
 	/**
 	 * @param {symbol|string|null|undefined} codec
 	 * @param {number}                       bitrate
 	 * @param {object}                       params
-	 * @param {string?}                      params.maxSize
-	 * @param {number?}                      params.maxFramerate
-	 * @param {symbol|string|null|undefined} params.pixelFormat
-	 * @param {string?}                      params.vf
+	 * @param {string?}                      params.filters
 	 */
 	constructor(
 		codec,
@@ -52,23 +31,7 @@ class FFmpegVideoOptions extends FFmpegOptions {
 			FFmpegVideoOptions.isCodecValid,
 			FFmpegVideoOptions.parseCodec,
 		)
-
-		if (params) {
-			this.#maxSize = params.maxSize
-			this.#maxFramerate = params.maxFramerate
-			this.#pixelFormat = FFmpegOptions._getNormalizedValue(
-				params.pixelFormat,
-				FFmpegVideoOptions.PixelFormat.DEFAULT,
-				FFmpegVideoOptions.isPixelFormatValid,
-				FFmpegVideoOptions.parsePixelFormat,
-			)
-			this.#params = params
-		} else {
-			this.#maxSize = null
-			this.#maxFramerate = null
-			this.#pixelFormat = FFmpegVideoOptions.PixelFormat.DEFAULT
-			this.#params = {}
-		}
+		this.#params = params || {}
 	}
 
 	/**
@@ -85,9 +48,9 @@ class FFmpegVideoOptions extends FFmpegOptions {
 
 		// [TODO] move to X264Options or X265Options with symbol
 		if (this.codec === FFmpegVideoOptions.Codec.X264) {
-			args['profile'] = this.#params.profile || 'high'
+			args['profile:v'] = this.#params.profile || 'high'
 		} else if (this.codec === FFmpegVideoOptions.Codec.X265) {
-			args['profile'] = this.#params.profile || 'main'
+			args['profile:v'] = this.#params.profile || 'main'
 		}
 
 		// [TODO] move to X264Options or X265Options with symbol
@@ -95,17 +58,14 @@ class FFmpegVideoOptions extends FFmpegOptions {
 			args['preset'] = this.#params.preset || 'slow'
 		}
 
-		if (typeof this.#maxSize === 'string') {
-			const [width, height] = this.#maxSize.split('x').map(Number)
-			args['vf'] = `scale=if(lt(${width}/iw\\,${height}/ih)\\,${width}\\,-2):if(lt(${width}/iw\\,${height}/ih)\\,-2\\,${height})`
+		if (typeof this.#params.filters === 'string') {
+			args['vf'] = this.#params.filters
 		}
-		if (typeof this.#params.vf === 'string') {
-			args['vf'] = args['vf']
-				? args['vf'] + ',' + this.#params.vf
-				: this.#params.vf
+		if (typeof this.#params.pixelFormat === 'string') {
+			args['pix_fmt'] = this.#params.pixelFormat
 		}
-		if (typeof this.#maxFramerate === 'number') {
-			args['fpsmax'] = this.#maxFramerate
+		if (typeof this.#params.maxFramerate === 'number') {
+			args['fpsmax'] = this.#params.maxFramerate
 		}
 		if (true) {
 			const keyint = 4
@@ -149,21 +109,6 @@ class FFmpegVideoOptions extends FFmpegOptions {
 			}
 		}
 		this.#codec = value
-	}
-
-	/**
-	 * Get pixel format.
-	 * @type {symbol}
-	 */
-	get pixelFormat() {
-		return this.#pixelFormat
-	}
-	/**
-	 * Set pixel format.
-	 * @type {symbol}
-	 */
-	set pixelFormat(value) {
-		this.#pixelFormat = value
 	}
 
 	/**
@@ -220,38 +165,6 @@ class FFmpegVideoOptions extends FFmpegOptions {
 		}
 		return ret
 	}
-
-	/**
-	 * Is pixel format valid.
-	 * @param   {symbol}  pixelFormat
-	 * @returns {boolean}
-	 */
-	static isPixelFormatValid(pixelFormat) {
-		return Object.values(FFmpegVideoOptions.PixelFormat).includes(pixelFormat)
-	}
-
-	/**
-	 * Parse pixel format.
-	 * @param   {string} str
-	 * @returns {symbol}
-	 */
-	static parsePixelFormat(str) {
-		let ret
-		switch (str.toLowerCase()) {
-		case 'default':
-			ret = FFmpegVideoOptions.PixelFormat.DEFAULT
-			break
-		case 'yuv420p':
-			ret = FFmpegVideoOptions.PixelFormat.YUV420P
-			break
-		case 'yuv420p10le':
-			ret = FFmpegVideoOptions.PixelFormat.YUV420P10LE
-			break
-		default:
-			throw Error(`This value (${str.toString()}) is invalid.`)
-		}
-		return ret
-	}
 }
 
 FFmpegVideoOptions.Codec = Object.freeze({
@@ -271,12 +184,6 @@ FFmpegVideoOptions.Codec = Object.freeze({
 
 	// AV1
 	AOM_AV1: Symbol('libaom-av1'),
-})
-
-FFmpegVideoOptions.PixelFormat = Object.freeze({
-	DEFAULT: Symbol('default'),
-	YUV420P: Symbol('yuv420p'),
-	YUV420P10LE: Symbol('yuv420p10le'),
 })
 
 module.exports = FFmpegVideoOptions

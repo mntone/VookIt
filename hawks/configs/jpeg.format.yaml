@@ -10,7 +10,11 @@ mime: "image/jpeg"
 
 options:
   quality: 8
-  resize: crop
+  resizeMethod: bicubic
+  resizeMode: crop
+  colorRange: pc # IT SHOULD BE FULL RANGE. PLEASE DO NOT CHANGE.
+  transferCharacteristics: srgb
+  matrixCoefficients: bt470bg # IT SHOULD BE BT.601. PLEASE DO NOT CHANGE.
 
 variants:
 - id: 100110 # JPEG (0010_0000) + type 1 (0000_0100) + 1x (0000_0010)

@@ -16,6 +16,7 @@ class FFmpegImageOptions extends FFmpegOptions {
 	 * @param {number?}                      params.quality [JPEG/WebP] Image quality (JPEG: 1-31, default ; WebP: 0-100, default 75)
 	 * @param {number?}                      params.crf     [AVIF only]
 	 * @param {number?}                      params.cpuUsed [AVIF only]
+	 * @param {string?}                      params.filters
 	 */
 	constructor(
 		codec,
@@ -40,33 +41,13 @@ class FFmpegImageOptions extends FFmpegOptions {
 		const args2 = {
 			map: '0:v:0',
 			vcodec: this.codec.description,
-			frames: 1,
+			['frames:v']: 1,
 			['b:v']: 0,
 		}
 		Object.assign(args, args2)
 
-		if (typeof this.#params.maxSize === 'string') {
-			// [TODO] Portrait video
-			const [width, height] = this.#params.maxSize.split('x').map(Number)
-			switch (this.#params.resize) {
-			case 'crop':
-				args['vf'] = `scale=if(gte(${width}/iw\\,${height}/ih)\\,${width}\\,-2):if(gte(${width}/iw\\,${height}/ih)\\,-2\\,${height}),crop=${width}:${height}:(iw-ow)/2:(ih-oh)/2:exact=1`
-				break
-			// "vf:pad" has no chroma sampling option, and I decide no use this option
-			// case 'pad':
-			//	args['vf'] = `scale=if(lt(${width}/iw\\,${height}/ih)\\,${width}\\,-2):if(lt(${width}/iw\\,${height}/ih)\\,-2\\,${height}),pad=${width}:${height}:-1:-1`
-			//	break
-			case 'fill':
-				args['vf'] = `scale=${width}:${height}`
-				break
-			default:
-				args['vf'] = `scale=-2:${height}`
-				break
-			}
-		} else {
-			if (typeof this.#params.maxWidth === 'number') {
-				args['vf'] = `scale=${this.#params.maxWidth}:-2`
-			}
+		if (typeof this.#params.filters === 'string') {
+			args['vf'] = this.#params.filters
 		}
 
 		// Codec specified params
