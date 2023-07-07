@@ -17,9 +17,8 @@ options:
   resizeMethod: bicubic
   codec: libx264
   pixelFormat: yuv420p
-  profile: "high"
-  preset: "slow"
-  fpsmax: 30
+  profile: high
+  preset: slow
   sc_threshold: 0
 
 tune:

@@ -57,20 +57,16 @@ function getExpectedSize(data: VideoData, vnt: Variant): Size {
 function adjustBitrate(expectedSize: Size, data: VideoData, vnt: Variant) {
 	if (vnt.bitrate) {
 		let basePixels
-		if (vnt.encodeOptions.maxWidth) {
 			if (vnt.encodeOptions.maxHeight) {
 				basePixels = calcWidthAs16over9(expectedSize.height) * expectedSize.height
-			} else {
+		} else if (vnt.encodeOptions.maxWidth) {
 				basePixels = expectedSize.width * (2 * Math.round(expectedSize.width * 9 / 32))
-			}
-		} else if (vnt.encodeOptions.maxHeight) {
-			basePixels = calcWidthAs16over9(expectedSize.height) * expectedSize.height
 		} else {
 			throw Error('Unknown constraint.')
 		}
 
 		let pixelRate = expectedSize.width * expectedSize.height / basePixels - 1
-		if (!compareNumber(pixelRate, 1)) {
+		if (!compareNumber(pixelRate, 0)) {
 			pixelRate *= pixelRate > 0
 				? vnt.tune.decreaseBitrateMultiplier
 				: vnt.tune.increaseBitrateMultiplier

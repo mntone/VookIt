@@ -3,7 +3,7 @@ const { isMac } = require('../../utils/OSSupport')
 const FFmpegOptions = require('./ffmpeg')
 
 class FFmpegVideoOptions extends FFmpegOptions {
-	static #superPropertyNames = ['tag', 'threads']
+	static #superPropertyNames = ['threads']
 
 	/**
 	 * Video codec

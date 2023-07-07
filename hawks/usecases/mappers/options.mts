@@ -159,7 +159,7 @@ export function mapOptions(
 		pixelFormat: getValidPixelFormat(pixelFormat as string),
 		maxWidth: mergedMaxWidth,
 		maxHeight: mergedMaxHeight,
-		maxFramerate: Number.isNaN(maxFramerate) ? maxFramerate as number : undefined,
+		maxFramerate: !Number.isNaN(maxFramerate) ? maxFramerate as number : undefined,
 		...additionalPairs,
 	}
 	return options

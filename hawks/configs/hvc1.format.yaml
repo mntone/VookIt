@@ -13,9 +13,8 @@ options:
   codec: libx265
   tag: hvc1 # Require Apple platforms
   pixelFormat: yuv420p
-  profile: "main"
-  preset: "slow"
-  fpsmax: 30
+  profile: main
+  preset: slow
   sc_threshold: 0
 
 tune:

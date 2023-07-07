@@ -28,10 +28,13 @@ async function updatePhase(job: Job<MainJobData>, next: Phase, resetCursor = fal
 
 export async function mainHandler(job: Job<MainJobData>) {
 	const filepath = await getInputFilepath(job.data, { assumeDirectory: false })
-	const context = getSuperContext(job, filepath)
-	context.progressRatio = 40
 
 	while (job.data.phase !== 'finished') {
+		const context = getSuperContext(job, filepath)
+
+		// Create new scope
+		context.scope(3)
+
 		switch (job.data.phase) {
 		case 'pending':
 			await updatePhase(job, 'image')
@@ -53,7 +56,10 @@ export async function mainHandler(job: Job<MainJobData>) {
 
 		case 'dispatching': {
 			const videoCodecs = CodecConfigLoader.instance.video.filter(c => c.enabled)
-			context.progressRatio = 20 / videoCodecs.length
+
+			// Create new scope
+			context.scope(videoCodecs.length)
+
 			for (const codec of videoCodecs) {
 				const queueName = codec.queueName
 				if (!Object.prototype.hasOwnProperty.call(queueCache, queueName)) {
@@ -75,11 +81,17 @@ export async function mainHandler(job: Job<MainJobData>) {
 				await context.done()
 			}
 			await updatePhase(job, 'finished', true)
+
+			// Restore scope
+			context.restore()
 			break
 		}
 
 		default:
 			throw Error('Unknown error')
 		}
+
+		// Restore scope
+		context.restore()
 	}
 }
