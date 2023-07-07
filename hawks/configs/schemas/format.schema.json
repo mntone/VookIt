@@ -157,7 +157,7 @@
 						"spline36",
 						"lanczos"
 					],
-					"default": "bilinear"
+					"default": "bicubic"
 				},
 				"colorRange": {
 					"title": "Color range",

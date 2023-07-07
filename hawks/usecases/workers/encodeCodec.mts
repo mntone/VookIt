@@ -17,7 +17,6 @@ export async function encodeCodec(
 	// Use weighted progress for video type
 	const isWeighted = codec.type === 'video'
 
-	// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 	const maxVariantId = codec.variants.at(-1)!.id
 
 	let cursor = ctx.job.data.cursor

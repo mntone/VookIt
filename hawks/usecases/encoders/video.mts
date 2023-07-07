@@ -8,7 +8,7 @@ import { Size } from '../../models/Size.mjs'
 import { EncodeContext } from '../../models/workers/EncodeContext.mjs'
 import { EncodeData } from '../../models/workers/EncodeData.mjs'
 import { getOutputFilepath } from '../../utils/fileSupport.mjs'
-import { VideoFilter } from '../filters/video.filter.mjs'
+import { Filters, VideoFilter } from '../filters/index.mjs'
 import { FFmpegProgress, ffmpeg, getAwaiter } from '../trampolines/ffmpeg.mjs'
 
 const EPSILON = 0.000001
@@ -57,10 +57,10 @@ function getExpectedSize(data: VideoData, vnt: Variant): Size {
 function adjustBitrate(expectedSize: Size, data: VideoData, vnt: Variant) {
 	if (vnt.bitrate) {
 		let basePixels
-			if (vnt.encodeOptions.maxHeight) {
-				basePixels = calcWidthAs16over9(expectedSize.height) * expectedSize.height
+		if (vnt.encodeOptions.maxHeight) {
+			basePixels = calcWidthAs16over9(expectedSize.height) * expectedSize.height
 		} else if (vnt.encodeOptions.maxWidth) {
-				basePixels = expectedSize.width * (2 * Math.round(expectedSize.width * 9 / 32))
+			basePixels = expectedSize.width * (2 * Math.round(expectedSize.width * 9 / 32))
 		} else {
 			throw Error('Unknown constraint.')
 		}
@@ -109,16 +109,19 @@ export async function encodeVideo(
 
 	const expectedSize = getExpectedSize(ctx.data, vnt)
 	const bitrate = adjustBitrate(expectedSize, ctx.data, vnt)
+
 	const filter = new VideoFilter(ctx.data)
 		.resizeMethod(vnt.encodeOptions.resizeMethod)
 		.size(expectedSize)
 		.colorRange('tv') // DO NOT USE FULL RANGE
 		.normalizeColors(ctx.data)
-	// @ts-expect-error Fix interop error
-	const options = new FFmpegVideoOptions(vnt.friendlyCodecId, bitrate, {
+	const filters = new Filters('video', vnt.encodeOptions.postFilters as string[])
+	filters.filters.unshift(filter)
+	const options = new FFmpegVideoOptions(bitrate, {
 		...vnt.encodeOptions,
-		filters: filter.build(),
+		filters: filters.build(),
 	})
+
 	// @ts-expect-error Fix interop error
 	const command = options.build({
 		inputs: ctx.filepath,

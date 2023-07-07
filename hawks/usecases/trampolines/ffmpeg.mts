@@ -148,7 +148,6 @@ function ffmpegFilters() {
 	const filters: FFmpegFilter[] = []
 	let result: RegExpExecArray | null
 	while ((result = filtersRe.exec(data)) !== null) {
-		/* eslint-disable @typescript-eslint/no-non-null-assertion */
 		const filter: FFmpegFilter = {
 			timelineSupport: result.groups!.timelineSupport === 'T',
 			sliceThreading: result.groups!.sliceThreading === 'S',
@@ -158,7 +157,6 @@ function ffmpegFilters() {
 			input: result.groups!.input,
 			output: result.groups!.output,
 		}
-		/* eslint-enable @typescript-eslint/no-non-null-assertion */
 		filters.push(filter)
 	}
 	__ffmpeg.__cache__.filters = filters

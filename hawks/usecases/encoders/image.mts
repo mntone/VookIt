@@ -7,7 +7,7 @@ import { Size } from '../../models/Size.mjs'
 import { EncodeContext } from '../../models/workers/EncodeContext.mjs'
 import { EncodeData } from '../../models/workers/EncodeData.mjs'
 import { getOutputFilepath } from '../../utils/fileSupport.mjs'
-import { BaseFilter, CropFilter, PadFilter, VideoFilter } from '../filters/_index.mjs'
+import { CropFilter, Filters, PadFilter, VideoFilter } from '../filters/index.mjs'
 import { ffmpeg, getAwaiter } from '../trampolines/ffmpeg.mjs'
 
 function getExpectedSize(data: ImageData, vnt: Variant): Size {
@@ -70,7 +70,6 @@ export async function encodeImage(
 	}
 
 	const expectedSize = getExpectedSize(ctx.data, vnt)
-	const filters: BaseFilter[] = []
 	const filter = new VideoFilter(ctx.data, { useSwscaleForResize: true })
 		.resizeMethod(vnt.encodeOptions.resizeMethod)
 		.size(expectedSize)
@@ -78,12 +77,13 @@ export async function encodeImage(
 		.colorPrimaries('bt709')
 		.transferCharacteristics(vnt.encodeOptions.transferCharacteristics)
 		.matrixCoefficients(vnt.encodeOptions.matrixCoefficients)
-	filters.push(filter)
+	const filters = new Filters('video', vnt.encodeOptions.postFilters as string[])
+	filters.filters.unshift(filter)
 
 	if (vnt.encodeOptions.maxWidth && vnt.encodeOptions.maxHeight && (vnt.encodeOptions.maxWidth !== expectedSize.width || vnt.encodeOptions.maxHeight !== expectedSize.height)) {
 		switch (vnt.encodeOptions.resizeMode) {
 		case 'crop':
-			filters.push(new CropFilter()
+			filters.add(new CropFilter()
 				.width(vnt.encodeOptions.maxWidth)
 				.height(vnt.encodeOptions.maxHeight)
 				.cropX(Math.round(0.5 * (expectedSize.width - vnt.encodeOptions.maxWidth)))
@@ -91,7 +91,7 @@ export async function encodeImage(
 			)
 			break
 		// case 'pad':
-		// 	filters.push(new PadFilter()
+		// 	filters.add(new PadFilter()
 		// 		.width(vnt.encodeOptions.maxWidth)
 		// 		.height(vnt.encodeOptions.maxHeight)
 		// 		.padX(Math.round(0.5 * (expectedSize.width - vnt.encodeOptions.maxWidth)))
@@ -105,7 +105,7 @@ export async function encodeImage(
 	// @ts-expect-error Fix interop error
 	const options = new FFmpegImageOptions(vnt.friendlyCodecId, {
 		...vnt.encodeOptions,
-		filters: filters.map(f => f.build()).join(','),
+		filters: filters.build(),
 	})
 	// @ts-expect-error Fix interop error
 	const command = options.build({

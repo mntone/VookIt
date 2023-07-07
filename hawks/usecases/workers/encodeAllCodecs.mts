@@ -12,7 +12,6 @@ export async function encodeAllCodecs(
 	media: Readonly<Codec>[],
 	callback: (variant: Variant) => Promise<unknown>,
 ) {
-	// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 	const maxVariantId = media.at(-1)!.variants.at(-1)!.id
 
 	let cursor = ctx.job.data.cursor

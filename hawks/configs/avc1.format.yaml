@@ -35,6 +35,10 @@ variants:
   options:
     maxSize: 432x180
     maxFramerate: 30
+    postFilters:
+    - pp=hb|8|39/vb|8|39/dr/fq|32
+    - hqdn3d
+    - unsharp=3:3:0.5:3:3:0.5
 
 - id: 10360 # AVC1 (0001_0000) + 360p (0000_0360)
   idstr: avc1_360p
@@ -44,6 +48,10 @@ variants:
   options:
     maxSize: 864x360
     maxFramerate: 30
+    postFilters:
+    - pp=hb|4|39/vb|4|39/dr/fq|32
+    - hqdn3d
+    - unsharp=3:3:0.5:3:3:0.5
 
 - id: 10720 # AVC1 (0001_0000) + 720p (0000_0720)
   idstr: avc1_720p
@@ -53,6 +61,8 @@ variants:
   options:
     maxSize: 1728x720
     maxFramerate: 30
+    postFilters:
+    - unsharp=3:3:0.5:3:3:0.5
 
 - id: 19999 # AVC1 (0001_0000) + (native)p (0000_9999)
   idstr: avc1_ntvp

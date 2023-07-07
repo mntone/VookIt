@@ -1,5 +1,5 @@
 import { getSoftwareVersion } from '../../../clogs/utils/VersionSupport.js'
-import { VideoFilter } from '../filters/video.filter.mjs'
+import { VideoFilter } from '../filters/video.mjs'
 import { ffmpeg } from '../trampolines/ffmpeg.mjs'
 
 export function detectSystem() {

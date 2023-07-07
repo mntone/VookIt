@@ -10,7 +10,6 @@ export async function encodeAllVariants(
 	variants: readonly Variant[],
 	callback: (variant: Variant) => Promise<unknown>,
 ) {
-	// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 	const maxVariantId = variants.at(-1)!.id
 
 	let cursor = ctx.job.data.cursor

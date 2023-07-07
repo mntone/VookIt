@@ -62,5 +62,5 @@ export type EncodeOptions = {
 	/**
 	 * Additional key-value pairs
 	 */
-	[key: string]: string | number | boolean | undefined
+	[key: string]: string[] | string | number | boolean | undefined
 }

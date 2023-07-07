@@ -10,10 +10,26 @@ import {
 import { ResizeMethod } from '../../models/encoders/EncodeOptions.mjs'
 import { ImageData } from '../../models/encoders/MediaData.mjs'
 
-import { BaseFilter } from './base.filter.mjs'
+import { Filter } from './base.mjs'
+
+const scaleTable = deepFreeze({
+	name: 'scale',
+	resize: {
+		key: 'flags',
+		values: {
+			nearest: 'neighbor',
+			bilinear: 'bilinear',
+			bicubic: 'bicubic',
+			spline16: 'spline',
+			spline36: 'spline',
+			lanczos: 'lanczos',
+		},
+	},
+})
 
 // https://github.com/FFmpeg/FFmpeg/blob/master/libavfilter/vf_colorspace.c
 const colorspaceTable = deepFreeze({
+	name: 'colorspace',
 	colorRange: {
 		in: 'irange',
 		out: 'range',
@@ -74,10 +90,10 @@ const colorspaceTable = deepFreeze({
 
 // https://github.com/FFmpeg/FFmpeg/blob/master/libavfilter/vf_zscale.c
 const zscaleTable = deepFreeze({
+	name: 'zscale',
 	resize: {
 		key: 'f', // or "filter"
 		values: {
-			// eslint-disable-next-line camelcase
 			nearest: 'point',
 			bilinear: 'bilinear',
 			bicubic: 'bicubic',
@@ -153,7 +169,7 @@ export type VideoFilterOptions = {
 	useSwscaleForResize?: boolean
 }
 
-export class VideoFilter extends BaseFilter {
+export class VideoFilter extends Filter {
 	#options: VideoFilterOptions
 
 	#resizeMethod?: ResizeMethod
@@ -277,21 +293,29 @@ export class VideoFilter extends BaseFilter {
 		return this
 	}
 
-	#buildSize() {
+	#buildSize(table: any): string | null {
+		const args = []
+
 		if (this.#dstWidth) {
 			if (this.#dstHeight) {
-				return `${this.#dstWidth}:${this.#dstHeight}`
+				args.push(`${this.#dstWidth}:${this.#dstHeight}`)
 			} else {
-				return `${this.#dstWidth}:${this.#srcHeight}`
+				args.push(`${this.#dstWidth}:${this.#srcHeight}`)
 			}
 		} else if (this.#dstHeight) {
-			return `${this.#srcWidth}:${this.#dstHeight}`
+			args.push(`${this.#srcWidth}:${this.#dstHeight}`)
 		} else {
 			return null
 		}
+
+		if (this.#resizeMethod) {
+			args.push(`${table.resize.key}=${table.resize.values[this.#resizeMethod]}`)
+		}
+
+		const commands = `${table.name}=` + args.join(':')
+		return commands
 	}
 
-	/* eslint-disable @typescript-eslint/no-non-null-assertion */
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	#buildColor(table: any): string | null {
 		const args = []
@@ -324,37 +348,26 @@ export class VideoFilter extends BaseFilter {
 		if (commands.length === 0) {
 			return null
 		}
-		return commands
+		return `${table.name}=` + commands
 	}
-	/* eslint-enable @typescript-eslint/no-non-null-assertion */
 
-	override build(): string | null {
-		const sizeCommand = this.#buildSize()
-		if (sizeCommand) {
-			if (this.#options.useSwscaleForResize) {
-				const colorCommands = this.#buildColor(zscaleTable)
-				return colorCommands
-					? `zscale=${colorCommands},scale=${sizeCommand}`
-					: `scale=${sizeCommand}`
-			} else if (VideoFilter.#useZImg) {
-				const colorCommands = this.#buildColor(zscaleTable)
-				return colorCommands
-					? `zscale=${sizeCommand}:f=${this.#resizeMethod ?? 'bilinear'}:${colorCommands}`
-					: `zscale=${sizeCommand}:f=${this.#resizeMethod ?? 'bilinear'}`
+	override build(): string[] {
+		if (this.#options.useSwscaleForResize) {
+			const sizeCommands = this.#buildSize(scaleTable)
+			const colorCommands = this.#buildColor(VideoFilter.#useZImg ? zscaleTable : colorspaceTable)
+			return [colorCommands, sizeCommands].filter(f => f !== null) as string[]
+		} else if (VideoFilter.#useZImg) {
+			const sizeCommands = this.#buildSize(zscaleTable)
+			const colorCommands = this.#buildColor(zscaleTable)
+			if (sizeCommands && colorCommands) {
+				return [sizeCommands + colorCommands.substring(7)]
 			} else {
-				const colorCommands = this.#buildColor(colorspaceTable)
-				return colorCommands
-					? `scale=${sizeCommand},colorspace=` + colorCommands
-					: 'scale=' + sizeCommand
+				return [colorCommands, sizeCommands].filter(f => f !== null) as string[]
 			}
 		} else {
-			if (VideoFilter.#useZImg) {
-				const colorCommands = this.#buildColor(zscaleTable)
-				return colorCommands ? 'zscale=' + colorCommands : null
-			} else {
-				const colorCommands = this.#buildColor(colorspaceTable)
-				return colorCommands ? 'colorspace=' + colorCommands : null
-			}
+			const sizeCommands = this.#buildSize(scaleTable)
+			const colorCommands = this.#buildColor(colorspaceTable)
+			return [colorCommands, sizeCommands].filter(f => f !== null) as string[]
 		}
 	}
 

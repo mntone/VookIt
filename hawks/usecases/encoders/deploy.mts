@@ -1,9 +1,7 @@
 import { existsSync } from 'fs'
 import { join } from 'path'
 
-// @ts-expect-error
 import env from '../../../constants/env.js'
-// @ts-expect-error
 import FFmpegDashOptions from '../../encoders/options/ffmpeg-dash.js'
 import { DeployContext } from '../../models/encoders/DeployContext.mjs'
 import { MediaData } from '../../models/encoders/MediaData.mjs'
@@ -26,7 +24,6 @@ export async function createCmaf(
 	const id = ctx.job.data.id
 
 	// Check if dash file exists.
-	// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 	const streamName = 'st_' + dctx.videoVariants.at(-1)!.friendlyId
 	const filepath = await getCmafFilepath(id, streamName)
 	if (existsSync(filepath)) {

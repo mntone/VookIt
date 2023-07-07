@@ -95,7 +95,6 @@ export class EncodeContext<JobData extends EncodeData, TData extends MediaData> 
 			throw Error('This operation is forbidden. This scope is top-level.')
 		}
 
-		// eslint-disable-next-line @typescript-eslint/no-non-null-assertion
 		return this.#scope.shift()!
 	}
 
