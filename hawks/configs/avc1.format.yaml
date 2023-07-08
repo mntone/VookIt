@@ -5,16 +5,16 @@ idstr: avc1
 enabled: true
 use: ffmpeg
 ext: ".mp4"
-mime: "video/mp4; codecs=avc1.6400[levelhex]"
-# Baseline: video/mp4; codecs="avc1.4200[levelhex]"
-# Main:     video/mp4; codecs="avc1.4d00[levelhex]"
-# High 10:  video/mp4; codecs="avc1.6e00[levelhex]"
+mime: "video/mp4; codecs=avc1.6400[level:%02x]"
+# Baseline: video/mp4; codecs="avc1.4200[level:%02x]"
+# Main:     video/mp4; codecs="avc1.4d00[level:%02x]"
+# High 10:  video/mp4; codecs="avc1.6e00[level:%02x]"
 audios: mp4a
 useHls: true
 
 options:
   threads: 2
-  resizeMethod: bicubic
+  resizeMethod: spline16
   codec: libx264
   pixelFormat: yuv420p
   profile: high
@@ -29,40 +29,38 @@ tune:
 variants:
 - id: 10180 # AVC1 (0001_0000) + 180p (0000_0180)
   idstr: avc1_180p
-  bitrate: 320k
+  bitrate: 400k
   constraints:
     height: ">180"
   options:
     maxSize: 432x180
     maxFramerate: 30
     postFilters:
-    - pp=hb|8|39/vb|8|39/dr/fq|32
+    - pp=hb|8|39/vb|8|39/dr/fq|12
     - hqdn3d
-    - unsharp=3:3:0.5:3:3:0.5
+    - unsharp=5:5:0.5:3:3:0.5
 
 - id: 10360 # AVC1 (0001_0000) + 360p (0000_0360)
   idstr: avc1_360p
-  bitrate: 640k
+  bitrate: 1040k # 180pbr x2.6
   constraints:
     height: ">360"
   options:
     maxSize: 864x360
     maxFramerate: 30
     postFilters:
-    - pp=hb|4|39/vb|4|39/dr/fq|32
+    - pp=hb|8|39/vb|8|39/dr/fq|8
     - hqdn3d
-    - unsharp=3:3:0.5:3:3:0.5
+    - unsharp=5:5:0.25:3:3:0.25
 
 - id: 10720 # AVC1 (0001_0000) + 720p (0000_0720)
   idstr: avc1_720p
-  bitrate: 2M
+  bitrate: 2912k # 360pbr x2.8
   constraints:
     height: ">720"
   options:
     maxSize: 1728x720
     maxFramerate: 30
-    postFilters:
-    - unsharp=3:3:0.5:3:3:0.5
 
 - id: 19999 # AVC1 (0001_0000) + (native)p (0000_9999)
   idstr: avc1_ntvp

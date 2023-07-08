@@ -1,31 +1,30 @@
-# ISO/IEC 23008-2 High Efficiency Video Coding
+# AV1
 type: video
-id: 50000 # HVC1 (0005_0000)
-idstr: hvc1
-enabled: false
+id: 20000 # AV01 (0002_0000)
+idstr: av01
+enabled: true
 use: ffmpeg
 ext: ".mp4"
-audios: mp4a
+mime: "video/mp4; codecs=av01.0.[level:%m(mapLevel)]M.[depth:%02d]"
+audios: [mp4a, opus]
 
 options:
   threads: 2
   resizeMethod: spline16
-  codec: libx265
-  tag: hvc1 # Require Apple platforms
+  codec: libsvtav1
   pixelFormat: yuv420p
-  profile: main
-  preset: slow
-  sc_threshold: 0
+  preset: 4
+  svtav1-params: "bias-pct=1"
 
 tune:
-  bpp: 0.075
-  increase: 0.75
-  decrease: 0.75
+  bpp: 0.055
+  increase: 0.8
+  decrease: 0.8
 
 variants:
-- id: 50180 # HVC1 (0005_0000) + 180p (0000_0180)
-  idstr: hvc1_180p
-  bitrate: 280k
+- id: 20180 # AV01 (0002_0000) + 180p (0000_0180)
+  idstr: av01_180p
+  bitrate: 200k
   constraints:
     height: ">180"
   options:
@@ -36,9 +35,9 @@ variants:
     - hqdn3d
     - unsharp=5:5:0.5:3:3:0.5
 
-- id: 50360 # HVC1 (0005_0000) + 360p (0000_0360)
-  idstr: hvc1_360p
-  bitrate: 728k # 180pbr x2.6
+- id: 20360 # AV01 (0002_0000) + 360p (0000_0360)
+  idstr: av01_360p
+  bitrate: 520k # 180pbr x2.6
   constraints:
     height: ">360"
   options:
@@ -49,17 +48,17 @@ variants:
     - hqdn3d
     - unsharp=5:5:0.25:3:3:0.25
 
-- id: 50720 # HVC1 (0005_0000) + 720p (0000_0720)
-  idstr: hvc1_720p
-  bitrate: 2038k # 360pbr x2.8
+- id: 20720 # AV01 (0002_0000) + 720p (0000_0720)
+  idstr: av01_720p
+  bitrate: 1456k # 360pbr x2.8
   constraints:
     height: ">720"
   options:
     maxSize: 1728x720
     maxFramerate: 30
 
-- id: 59999 # HVC1 (0005_0000) + (native)p (0000_9999)
-  idstr: hvc1_ntvp
+- id: 29999 # AV01 (0002_0000) + (native)p (0000_9999)
+  idstr: av01_ntvp
   # DO NOT USE "bitrate" ATTRIBUTE!!
   options:
     maxFramerate: 120

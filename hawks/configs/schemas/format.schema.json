@@ -219,6 +219,7 @@
 						"libvpx",
 						"libvpx-vp9",
 						"libaom-av1",
+						"libsvtav1",
 
 						"libmp3lame",
 						"aac",

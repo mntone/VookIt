@@ -17,12 +17,12 @@ I really wanted to write a sentence in Japanese. It means “This software is wr
 - Create MPEG-DASH & HLS files automatically
 - Ultrawide (21.6:9) & 120 fps video support
 - Chunk uploading with JavaScript
+- HEVC (default off) & AV1 video support
 
 ### TODO
 
 - **Manage streams** (I'm sorry. Currently, stream name isn't applied automatically.)
 - **User authentication**
-- **AV1 encoding**
 - Tag
   - Tune encode settings by game title tag.
 - Bypass audio data (ABR 256 kbps AAC-LC only)

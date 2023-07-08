@@ -92,6 +92,7 @@ function getValidCodec(codec: string | undefined): Encoder | undefined {
 	case 'libvpx':
 	case 'libvpx-vp9':
 	case 'libaom-av1':
+	case 'libsvtav1':
 	case 'libmp3lame':
 	case 'aac':
 	case 'aac_at':
