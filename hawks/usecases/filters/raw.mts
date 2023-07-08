@@ -1,14 +1,14 @@
-import { Filter } from './base.mjs'
+import { Filter, FilterType } from './base.mjs'
 
 export class RawFilter extends Filter {
 	#value: string
 
-	constructor(str?: string) {
+	constructor(type: FilterType, str?: string) {
 		if (typeof str !== 'string') {
 			throw new Error('Invalid params.')
 		}
 
-		super('video')
+		super(type)
 
 		this.#value = str
 	}
@@ -18,7 +18,7 @@ export class RawFilter extends Filter {
 		return this
 	}
 
-	override build(): string[] {
-		return [this.#value]
+	override build(): string {
+		return this.#value
 	}
 }

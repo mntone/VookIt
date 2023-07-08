@@ -1,10 +1,10 @@
 import { Size } from '../../models/Size.mjs'
 
-import { Filter } from './base.mjs'
+import { Filter, FilterProperty } from './base.mjs'
 
 export class PadFilter extends Filter {
-	#width = 0
-	#height = 0
+	#width: string | number = 'iw'
+	#height: string | number = 'ih'
 	#padX: string | number = 0
 	#padY: string | number = 0
 
@@ -12,61 +12,16 @@ export class PadFilter extends Filter {
 		super('video')
 
 		if (typeof str === 'string') {
-			if (str.startsWith('pad=')) {
-				str = str.substring(4)
-			}
-
-			let i = 0
-			const params = str.split(':')
-			for (const param of params) {
-				if (params.includes('=')) {
-					const [key, value] = param
-					switch (key) {
-					case 'w':
-					case 'width':
-						this.#width = Number(value)
-						break
-					case 'h':
-					case 'height':
-						this.#height = Number(value)
-						break
-					case 'x':
-						this.#padX = value
-						break
-					case 'y':
-						this.#padY = value
-						break
-					default:
-						break
-					}
-				} else {
-					switch (i++) {
-					case 0:
-						this.#width = Number(param)
-						break
-					case 1:
-						this.#height = Number(param)
-						break
-					case 2:
-						this.#padX = param
-						break
-					case 3:
-						this.#padY = param
-						break
-					default:
-						break
-					}
-				}
-			}
+			this._parseFromDefines(str, PadFilter.properties)
 		}
 	}
 
-	width(value: number) {
+	width(value: string | number) {
 		this.#width = value
 		return this
 	}
 
-	height(value: number) {
+	height(value: string | number) {
 		this.#height = value
 		return this
 	}
@@ -100,9 +55,33 @@ export class PadFilter extends Filter {
 		return this
 	}
 
-	override build(): string[] {
-		return [`pad=${this.#width}:${this.#height}:${this.#padX}:${this.#padY}`]
+	override build(): string {
+		return this._buildFromDefines(
+			PadFilter.filterName,
+			PadFilter.properties,
+		)
+	}
+
+	// Getters for testing.
+	getWidth(): string | number {
+		return this.#width
+	}
+	getHeight(): string | number {
+		return this.#height
+	}
+	getPadX(): string | number {
+		return this.#padX
+	}
+	getPadY(): string | number {
+		return this.#padY
 	}
 
 	static override readonly filterName = 'pad'
+
+	static override readonly properties: FilterProperty[] = [
+		Filter._prop(0, ['w', 'width'], 'iw', t => (t as PadFilter).#width, (t, v) => (t as PadFilter).#width = Filter._getAsStringOrNumber(v)),
+		Filter._prop(1, ['h', 'height'], 'ih', t => (t as PadFilter).#height, (t, v) => (t as PadFilter).#height = Filter._getAsStringOrNumber(v)),
+		Filter._prop(2, ['x'], 0, t => (t as PadFilter).#padX, (t, v) => (t as PadFilter).#padX = Filter._getAsStringOrNumber(v)),
+		Filter._prop(3, ['y'], 0, t => (t as PadFilter).#padY, (t, v) => (t as PadFilter).#padY = Filter._getAsStringOrNumber(v)),
+	]
 }

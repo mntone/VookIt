@@ -8,16 +8,13 @@ import { Size } from '../../models/Size.mjs'
 import { EncodeContext } from '../../models/workers/EncodeContext.mjs'
 import { EncodeData } from '../../models/workers/EncodeData.mjs'
 import { getOutputFilepath } from '../../utils/fileSupport.mjs'
+import { equalsNumber } from '../../utils/number.mjs'
 import { Filters, VideoFilter } from '../filters/index.mjs'
 import { FFmpegProgress, ffmpeg, getAwaiter } from '../trampolines/ffmpeg.mjs'
 
 const EPSILON = 0.000001
 const BASE_LOG_PIXELS = Math.log(1280 * 720)
 const BASE_FRAMERATE = 30
-
-function compareNumber(a: number, b: number) {
-	return Math.abs(a - b) < EPSILON
-}
 
 function calcWidthAs16over9(height: number) {
 	return 2 * Math.round(height * 8 / 9)
@@ -66,7 +63,7 @@ function adjustBitrate(expectedSize: Size, data: VideoData, vnt: Variant) {
 		}
 
 		let pixelRate = expectedSize.width * expectedSize.height / basePixels - 1
-		if (!compareNumber(pixelRate, 0)) {
+		if (!equalsNumber(pixelRate, 0, EPSILON)) {
 			pixelRate *= pixelRate > 0
 				? vnt.tune.decreaseBitrateMultiplier
 				: vnt.tune.increaseBitrateMultiplier
@@ -80,7 +77,7 @@ function adjustBitrate(expectedSize: Size, data: VideoData, vnt: Variant) {
 	} else {
 		const pixels = data.width * data.height
 		let pixelMultiplier = 2 - Math.log(pixels) / BASE_LOG_PIXELS
-		if (!compareNumber(pixelMultiplier, 1)) {
+		if (!equalsNumber(pixelMultiplier, 1, EPSILON)) {
 			pixelMultiplier = pixelMultiplier > 1
 				? pixelMultiplier / vnt.tune.decreaseBitrateMultiplier
 				: pixelMultiplier * vnt.tune.increaseBitrateMultiplier

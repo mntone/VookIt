@@ -351,7 +351,7 @@ export class VideoFilter extends Filter {
 		return `${table.name}=` + commands
 	}
 
-	override build(): string[] {
+	#buildPrivate(): string[] {
 		if (this.#options.useSwscaleForResize) {
 			const sizeCommands = this.#buildSize(scaleTable)
 			const colorCommands = this.#buildColor(VideoFilter.#useZImg ? zscaleTable : colorspaceTable)
@@ -369,6 +369,10 @@ export class VideoFilter extends Filter {
 			const colorCommands = this.#buildColor(colorspaceTable)
 			return [colorCommands, sizeCommands].filter(f => f !== null) as string[]
 		}
+	}
+
+	override build(): string {
+		return this.#buildPrivate().join(',')
 	}
 
 	get src(): ColorRange | undefined {

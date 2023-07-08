@@ -1,76 +1,29 @@
 import { Size } from '../../models/Size.mjs'
 
-import { Filter } from './base.mjs'
+import { Filter, FilterProperty } from './base.mjs'
 
 export class CropFilter extends Filter {
-	#width = 0
-	#height = 0
+	#width: string | number = 'iw'
+	#height: string | number = 'ih'
 	#cropX: string | number = '(iw-ow)/2'
 	#cropY: string | number = '(ih-oh)/2'
-	#exact = true
+	#keepAspect = false
+	#exact = false
 
 	constructor(str?: string) {
 		super('video')
 
 		if (typeof str === 'string') {
-			if (str.startsWith('crop=')) {
-				str = str.substring(5)
-			}
-
-			let i = 0
-			const params = str.split(':')
-			for (const param of params) {
-				if (params.includes('=')) {
-					const [key, value] = param
-					switch (key) {
-					case 'w':
-					case 'width':
-						this.#width = Number(value)
-						break
-					case 'h':
-					case 'height':
-						this.#height = Number(value)
-						break
-					case 'x':
-						this.#cropX = value
-						break
-					case 'y':
-						this.#cropY = value
-						break
-					case 'exact':
-						this.#exact = value === '1'
-						break
-					default:
-						break
-					}
-				} else {
-					switch (i++) {
-					case 0:
-						this.#width = Number(param)
-						break
-					case 1:
-						this.#height = Number(param)
-						break
-					case 2:
-						this.#cropX = param
-						break
-					case 3:
-						this.#cropY = param
-						break
-					default:
-						break
-					}
-				}
-			}
+			this._parseFromDefines(str, CropFilter.properties)
 		}
 	}
 
-	width(value: number) {
+	width(value: string | number) {
 		this.#width = value
 		return this
 	}
 
-	height(value: number) {
+	height(value: string | number) {
 		this.#height = value
 		return this
 	}
@@ -104,15 +57,51 @@ export class CropFilter extends Filter {
 		return this
 	}
 
+	keepAspect(value: boolean) {
+		this.#keepAspect = value
+		return this
+	}
+
 	exact(value: boolean) {
 		this.#exact = value
 		return this
 	}
 
-	override build(): string[] {
-		const footer = this.#exact ? ':exact=1' : ''
-		return [`crop=${this.#width}:${this.#height}:${this.#cropX}:${this.#cropY}` + footer]
+	override build(): string {
+		return this._buildFromDefines(
+			CropFilter.filterName,
+			CropFilter.properties,
+		)
+	}
+
+	// Getters for testing.
+	getWidth(): string | number {
+		return this.#width
+	}
+	getHeight(): string | number {
+		return this.#height
+	}
+	getCropX(): string | number {
+		return this.#cropX
+	}
+	getCropY(): string | number {
+		return this.#cropY
+	}
+	getKeepAspect(): boolean {
+		return this.#keepAspect
+	}
+	getExact(): boolean {
+		return this.#exact
 	}
 
 	static override readonly filterName = 'crop'
+
+	static override readonly properties: FilterProperty[] = [
+		Filter._prop(0, ['w', 'out_w'], 'iw', t => (t as CropFilter).#width, (t, v) => (t as CropFilter).#width = Filter._getAsStringOrNumber(v)),
+		Filter._prop(1, ['h', 'out_h'], 'ih', t => (t as CropFilter).#height, (t, v) => (t as CropFilter).#height = Filter._getAsStringOrNumber(v)),
+		Filter._prop(2, ['x'], '(iw-ow)/2', t => (t as CropFilter).#cropX, (t, v) => (t as CropFilter).#cropX = Filter._getAsStringOrNumber(v)),
+		Filter._prop(3, ['y'], '(ih-oh)/2', t => (t as CropFilter).#cropY, (t, v) => (t as CropFilter).#cropY = Filter._getAsStringOrNumber(v)),
+		Filter._bprop(null, ['keep_aspect'], false, t => (t as CropFilter).#keepAspect, (t, v) => (t as CropFilter).#keepAspect = v),
+		Filter._bprop(null, ['exact'], false, t => (t as CropFilter).#exact, (t, v) => (t as CropFilter).#exact = v),
+	]
 }

@@ -87,7 +87,8 @@ export async function encodeImage(
 				.width(vnt.encodeOptions.maxWidth)
 				.height(vnt.encodeOptions.maxHeight)
 				.cropX(Math.round(0.5 * (expectedSize.width - vnt.encodeOptions.maxWidth)))
-				.cropY(Math.round(0.5 * (expectedSize.height - vnt.encodeOptions.maxHeight))),
+				.cropY(Math.round(0.5 * (expectedSize.height - vnt.encodeOptions.maxHeight)))
+				.exact(true),
 			)
 			break
 		// case 'pad':

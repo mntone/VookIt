@@ -3,6 +3,7 @@ import { CropFilter } from './crop.mjs'
 import { HQDeNoise3DFilter } from './hqdn3d.mjs'
 import { PadFilter } from './pad.mjs'
 import { RawFilter } from './raw.mjs'
+import { UnsharpFilter } from './unsharp.mjs'
 
 export * from './base.mjs'
 export * from './crop.mjs'
@@ -20,6 +21,7 @@ export function getVideoFilters(): Record<string, (new (s?: string) => Filter) |
 		crop: CropFilter,
 		hqdn3d: HQDeNoise3DFilter,
 		pad: PadFilter,
+		unsharp: UnsharpFilter,
 	}
 }
 
@@ -36,7 +38,7 @@ export class Filters {
 					const filter = new keyClass(value)
 					this.#filters.push(filter)
 				} else {
-					const filter = new RawFilter(fstr)
+					const filter = new RawFilter(type, fstr)
 					this.#filters.push(filter)
 				}
 			}
@@ -53,6 +55,6 @@ export class Filters {
 	}
 
 	build(): string {
-		return this.#filters.flatMap(f => f.build()).join(',')
+		return this.#filters.map(f => f.build()).join(',')
 	}
 }

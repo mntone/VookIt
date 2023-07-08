@@ -1,47 +1,27 @@
-import { Filter } from './base.mjs'
+import { Filter, FilterProperty } from './base.mjs'
 
 export class HQDeNoise3DFilter extends Filter {
 	#lumaSpatial = 4
-	#chromaSpatial
-	#lumaTemporal
-	#chromaTemporal
+	#chromaSpatial!: number
+	#lumaTemporal!: number
+	#chromaTemporal!: number
 
 	constructor(str?: string) {
 		super('video')
 
 		let i = 0
 		if (typeof str === 'string') {
-			if (str.startsWith('hqdn3d=')) {
-				str = str.substring(7)
-			}
-
-			const params = str.split(':')
-			for (const param of params) {
-				switch (i++) {
-				case 0:
-					this.#lumaSpatial = Math.max(0, Number(param))
-					break
-				case 1:
-					this.#chromaSpatial = Math.max(0, Number(param))
-					break
-				case 2:
-					this.#lumaTemporal = Math.max(0, Number(param))
-					break
-				case 3:
-					this.#chromaTemporal = Math.max(0, Number(param))
-					break
-				default:
-					break
-				}
-			}
+			i = this._parseFromDefines(str, HQDeNoise3DFilter.properties)
 		}
 		switch (i) {
 		case 2:
 			this.#lumaTemporal = 6 * this.#lumaSpatial / 4
-			this.#chromaTemporal = this.#lumaTemporal * this.#chromaSpatial! / this.#lumaSpatial
+			this.#chromaTemporal = this.#lumaTemporal * this.#chromaSpatial / this.#lumaSpatial
 			break
 		case 3:
-			this.#chromaTemporal = this.#lumaTemporal! * this.#chromaSpatial! / this.#lumaSpatial
+			this.#chromaTemporal = this.#lumaTemporal * this.#chromaSpatial / this.#lumaSpatial
+			break
+		case 4:
 			break
 		default:
 			this.#chromaSpatial = 3 * this.#lumaSpatial / 4
@@ -83,9 +63,33 @@ export class HQDeNoise3DFilter extends Filter {
 		return this
 	}
 
-	override build(): string[] {
-		return [`hqdn3d=${this.#lumaSpatial}:${this.#chromaSpatial}:${this.#lumaTemporal}:${this.#chromaTemporal}`]
+	override build(): string {
+		return this._buildFromDefines(
+			HQDeNoise3DFilter.filterName,
+			HQDeNoise3DFilter.properties,
+		)
+	}
+
+	// Getters for testing.
+	getLumaSpatial(): number {
+		return this.#lumaSpatial
+	}
+	getChromaSpatial(): number {
+		return this.#chromaSpatial
+	}
+	getLumaTemporal(): number {
+		return this.#lumaTemporal
+	}
+	getChromaTemporal(): number {
+		return this.#chromaTemporal
 	}
 
 	static override readonly filterName = 'hqdn3d'
+
+	static override readonly properties: FilterProperty[] = [
+		Filter._nprop(0, null, 4, 0, Infinity, t => (t as HQDeNoise3DFilter).#lumaSpatial, (t, v) => (t as HQDeNoise3DFilter).#lumaSpatial = v),
+		Filter._nprop(1, null, 3, 0, Infinity, t => (t as HQDeNoise3DFilter).#chromaSpatial, (t, v) => (t as HQDeNoise3DFilter).#chromaSpatial = v),
+		Filter._nprop(2, null, 6, 0, Infinity, t => (t as HQDeNoise3DFilter).#lumaTemporal, (t, v) => (t as HQDeNoise3DFilter).#lumaTemporal = v),
+		Filter._nprop(3, null, 4.5, 0, Infinity, t => (t as HQDeNoise3DFilter).#chromaTemporal, (t, v) => (t as HQDeNoise3DFilter).#chromaTemporal = v),
+	]
 }
