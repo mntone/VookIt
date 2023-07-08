@@ -85,7 +85,7 @@ __ffmpeg.__cache__ = cache
  * @param arg The command arg
  * @returns   The ffmpeg result as string
  */
-function ffmpegSync(arg: string): string {
+function ffmpegSync(arg: string): string | null {
 	const data = shell.spawnSync(
 		'ffmpeg',
 		['-hide_banner', '-nostdin', arg],
@@ -133,6 +133,7 @@ type FFmpegFilter = {
 
 /**
  * Get ffmpeg supported filters.
+ * @returns The ffmpeg filters data
  */
 function ffmpegFilters() {
 	if (__ffmpeg.__cache__.filters) {
@@ -140,6 +141,9 @@ function ffmpegFilters() {
 	}
 
 	const data = ffmpegSync('-filters')
+	if (data === null) {
+		return []
+	}
 	if (data.startsWith('No filter name specified.')
 		|| data.startsWith('Unknown filter ')) {
 		return []

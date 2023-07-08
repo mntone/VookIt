@@ -2,7 +2,7 @@ import { ColorPrimaries, MatrixCoefficients, TransferCharacteristics } from '../
 import { AllMediaData } from '../../models/encoders/MediaData.mjs'
 import { initFramerate, parseFramerate } from '../../models/Framerate.mjs'
 import { FFprobeStreamEntriesOptions } from '../../models/trampolines/FFprobeOptions.mjs'
-import { FFprobeAudioStreamEntries, FFprobeVideoStreamEntries, FFproveColorSpace } from '../../models/trampolines/FFprobeStreamEntries.mjs'
+import { FFprobeAudioStreamEntries, FFprobeVideoStreamEntries } from '../../models/trampolines/FFprobeStreamEntries.mjs'
 import { normalizeColorPrimaries, normalizeColorRange, normalizeColorTransfer, normalizeMatrixCoefficients } from '../mappers/ffprobe.mjs'
 import { ffproveSync } from '../trampolines/ffprobe.mjs'
 

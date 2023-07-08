@@ -2,7 +2,6 @@ import { spawnSync } from 'child_process'
 
 import snakeCase from 'lodash.snakecase'
 
-// @ts-expect-error
 import toCommand from '../../encoders/utils/command.js'
 import { FFprobeEntries, FFprobeOptions } from '../../models/trampolines/FFprobeOptions.mjs'
 

@@ -28,7 +28,7 @@ describe('init', () => {
 	})
 
 	test('string with 3 parameters', () => {
-		const f = new HQDeNoise3DFilter(`5:4:5`)
+		const f = new HQDeNoise3DFilter('5:4:5')
 		expect(f.getLumaSpatial()).toBe(5)
 		expect(f.getChromaSpatial()).toBe(4)
 		expect(f.getLumaTemporal()).toBe(5)
@@ -36,7 +36,7 @@ describe('init', () => {
 	})
 
 	test('string with 4 parameters', () => {
-		const f = new HQDeNoise3DFilter(`5:4:5:8`)
+		const f = new HQDeNoise3DFilter('5:4:5:8')
 		expect(f.getLumaSpatial()).toBe(5)
 		expect(f.getChromaSpatial()).toBe(4)
 		expect(f.getLumaTemporal()).toBe(5)

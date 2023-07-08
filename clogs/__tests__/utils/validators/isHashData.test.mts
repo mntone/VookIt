@@ -45,4 +45,3 @@ describe('shadata', () => {
 		expect(isHashData('sha512-fPLlcwzeoi98L26PuSb/c4Rksg7GGluKHIP0+s7NrjBvKaK3aFItXPDzZ3R/MM45x0hjJ4+ubCfhfOnjC2zL2Q==')).toBe(true)
 	})
 })
-

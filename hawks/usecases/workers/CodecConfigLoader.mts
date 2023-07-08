@@ -3,7 +3,6 @@ import { readFile } from 'fs/promises'
 import { glob } from 'glob'
 import { load as yamlLoad } from 'js-yaml'
 
-// @ts-expect-error
 import env from '../../../constants/env.js'
 import { CodecConfig } from '../../models/configs/CodecConfig.mjs'
 import { AudioCodec, Codec, ImageCodec, Media, VideoCodec } from '../../models/encoders/Codec.mjs'
@@ -121,9 +120,7 @@ export class CodecConfigLoader {
 		return this.#codecByType[type]
 	}
 
-	codecBy(codecId: number): Codec
-	codecBy(codecId: string): Codec
-	codecBy(codecId: number|string) {
+	codecBy(codecId: number | string) {
 		if (typeof codecId === 'string') {
 			return this.#codecByFriendlyId[codecId]
 		} else {

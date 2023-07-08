@@ -1,4 +1,3 @@
-// @ts-expect-error
 import env from '../../../constants/env.js'
 import { Codec } from '../../models/encoders/Codec.mjs'
 import { AllMediaData } from '../../models/encoders/MediaData.mjs'

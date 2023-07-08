@@ -99,7 +99,17 @@ export abstract class Filter {
 		const pairs: Record<string, string> = {}
 
 		for (const prop of properties.slice().reverse()) {
-			if (prop.propertyType === 'boolean') {
+			if (prop.propertyType === 'number') {
+				const nprop = prop as NumberFilterProperty
+				const propertyValue = nprop.getValue(this)
+				if (nprop.index === null) {
+					if (propertyValue !== nprop.defaultValue) {
+						pairs[nprop.parameterNames[0]] = propertyValue.toString()
+					}
+				} else if (args.length !== 0 || !equalsNumber(propertyValue, nprop.defaultValue)) {
+					args.unshift(propertyValue.toString())
+				}
+			} else if (prop.propertyType === 'boolean') {
 				const bprop = prop as BooleanFilterProperty
 				const propertyValue = bprop.getValue(this)
 				if (bprop.index === null) {
