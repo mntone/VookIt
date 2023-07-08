@@ -1,6 +1,7 @@
 import { ColorRange, MatrixCoefficients, TransferCharacteristics } from '../../models/Colors.mjs'
 import { EncodeOptions, Encoder, PixelFormat, ResizeMethod, ResizeMode } from '../../models/encoders/EncodeOptions.mjs'
 import { Size, parseSize } from '../../models/Size.mjs'
+import { isMac } from '../../utils/os.mjs'
 
 function getValidResizeMode(resizeMode: string | undefined): ResizeMode | undefined {
 	switch (resizeMode) {
@@ -95,9 +96,15 @@ function getValidCodec(codec: string | undefined): Encoder | undefined {
 	case 'libsvtav1':
 	case 'libmp3lame':
 	case 'aac':
-	case 'aac_at':
 	case 'libopus':
 		return codec
+	case 'aac_at':
+		if (isMac) {
+			console.warn('Use "aac" instead of "aac_at". It is macOS only.')
+			return codec
+		} else {
+			return 'aac'
+		}
 	default:
 		throw new Error('Unknown codec.')
 	}

@@ -1,14 +1,6 @@
-const { isMac } = require('../../utils/OSSupport')
-
 const FFmpegOptions = require('./ffmpeg')
 
 class FFmpegAudioOptions extends FFmpegOptions {
-	/**
-	 * Audio codec
-	 * @type {symbol}
-	 */
-	#codec
-
 	/**
 	 * Audio channel
 	 * @type {number}
@@ -18,24 +10,18 @@ class FFmpegAudioOptions extends FFmpegOptions {
 	#params
 
 	/**
-	 * @param {symbol|string|null|undefined} codec
-	 * @param {string}                       bitrate
-	 * @param {object}                       params
+	 * @param {number} bitrate
+	 * @param {object} params
 	 */
 	constructor(
-		codec,
 		bitrate = 128 * 1024,
 		params = undefined) {
 		super(bitrate)
 
-		this.#codec = FFmpegOptions._getNormalizedValue(
-			codec,
-			isMac()
-				? FFmpegAudioOptions.Codec.AAC_AUDIOTOOLBOX
-				: FFmpegAudioOptions.Codec.AAC,
-			FFmpegAudioOptions.isCodecValid,
-			FFmpegAudioOptions.parseCodec,
-		)
+		if (typeof params.codec !== 'string') {
+			throw new Error('The codec is invalid.')
+		}
+
 		this.#channel = 2
 		this.#params = params || {}
 	}
@@ -49,9 +35,9 @@ class FFmpegAudioOptions extends FFmpegOptions {
 
 		const args2 = {
 			map: '0:a:0',
-			acodec: this.codec.description,
+			acodec: this.#params.codec,
 			ac: this.channel,
-			b: this.bitrate,
+			['b:a']: this.bitrate,
 		}
 		Object.assign(args, args2)
 
@@ -61,38 +47,17 @@ class FFmpegAudioOptions extends FFmpegOptions {
 			args['af'] = 'aformat=sample_rates=' + this.#params.sampleRate
 		}
 
-		switch (this.codec) {
-		case FFmpegAudioOptions.Codec.MP3_LAME:
+		switch (this.#params.codec) {
+		case 'libmp3lame':
 			args['strict'] = 'unofficial'
 			break
-		case FFmpegAudioOptions.Codec.AAC:
+		case 'aac':
+		case 'aac_at':
 			args['strict'] = 'experimental'
 			break
 		default:
 			break
 		}
-	}
-
-	/**
-	 * Get audio codec.
-	 * @type {symbol}
-	 */
-	get codec() {
-		return this.#codec
-	}
-	/**
-	 * Set audio codec.
-	 * @type {symbol}
-	 */
-	set codec(value) {
-		if (FFmpegAudioOptions.isCodecValid(value)) {
-			throw Error(`This value (${value.toString()}) is invalid.`)
-		}
-		if (!isMac && value === FFmpegAudioOptions.Codec.AAC_AUDIOTOOLBOX) {
-			console.warn('AAC_AUDIOTOOLBOX is not supported. This is macOS only.')
-			value = FFmpegAudioOptions.Codec.AAC
-		}
-		this.#codec = value
 	}
 
 	/**
@@ -115,64 +80,12 @@ class FFmpegAudioOptions extends FFmpegOptions {
 	}
 
 	static _upperLimitBitrate() {
-		if (this.codec === FFmpegAudioOptions.Codec.MP3_LAME) {
+		if (this.#params.codec === 'libmp3lame') {
 			return 320 * 1024 /* 320 KB */
 		} else {
 			return FFmpegOptions._upperLimitBitrate()
 		}
 	}
-
-	/**
-	 * Is audio codec valid.
-	 * @param   {symbol}  codec
-	 * @returns {boolean}
-	 */
-	static isCodecValid(codec) {
-		return Object.values(FFmpegAudioOptions.Codec).includes(codec)
-	}
-
-	/**
-	 * Parse audio codec.
-	 * @param   {string} str
-	 * @returns {symbol}
-	 */
-	static parseCodec(str) {
-		let ret
-		switch (str.toLowerCase()) {
-		case 'mp3':
-		case 'lame':
-		case 'libmp3lame':
-			ret = FFmpegAudioOptions.Codec.MP3_LAME
-			break
-		case 'aac':
-		case 'mp4a':
-			ret = FFmpegAudioOptions.Codec.AAC
-			break
-		case 'aac_at':
-		case 'aac_audiotoolbox':
-			ret = FFmpegAudioOptions.Codec.AAC_AUDIOTOOLBOX
-			break
-		case 'opus':
-		case 'libopus':
-			ret = FFmpegAudioOptions.Codec.OPUS
-			break
-		default:
-			throw Error(`This value (${str.toString()}) is invalid.`)
-		}
-		return ret
-	}
 }
-
-FFmpegAudioOptions.Codec = Object.freeze({
-	// MP3
-	MP3_LAME: Symbol('libmp3lame'),
-
-	// AAC
-	AAC: Symbol('aac'),
-	AAC_AUDIOTOOLBOX: Symbol('aac_at'), // macOS only
-
-	// Opus
-	OPUS: Symbol('libopus'),
-})
 
 module.exports = FFmpegAudioOptions

@@ -1,4 +1,4 @@
-import { platform } from 'os'
+import { isWin } from '../../utils/os.mjs'
 
 import { __shellLinux } from './shell.linux.mjs'
 import { __shellWindows } from './shell.windows.mjs'
@@ -9,10 +9,9 @@ export type ShellType = {
 }
 
 export const shell: ShellType = (() => {
-	switch (platform()) {
-	case 'win32':
+	if (isWin) {
 		return __shellWindows
-	default:
+	} else {
 		return __shellLinux
 	}
 })()

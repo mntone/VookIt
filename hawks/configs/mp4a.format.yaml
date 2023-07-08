@@ -14,7 +14,7 @@ options:
 variants:
 - id: 1000064 # MP4A (0100_0000) + 64 kbps (0000_0064)
   idstr: mp4a_64k
-  bitrate: 32k
+  bitrate: 64k
   options:
     sampleRate: [16000, 22050, 24000, 32000, 44100, 48000]
 
