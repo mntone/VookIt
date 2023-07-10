@@ -20,3 +20,7 @@ node_modules/
 .dst/
 .media/
 .temp/
+
+# Ignore actual configuration files.
+configurations/*.yaml
+!configurations/*.example.yaml

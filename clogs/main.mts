@@ -5,7 +5,7 @@ import babelRegister from '@babel/register'
 import { NestFactory } from '@nestjs/core'
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify'
 
-import env from '../constants/env.js'
+import { loadConfigurations } from '../configurations/configurations.mjs'
 import initConstants from '../constants/init.js'
 
 import { AppModule } from './app.module.mjs'
@@ -21,24 +21,34 @@ async function bootstrap() {
 	// Init babel for JSX.
 	babelRegister()
 
+	// Load configurations.
+	const conf = loadConfigurations().http
+
 	// Start up fastify.
-	const fastifyOptions = {
-		http2: true,
-		https: {
-			allowHTTP1: true,
-			key: await readFile(env.sslKeyFile),
-			cert: await readFile(env.sslCertFile),
-		},
-		logger: !isProd,
-		maxParamLength: 25,
-	}
+	const fastifyOptions = conf.ssl
+		? {
+			http2: conf.http2 === true,
+			https: {
+				allowHTTP1: true,
+				key: await readFile(conf.ssl.key),
+				cert: await readFile(conf.ssl.cert),
+			},
+			logger: !isProd,
+			maxParamLength: 25,
+		}
+		: {
+			logger: !isProd,
+			maxParamLength: 25,
+		}
 	const app = await NestFactory.create<NestFastifyApplication>(
 		AppModule,
 		new FastifyAdapter(fastifyOptions),
 	)
 	await setupFastify(app)
 	setupBullMQ(app)
-	await app.listen(env.port)
+
+	// Listen
+	await app.listen(conf.port, conf.host)
 }
 
 bootstrap()

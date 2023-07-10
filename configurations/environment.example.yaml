@@ -1,0 +1,9 @@
+# Server settings
+# [Note] Quickly start with the command "npm run openssl:init"
+http:
+  http2: true
+  host: localhost
+  port: 443
+  ssl:
+    key: .dev/key.pem
+    cert: .dev/cert.pem
