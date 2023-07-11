@@ -50,7 +50,7 @@ function UploadPage({ t, language, session }) {
 			language={language}
 			session={session}
 			stylesheets={`${env.styleRelativePath}/form.css`}>
-			<div className="c">
+			<div className="d">
 				<h1>{title}</h1>
 
 				<form action="/api/upload" encType="multipart/form-data" method="POST">

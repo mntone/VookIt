@@ -4,9 +4,6 @@
 @use "../base/backport" as *
 @use "../base/variables" as *
 
-$navbar-item-color: $black
-$navbar-item-hover-color: $accent-dark1
-
 // navbar
 .nn
 	contain: strict
@@ -30,7 +27,7 @@ a[href].n-item
 	&:focus,
 	&:focus-within,
 	&:hover
-		color: $navbar-item-hover-color // TODO move to paint
+		color: var(--a1)
 
 .n-brand
 	color: transparent !important

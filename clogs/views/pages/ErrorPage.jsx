@@ -19,7 +19,7 @@ function ErrorPage({ t, language, session, description }) {
 			title={title}
 			language={language}
 			session={session}>
-			<div className="c">
+			<div className="d">
 				<h1>{title}</h1>
 				<p>{description}</p>
 			</div>

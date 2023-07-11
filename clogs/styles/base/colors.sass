@@ -1,0 +1,52 @@
+@use "sass:math"
+@use "sass:color"
+
+@use "../mixins" as *
+@use "./variables" as *
+
+$shadow-from: 1
+$shadow-to: 4
+
+=define-shadow-light($i)
+	--s#{$i}: 0 0 2px rgba(0, 0, 0, .12), 0 #{0.5 * $i}px #{$i}px rgba(0, 0, 0, .14)
+
+=define-shadow-dark($i)
+	--s#{$i}: 0 0 2px rgba(0, 0, 0, .24), 0 #{0.5 * $i}px #{$i}px rgba(0, 0, 0, .28)
+
+:root
+	--f: #{$black}
+	--f1: #{$black-dark1}
+	--f2: #{$black-dark2}
+	--f3: #{$black-dark3}
+	--b: #{$white}
+	--b-gl: #{$glass-background-light}
+	--a: #{$accent-light}
+	--a1: #{$accent-light-dark1}
+
+	--bgg: #{$background-gradient-color-light}
+	--bgg1: #{color.mix($background-gradient-color-light, $background-gradient-base-light, 66.6666%)}
+	--bgg2: #{color.mix($background-gradient-color-light, $background-gradient-base-light, 33.3333%)}
+	--bgg3: #{$background-gradient-base-light}
+
+	@for $i from $shadow-from through $shadow-to
+		+define-shadow-light(math.pow(2, $i))
+	--s64: 0 0 8px rgba(0, 0, 0, .12), 0 32px 64px rgba(0, 0, 0, .14)
+
+	+dark
+		--f: #{$white}
+		--f1: #{$white-dark1}
+		--f2: #{$white-dark2}
+		--f3: #{$white-dark3}
+		--b: #{$black}
+		--b-gl: #{$glass-background-dark}
+		--a: #{$accent-dark}
+		--a1: #{$accent-dark-dark1}
+
+		--bgg: #{$background-gradient-color-dark}
+		--bgg1: #{color.mix($background-gradient-color-dark, $background-gradient-base-dark, 66.6667%)}
+		--bgg2: #{color.mix($background-gradient-color-dark, $background-gradient-base-dark, 33.3333%)}
+		--bgg3: #{$background-gradient-base-dark}
+
+		@for $i from $shadow-from through $shadow-to
+			+define-shadow-dark(math.pow(2, $i))
+		--s64: 0 0 8px rgba(0, 0, 0, .24), 0 32px 64px rgba(0, 0, 0, .28)

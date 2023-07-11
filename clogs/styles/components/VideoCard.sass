@@ -23,10 +23,7 @@
 			right: auto
 			bottom: auto
 
-$VideoCard-text: $black
-$VideoCard-text-hover: $black-dark2
-$VideoCard-border: $accent
-$VideoCard-radius: 16px
+$VideoCard-radius: 1em
 
 $VideoCard-content-spacing-top: .5rem
 $VideoCard-content-spacing-gap: .125rem
@@ -38,12 +35,9 @@ $VideoCard-content-height: calc(3rem + $VideoCard-content-spacing-top + $VideoCa
 	position: relative
 	z-index: 1
 	border-radius: $VideoCard-radius
-	+glass(#FFFFFF)
-	box-shadow: $shadow4
+	+glass-hoverable
 	+unselectable
 	+default-transition(box-shadow)
-	&:hover
-		box-shadow: $shadow16
 
 	figure
 		+aspect-ratio(16, 9, relative)
@@ -74,14 +68,16 @@ $VideoCard-content-height: calc(3rem + $VideoCard-content-spacing-top + $VideoCa
 	&-link
 		display: block
 		border-radius: $VideoCard-radius
-		color: $VideoCard-text
+		color: var(--f)
+		&:hover
+			color: var(--f2)
 		box-shadow: inset 0 0 0px 2px transparent
 		+default-transition(color, box-shadow)
 		&:after
 			position: absolute
 			top: 0
 			left: 0
-			border: 3px solid $VideoCard-border
+			border: 3px solid var(--a)
 			border-radius: $VideoCard-radius
 			content: ""
 			width: 100%
@@ -92,7 +88,6 @@ $VideoCard-content-height: calc(3rem + $VideoCard-content-spacing-top + $VideoCa
 				border-bottom-left-radius: 0
 				border-bottom-right-radius: 0
 		&:hover
-			color: $VideoCard-text-hover
-			box-shadow: inset 0 0 0px 5px white // last params is current background
+			box-shadow: inset 0 0 0px 5px var(--bgg3)
 			&:after
 				opacity: 1

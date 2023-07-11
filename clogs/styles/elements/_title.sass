@@ -1,3 +1,4 @@
+@use "../mixins" as *
 @use "../base/variables" as *
 
 =base
@@ -8,13 +9,13 @@
 	+base
 	line-height: 1.25
 	letter-spacing: -.01em
-	color: $black-dark2
+	color: var(--f2)
 	a:hover
-		color: $black-dark3
+		color: var(--f3)
 
 =sub
 	+base
 	line-height: 1.375
-	color: $black-dark1
+	color: var(--f1)
 	a:hover
-		color: $black-dark2
+		color: var(--f2)

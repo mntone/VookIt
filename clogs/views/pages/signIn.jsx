@@ -49,7 +49,7 @@ function SignInPage({ t, language, session, redirect }) {
 			stylesheets={`${env.styleRelativePath}/form.css`}
 			scripts="signin"
 			lastChild={<script dangerouslySetInnerHTML={{ __html: getInlineScript(t) }} defer={true} />}>
-			<div className="c">
+			<div className="d d-narrow">
 				<h1>{pageTitle}</h1>
 
 				<form action="/auth/login" method="POST">

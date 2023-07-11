@@ -1,8 +1,23 @@
 @use "sass:color"
 
-@use "../mixins" as m
+@use "../mixins" as *
+@use "../base/variables" as *
 
-=glass($background-color: null)
-	@if $background-color
-		background-color: color.adjust($background-color, $alpha: -0.333)
-	+m.backdrop-filter(blur(2px))
+$glass-blur: .25em
+
+=glass($background-color-light: null, $background-color-dark: null)
+	@if $background-color-light and $background-color-dark
+		background-color: color.adjust($background-color-light, $alpha: -0.333)
+		+dark
+			background-color: color.adjust($background-color-dark, $alpha: -0.2)
+	@else
+		background-color: var(--b-gl)
+	+backdrop-filter(blur($glass-blur))
+	box-shadow: var(--s8)
+
+=glass-hoverable
+	background-color: var(--b-gl)
+	+backdrop-filter(blur($glass-blur))
+	box-shadow: var(--s4)
+	&:hover
+		box-shadow: var(--s16)

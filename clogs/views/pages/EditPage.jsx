@@ -53,7 +53,7 @@ function EditPage({ t, language, session, post }) {
 			stylesheets={`${env.styleRelativePath}/form.css`}
 			scripts="edit"
 			lastChild={<script dangerouslySetInnerHTML={{ __html: getInlineScript(t) }} defer={true} />}>
-			<div className="c">
+			<div className="d">
 				<h1>{pageTitle}</h1>
 
 				<form action={`/api/post/${usid}.html`} method="POST">

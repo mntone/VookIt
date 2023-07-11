@@ -29,10 +29,11 @@ $button-dark-background--hover: color.scale(color.adjust($button-dark-background
 // - Accent colors
 $button-accent-foreground: $white
 $button-accent-foreground--hover: $white-dark1
-$button-accent-background: $accent
+$button-accent-background: $accent-light
 $button-accent-background--hover: color.adjust($button-accent-background, $blackness: 10%)
 
 // - Dark Accent colors
+$button-accent-dark-background: $accent-dark
 $button-accent-dark-background--hover: color.scale($button-accent-background, $whiteness: 15%)
 
 // CSS Variables
@@ -58,6 +59,7 @@ $button-accent-dark-background--hover: color.scale($button-accent-background, $w
 	--c-a-background: #{$button-accent-background}
 	--c-a-background--hover: #{$button-accent-background--hover}
 	+dark
+		--c-a-background: #{$button-accent-dark-background}
 		--c-a-background--hover: #{$button-accent-dark-background--hover}
 
 // Mix-ins
@@ -92,6 +94,7 @@ $button-accent-dark-background--hover: color.scale($button-accent-background, $w
 
 	// Text
 	line-height: 1
+	white-space: nowrap
 
 // Normalize
 button
