@@ -52,10 +52,17 @@ export async function setupFastify(app: NestFastifyApplication) {
 	})
 
 	// Set default renderer.
-	app.register(fastifyReactView, {
-		defaultHeaders: {
+	const defaultHeaders: Record<string, string> = {
+		'Referrer-Policy': 'no-referrer',
 			'X-Content-Type-Options': 'nosniff',
-		},
+		'X-Download-Options': 'noopen',
+		'X-Frame-Options': 'DENY',
+	}
+	if (conf.http.ssl) {
+		defaultHeaders['Strict-Transport-Security'] = 'max-age=' + (3 * 365 * 24 * 60 * 60).toString()
+	}
+	app.register(fastifyReactView, {
+		defaultHeaders,
 		root: './clogs/views/pages',
 	})
 
