@@ -53,21 +53,23 @@ module.exports = {
 
 	// --- User configs
 	// Defines the length of screenname
-	screennameLength: {
-		min: 3,
-		max: 128,
-	},
+	screennameMinimumLength: 3,
+	screennameMaximumLength: 127,
+
+	// Defines the length of password
+	passwordMinimumLength: 10,
+	passwordMaximumLength: 127,
 
 	// Defines the length of name
 	nameLength: {
-		max: 256,
+		max: 255,
 	},
 
 	// --- Post configs
 	// Defines the length of title
 	titleLength: {
 		min: 1,
-		max: 64,
+		max: 63,
 	},
 
 	// Defines the maximum length of description

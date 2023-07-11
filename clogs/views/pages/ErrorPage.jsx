@@ -7,16 +7,18 @@ const Root = require('../components/Root')
  * @param   {object}                   props
  * @param   {function(string): string} props.t
  * @param   {string}                   props.language
+ * @param   {object}                   props.session
  * @param   {string}                   props.description
  * @returns {React.JSX.Element}
  */
-function ErrorPage({ t, language, description }) {
+function ErrorPage({ t, language, session, description }) {
 	const title = t('errorpage.pagetitle')
 	return (
 		<Root
 			t={t}
 			title={title}
-			language={language}>
+			language={language}
+			session={session}>
 			<div className="c">
 				<h1>{title}</h1>
 				<p>{description}</p>
@@ -27,6 +29,9 @@ function ErrorPage({ t, language, description }) {
 ErrorPage.propTypes = {
 	t: PropTypes.func.isRequired,
 	language: PropTypes.string.isRequired,
+	session: PropTypes.shape({
+		uid: PropTypes.number,
+	}),
 	description: PropTypes.string.isRequired,
 }
 

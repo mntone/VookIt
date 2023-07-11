@@ -37,9 +37,10 @@ window.hookUpload(Object.freeze({
  * @param   {object}                   props
  * @param   {function(string): string} props.t
  * @param   {string}                   props.language
+ * @param   {object}                   props.session
  * @returns {React.JSX.Element}
  */
-function UploadPage({ t, language }) {
+function UploadPage({ t, language, session }) {
 	const title = t('uploadpage.pagetitle')
 	const accept = env.uploadSupportExtensions.concat(env.uploadSupportMimeTypes).join(',')
 	return (
@@ -47,6 +48,7 @@ function UploadPage({ t, language }) {
 			t={t}
 			title={title}
 			language={language}
+			session={session}
 			stylesheets={`${env.styleRelativePath}/form.css`}>
 			<div className="c">
 				<h1>{title}</h1>
@@ -82,6 +84,9 @@ function UploadPage({ t, language }) {
 UploadPage.propTypes = {
 	t: PropTypes.func.isRequired,
 	language: PropTypes.string.isRequired,
+	session: PropTypes.shape({
+		uid: PropTypes.number,
+	}),
 }
 
 module.exports = UploadPage

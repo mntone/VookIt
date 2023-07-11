@@ -7,3 +7,10 @@ http:
   ssl:
     key: .dev/key.pem
     cert: .dev/cert.pem
+
+# Session settings
+# [Note] Quickly start with the command "npm run session:init"
+session:
+  cookieName: __Host-s
+  cookieMaxAge: 1209600 # 14 days (14 * 24 * 60 * 60)
+  key: .dev/session.key

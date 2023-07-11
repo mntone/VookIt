@@ -14,7 +14,7 @@ const getInlineScript = t => {
 		.replace('{{maximum}}', env.descriptionMaximumLength)
 	return `
 'use strict'
-new window.EditForm({
+new window.EditForm(Object.freeze({
 	title: ['title', {
 		invalidClassName: 'is-danger',
 		messageElementId: 'title-validation',
@@ -28,7 +28,7 @@ new window.EditForm({
 	visibility: 'visibility',
 	update: 'update',
 	cancel: 'cancel',
-})
+}))
 `
 }
 
@@ -36,10 +36,11 @@ new window.EditForm({
  * @param   {object}                        props
  * @param   {function(string): string}      props.t
  * @param   {string}                        props.language
+ * @param   {object}                        props.session
  * @param   {import('@prisma/client').Post} props.post
  * @returns
  */
-function EditPage({ t, language, post }) {
+function EditPage({ t, language, session, post }) {
 	const pageTitle = t('editpage.pagetitle')
 	const usid = numToUsid(post.id)
 	return (
@@ -47,6 +48,8 @@ function EditPage({ t, language, post }) {
 			t={t}
 			title={pageTitle}
 			language={language}
+			session={session}
+			redirect={'%2Fe%2F' + usid}
 			stylesheets={`${env.styleRelativePath}/form.css`}
 			scripts="edit"
 			lastChild={<script dangerouslySetInnerHTML={{ __html: getInlineScript(t) }} defer={true} />}>
@@ -98,6 +101,9 @@ function EditPage({ t, language, post }) {
 EditPage.propTypes = {
 	t: PropTypes.func.isRequired,
 	language: PropTypes.string.isRequired,
+	session: PropTypes.shape({
+		uid: PropTypes.number,
+	}),
 	post: PropTypes.shape({
 		id: PropTypes.number.isRequired,
 		title: PropTypes.string.isRequired,

@@ -4,6 +4,7 @@ import { ConfigModule } from '@nestjs/config'
 import { loadConfigurations } from '../configurations/configurations.mjs'
 
 import { ApisModule } from './controllers/apis/apis.module.mjs'
+import { AuthenticationsModule } from './controllers/authentications/authentications.module.mjs'
 import { RootModule } from './controllers/roots/roots.module.mjs'
 
 @Module({
@@ -14,6 +15,7 @@ import { RootModule } from './controllers/roots/roots.module.mjs'
 			load: [loadConfigurations],
 		}),
 		RootModule,
+		AuthenticationsModule,
 		ApisModule,
 	],
 })

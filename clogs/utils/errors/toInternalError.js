@@ -4,9 +4,9 @@ const InternalError = require('./InternalError.js')
 
 /**
  *
- * @param   {string}               fieldName
- * @param   {number}               statusCode
- * @returns {(err: Error) => void}
+ * @param   {string}                fieldName
+ * @param   {number}                statusCode
+ * @returns {(err: Error) => never}
  */
 function toInternalError(fieldName, statusCode = 400) {
 	return err => {

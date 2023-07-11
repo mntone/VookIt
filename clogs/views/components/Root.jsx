@@ -11,6 +11,9 @@ const NavBar = require('./NavBar')
 /**
  * @param   {object}                            props
  * @param   {function(string): string}          props.t
+ * @param   {object}                            props.session
+ * @param   {number?}                           props.session.uid
+ * @param   {string?}                           props.redirect
  * @param   {string?}                           props.title
  * @param   {string}                            props.language
  * @param   {string|undefined}                  props.className
@@ -21,7 +24,7 @@ const NavBar = require('./NavBar')
  * @param   {React.ReactNode[]|React.ReactNode} props.lastChild
  * @returns {React.JSX.Element}
  */
-function Root({ t, title, language, className, toppageLinkEnabled, stylesheets, scripts, lastChild, children }) {
+function Root({ t, session, redirect, title, language, className, toppageLinkEnabled, stylesheets, scripts, lastChild, children }) {
 	if (typeof stylesheets === 'string') {
 		stylesheets = [stylesheets]
 	}
@@ -53,7 +56,11 @@ function Root({ t, title, language, className, toppageLinkEnabled, stylesheets, 
 				})}
 			</head>
 			<body className={className}>
-				<NavBar t={t} linkEnabled={toppageLinkEnabled} />
+				<NavBar
+					t={t}
+					session={session}
+					redirect={redirect}
+					linkEnabled={toppageLinkEnabled} />
 
 				<main id="m">
 					{children}
@@ -70,6 +77,10 @@ function Root({ t, title, language, className, toppageLinkEnabled, stylesheets, 
 }
 Root.propTypes = {
 	t: PropTypes.func.isRequired,
+	session: PropTypes.shape({
+		uid: PropTypes.number,
+	}),
+	redirect: PropTypes.string,
 	title: PropTypes.string,
 	language: PropTypes.string.isRequired,
 	className: PropTypes.string,

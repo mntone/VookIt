@@ -3,6 +3,7 @@ import { ApiProperty } from '@nestjs/swagger'
 import { IsIn, Length, MaxLength } from 'class-validator'
 
 import env from '../../../../../constants/env.js'
+import { getLengthMessage } from '../../../../utils/validators/lengthMessage.mjs'
 
 export class EditDto {
 	@ApiProperty({
@@ -10,18 +11,7 @@ export class EditDto {
 		type: String,
 	})
 	@Length(env.titleLength.min, env.titleLength.max, {
-		message: args => {
-			const value = args.value ? args.value.length : 0
-			let conditionMessage
-			if (value === 0) {
-				conditionMessage = 'empty'
-			} else if (value < env.titleLength.min) {
-				conditionMessage = 'too short'
-			} else {
-				conditionMessage = 'too long'
-			}
-			return `The ${args.property} is ${conditionMessage}. Its length should be betweet ${args.constraints[0]} and ${args.constraints[1]}, but actual length is ${value}.`
-		},
+		message: getLengthMessage,
 	})
 	readonly title!: string
 

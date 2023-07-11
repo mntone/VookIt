@@ -1,6 +1,8 @@
 sitename: "VookIt!"
 
 navbar:
+  login: ログイン
+  logout: ログアウト
   upload: アップロード
   settings: 設定
   modal:
@@ -22,6 +24,15 @@ viewpage:
   edit: 編集
   error:
     id: "変数 `id` はURL安全BASE64である必要があります。"
+
+signinpage:
+  pagetitle: ログイン
+  screenname: スクリーン ネーム
+  password: パスワード
+  signin: ログイン
+  validation:
+    screenname: スクリーン ネームは{{minimum}}～{{maximum}}文字にする必要があります
+    password: パスワードは{{minimum}}～{{maximum}}文字にする必要があります
 
 editpage:
   pagetitle: 編集
@@ -67,6 +78,7 @@ error:
     nohash: ファイル ハッシュが指定されていません # 400
     notfound: 進行中のアップロードが見つかりません # 404
     unknown_hash_algorithm: 不明なハッシュ アルゴリズムが指定されています # 400
+  unauthorized: ユーザー認証が必要です
 
 formats:
   avc1: H.264/AVC {{height}}p ({{bitrate}}bps)

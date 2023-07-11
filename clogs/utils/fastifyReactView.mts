@@ -56,19 +56,25 @@ export function fastifyReactView(
 			cache.clear()
 		},
 	})
-	instance.decorateReply(propertyName, async function (template: string, args: unknown) {
-		if (args === undefined) {
-			return
-		}
-
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	instance.decorateReply(propertyName, async function (template: string, args: any) {
 		let elem = cache.get(template)
 		if (!elem) {
 			const path = resolve(process.cwd(), root, template + ext)
 			elem = await import(path)
 		}
 
-		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		const stream = getStream(elem.default, args ? Object.assign(args as any, this.locals) : this.locals)
+		if (args) {
+			Object.assign(args, this.locals)
+			args.session = this.request.session
+		} else {
+			args = {
+				...this.locals,
+				session: this.request.session,
+			}
+		}
+
+		const stream = getStream(elem.default, args)
 		await this.headers(defaultHeaders).send(stream)
 	})
 

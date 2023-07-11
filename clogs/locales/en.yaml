@@ -1,6 +1,8 @@
 sitename: "VookIt!"
 
 navbar:
+  login: Log In
+  logout: Log Out
   upload: Upload
   settings: Settings
   modal:
@@ -23,6 +25,15 @@ viewpage:
   error:
     id: "The variable `id` should be in url safe base64."
 
+signinpage:
+  pagetitle: Log In
+  screenname: Screen Name
+  password: Password
+  signin: Log In
+  validation:
+    screenname: The screen name must be between {{minimum}} and {{maximum}} characters.
+    password: The password must be between {{minimum}} and {{maximum}} characters.
+
 editpage:
   pagetitle: Edit
   title: Title (required)
@@ -33,8 +44,8 @@ editpage:
   update: Update
   cancel: Cancel
   validation:
-    title: Title must be between {{minimum}} and {{maximum}} characters.
-    description: Description must be up to {{maximum}} characters.
+    title: The title must be between {{minimum}} and {{maximum}} characters.
+    description: The description must be up to {{maximum}} characters.
 
 uploadpage:
   pagetitle: Upload
@@ -67,6 +78,7 @@ error:
     nohash: Not found file hash. # 400
     notfound: Not found upload in progress. # 404
     unknown_hash_algorithm: Unknown hash algorithm. # 400
+  unauthorized: Require user authentication
 
 formats:
   avc1: H.264/AVC {{height}}p ({{bitrate}}bps)

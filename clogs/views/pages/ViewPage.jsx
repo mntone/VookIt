@@ -38,6 +38,7 @@ function getInlineScript(id) {
 /**
  * @param   {object}                   props
  * @param   {function(string): string} props.t
+ * @param   {object}                   props.session
  * @param   {string}                   props.language
  * @param   {number}                   props.id
  * @param   {string}                   props.title
@@ -48,7 +49,7 @@ function getInlineScript(id) {
  * @returns {React.JSX.Element}
  */
 // eslint-disable-next-line react/display-name, react/prop-types
-module.exports = ({ t, language, id, title, description, postedBy, published, publishedBy }) => {
+module.exports = ({ t, language, session, id, title, description, postedBy, published, publishedBy }) => {
 	const usid = numToUsid(id)
 	const stylesheets = [{
 		href: 'https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.3.6/controls.min.css',
@@ -60,6 +61,8 @@ module.exports = ({ t, language, id, title, description, postedBy, published, pu
 			t={t}
 			title={title}
 			language={language}
+			session={session}
+			redirect={'%2Fv%2F' + usid}
 			stylesheets={stylesheets}>
 			<div className="VideoPlayer">
 				<div id="player">

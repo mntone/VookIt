@@ -6,6 +6,7 @@ import {
 	Query,
 	Render,
 	UseFilters,
+	UseGuards,
 } from '@nestjs/common'
 import { Prisma } from '@prisma/client'
 
@@ -14,6 +15,7 @@ import findPostById from '../../usecase/posts/findById.js'
 import findPosts from '../../usecase/posts/findMany.js'
 import { HtmlPageExceptionFilter } from '../../utils/filters/htmlPageException.filter.mjs'
 import { ParseUsidPipe } from '../../utils/pipes/parseUsid.pipe.mjs'
+import { AuthenticationsGuard } from '../authentications/authentications.guard.mjs'
 
 @Controller()
 @UseFilters(HtmlPageExceptionFilter)
@@ -38,6 +40,7 @@ export class RootController {
 		const posts = await findPosts(options)
 		return {
 			limit,
+			until,
 			firstPage: !until,
 			posts,
 		}
@@ -85,7 +88,18 @@ export class RootController {
 
 	@Get('upload')
 	@Render('UploadPage')
+	@UseGuards(AuthenticationsGuard)
 	upload() {
 		return null
+	}
+
+	@Get('login')
+	@Render('signIn')
+	signIn(
+		@Query('r') redirect: string | undefined,
+	) {
+		return {
+			redirect,
+		}
 	}
 }

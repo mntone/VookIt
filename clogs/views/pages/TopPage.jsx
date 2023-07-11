@@ -8,12 +8,14 @@ const VideoCard = require('../components/VideoCard')
  * @param   {object}                          props
  * @param   {function(string): string}        props.t
  * @param   {string}                          props.language
+ * @param   {object}                          props.session
  * @param   {number}                          props.limit
+ * @param   {number | undefined}              props.until
  * @param   {boolean}                         props.firstPage
  * @param   {import('@prisma/client').Post[]} props.posts
  * @returns {React.JSX.Element}
  */
-function TopPage({ t, language, limit, firstPage, posts }) {
+function TopPage({ t, language, session, limit, until, firstPage, posts }) {
 	const isAdmin = false
 	const count = posts.length
 
@@ -37,6 +39,8 @@ function TopPage({ t, language, limit, firstPage, posts }) {
 		<Root
 			t={t}
 			language={language}
+			session={session}
+			redirect={until ? '%2F%3Funtil%3D' + until.toString() : undefined}
 			className={`cc-max${Math.max(2, Math.ceil(count / 3))}`}
 			toppageLinkEnabled={!firstPage}>
 			<div className="cc">
@@ -52,7 +56,11 @@ function TopPage({ t, language, limit, firstPage, posts }) {
 TopPage.propTypes = {
 	t: PropTypes.func.isRequired,
 	language: PropTypes.string.isRequired,
+	session: PropTypes.shape({
+		uid: PropTypes.number,
+	}),
 	limit: PropTypes.number.isRequired,
+	until: PropTypes.number,
 	firstPage: PropTypes.bool.isRequired,
 	posts: PropTypes.array.isRequired,
 }

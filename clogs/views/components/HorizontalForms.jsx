@@ -5,6 +5,7 @@ const { Hidden } = require('./Forms')
 
 /**
  * @typedef TextInputProps
+ * @property {'text' | 'password'}               type
  * @property {string}                            id
  * @property {string}                            title
  * @property {string?}                           content
@@ -21,7 +22,7 @@ const { Hidden } = require('./Forms')
  * @param   {TextInputProps}    props
  * @returns {React.JSX.Element}
  */
-function TextInput({ id, title, content, placeholder, minimumLength, maximumLength, required, disabled, children }) {
+function TextInput({ type, id, title, content, placeholder, minimumLength, maximumLength, required, disabled, children }) {
 	return (
 		<div className="field is-horizontal">
 			<div className="field-label is-normal">
@@ -32,6 +33,7 @@ function TextInput({ id, title, content, placeholder, minimumLength, maximumLeng
 					<div className="control">
 						<input
 							className="input"
+							type={type !== 'text' ? type : undefined}
 							id={id}
 							name={id}
 							defaultValue={content}
@@ -48,6 +50,7 @@ function TextInput({ id, title, content, placeholder, minimumLength, maximumLeng
 	)
 }
 TextInput.propTypes = {
+	type: PropTypes.string,
 	id: PropTypes.string.isRequired,
 	title: PropTypes.string.isRequired,
 	content: PropTypes.string,
@@ -59,6 +62,7 @@ TextInput.propTypes = {
 	children: PropTypes.node,
 }
 TextInput.defaultProps = {
+	type: 'text',
 	required: false,
 	disabled: false,
 }

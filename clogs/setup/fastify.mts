@@ -1,8 +1,10 @@
+import { readFile } from 'fs/promises'
 import { resolve } from 'path'
 
 import fastifyAccepts from '@fastify/accepts'
 import acceptsSerializer from '@fastify/accepts-serializer'
 import fastifyMultipart from '@fastify/multipart'
+import fastifySecureSession from '@fastify/secure-session'
 import { NestFastifyApplication } from '@nestjs/platform-fastify'
 // import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import i18next from 'i18next'
@@ -13,6 +15,7 @@ import yaml from 'js-yaml'
 import { pack, unpack } from 'msgpackr'
 import { initReactI18next } from 'react-i18next'
 
+import { loadConfigurations } from '../../configurations/configurations.mjs'
 import env from '../../constants/env.js'
 import fastifyReactView from '../utils/fastifyReactView.mjs'
 
@@ -33,6 +36,20 @@ export async function setupFastify(app: NestFastifyApplication) {
 			fallbackLng: 'en',
 		})
 	app.register(i18nextMiddleware.plugin, { i18next })
+
+	// Set session.
+	const conf = loadConfigurations()
+	app.register(fastifySecureSession, {
+		cookieName: conf.session.cookieName,
+		cookie: {
+			httpOnly: true,
+			maxAge: conf.session.cookieMaxAge,
+			path: '/',
+			sameSite: 'lax',
+			secure: conf.http.ssl != null,
+		},
+		secret: await readFile(conf.session.key),
+	})
 
 	// Set default renderer.
 	app.register(fastifyReactView, {

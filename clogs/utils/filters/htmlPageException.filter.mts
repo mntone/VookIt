@@ -1,4 +1,9 @@
-import { ArgumentsHost, ExceptionFilter, HttpException } from '@nestjs/common'
+import {
+	ArgumentsHost,
+	ExceptionFilter,
+	HttpException,
+	UnauthorizedException,
+} from '@nestjs/common'
 import fastify from 'fastify'
 
 import ErrorPage from '../../views/pages/ErrorPage.jsx'
@@ -14,12 +19,15 @@ export class HtmlPageExceptionFilter implements ExceptionFilter {
 		if (exception instanceof InternalError) {
 			description = req.t('error.' + exception.fieldName)
 				+ ' (' + req.t('errorpage.message').replace('%d', exception.statusCode.toString()) + ')'
+		} else if (exception instanceof UnauthorizedException) {
+			description = req.t('error.unauthorized')
 		} else {
 			description = req.t('errorpage.message').replace('%d', exception.getStatus().toString())
 		}
 		const stream = getStream(ErrorPage, {
 			t: req.t,
 			language: req.language,
+			session: req.session,
 			description,
 		})
 		res

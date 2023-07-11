@@ -11,10 +11,13 @@ datasource db {
 }
 
 model User {
-  id         Int     @id @default(autoincrement())
-  screenname String  @unique
-  name       String?
-  posts      Post[]
+  id             Int      @id @default(autoincrement())
+  screenname     String   @unique
+  name           String?
+  password       String
+  createdAt      DateTime @default(now()) @map("created_at")
+  lastSignedInAt DateTime @default(now()) @map("last_signed_in_at")
+  posts          Post[]
 }
 
 model Post {

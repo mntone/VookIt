@@ -44,6 +44,10 @@ module.exports = {
 			dependOn: 'main',
 			import: './clogs/scripts/edit.js',
 		},
+		signin: {
+			dependOn: 'main',
+			import: './clogs/scripts/signin.js',
+		},
 		upload: './clogs/scripts/upload.js',
 	},
 	devtool: isDev
