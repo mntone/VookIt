@@ -105,9 +105,6 @@ function retryPromise(task, cond) {
 const defaultInit = {
 	method: 'POST',
 	mode: 'same-origin',
-	headers: {
-		'Accept': 'application/json',
-	},
 	redirect: 'manual',
 	referrer: '',
 }

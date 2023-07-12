@@ -26,21 +26,21 @@ async function bootstrap() {
 	const conf = loadConfigurations().http
 
 	// Start up fastify.
-	const fastifyOptions = conf.ssl
-		? {
+	const fastifyOptions = {
+		logger: !isProd,
+		bodyLimit: 4 * 1024,
+		maxParamLength: 25,
+	}
+	if (conf.ssl) {
+		Object.assign(fastifyOptions, {
 			http2: conf.http2 === true,
 			https: {
 				allowHTTP1: true,
 				key: await readFile(conf.ssl.key),
 				cert: await readFile(conf.ssl.cert),
 			},
-			logger: !isProd,
-			maxParamLength: 25,
-		}
-		: {
-			logger: !isProd,
-			maxParamLength: 25,
-		}
+		})
+	}
 	const app = await NestFactory.create<NestFastifyApplication>(
 		AppModule,
 		new FastifyAdapter(fastifyOptions),

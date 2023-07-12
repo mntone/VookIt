@@ -1,8 +1,6 @@
 import { readFile } from 'fs/promises'
 import { resolve } from 'path'
 
-import fastifyAccepts from '@fastify/accepts'
-import acceptsSerializer from '@fastify/accepts-serializer'
 import fastifyMultipart from '@fastify/multipart'
 import fastifySecureSession from '@fastify/secure-session'
 import { NestFastifyApplication } from '@nestjs/platform-fastify'
@@ -11,8 +9,6 @@ import i18next from 'i18next'
 import i18nextFsBackend from 'i18next-fs-backend'
 // @ts-expect-error Fix no types
 import i18nextMiddleware from 'i18next-http-middleware'
-import yaml from 'js-yaml'
-import { pack, unpack } from 'msgpackr'
 import { initReactI18next } from 'react-i18next'
 
 import { loadConfigurations } from '../../configurations/configurations.mjs'
@@ -54,7 +50,7 @@ export async function setupFastify(app: NestFastifyApplication) {
 	// Set default renderer.
 	const defaultHeaders: Record<string, string> = {
 		'Referrer-Policy': 'no-referrer',
-			'X-Content-Type-Options': 'nosniff',
+		'X-Content-Type-Options': 'nosniff',
 		'X-Download-Options': 'noopen',
 		'X-Frame-Options': 'DENY',
 	}
@@ -66,9 +62,6 @@ export async function setupFastify(app: NestFastifyApplication) {
 		root: './clogs/views/pages',
 	})
 
-	app.register(fastifyAccepts)
-
-
 	// Init multipart
 	app.register(fastifyMultipart, {
 		limits: {
@@ -77,24 +70,9 @@ export async function setupFastify(app: NestFastifyApplication) {
 		},
 	})
 
+	// Remove JSON and text type parser.
 	const fastify = app.getHttpAdapter().getInstance()
-	fastify.removeContentTypeParser(['text/plain'])
-	fastify.addContentTypeParser(
-		['application/msgpack', 'application/x-msgpack'],
-		{
-			bodyLimit: 512 * 1024,
-			parseAs: 'buffer',
-		},
-		(_, body, done) => {
-			try {
-				const res = unpack(body as Uint8Array)
-				done(null, res)
-			} catch (err) {
-				// eslint-disable-next-line @typescript-eslint/no-explicit-any
-				(err as any).statusCode = 400
-				done(err as Error)
-			}
-		})
+	fastify.removeContentTypeParser(['application/json', 'text/plain'])
 
 	// Deploy static assets.
 	if (env.staticDeployEnabled) {
