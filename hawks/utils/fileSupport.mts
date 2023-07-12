@@ -2,16 +2,19 @@ import { existsSync } from 'fs'
 import { mkdir } from 'fs/promises'
 import { join } from 'path'
 
+import { loadConfigurations } from '../../configurations/configurations.mjs'
 import env from '../../constants/env.js'
 import { Variant } from '../models/encoders/Variant.mjs'
 import { EncodeData } from '../models/workers/EncodeData.mjs'
+
+const outputPath = loadConfigurations().media.outputPath
 
 export type FilepathOptions = {
 	assumeDirectory: boolean
 }
 
 export function getInputDirname(data: EncodeData) {
-	const inputDirname = join(env.mediaOutputDir, data.id)
+	const inputDirname = join(outputPath, data.id)
 	return inputDirname
 }
 
@@ -43,8 +46,8 @@ export function getOutputFilename(variant: Variant) {
 
 export function getOutputDirname(id: string, isPublic: boolean) {
 	const outputDirname = isPublic
-		? join(env.mediaOutputDir, id)
-		: join(env.mediaOutputDir, id, env.mediaPrivateDirname)
+		? join(outputPath, id)
+		: join(outputPath, id, env.mediaPrivateDirname)
 	return outputDirname
 }
 
@@ -59,7 +62,7 @@ export async function getOutputFilepath(id: string, variant: Variant, options?: 
 }
 
 export function getCmafDirname(id: string, name: string) {
-	const cmafDirname = join(env.mediaOutputDir, id, name)
+	const cmafDirname = join(outputPath, id, name)
 	return cmafDirname
 }
 

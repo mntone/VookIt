@@ -49,7 +49,7 @@ function UploadPage({ t, language, session }) {
 			title={title}
 			language={language}
 			session={session}
-			stylesheets={`${env.styleRelativePath}/form.css`}>
+			stylesheets={'/a/form.css'}>
 			<div className="d">
 				<h1>{title}</h1>
 

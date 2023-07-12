@@ -1,7 +1,6 @@
 const PropTypes = require('prop-types')
 const React = require('react')
 
-const env = require('../../../constants/env')
 const AppScript = require('../components/AppScript')
 
 const AppearanceModal = require('./AppearanceModal')
@@ -37,7 +36,7 @@ function Root({ t, session, redirect, title, language, className, toppageLinkEna
 			<head>
 				<title>{title ? title + ' - ' + t('sitename') : t('sitename')}</title>
 				<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
-				<link rel="stylesheet" href={`${env.styleRelativePath}/index.css`} referrerPolicy="no-referrer" />
+				<link rel="stylesheet" href={'/a/index.css'} referrerPolicy="no-referrer" />
 				{stylesheets.map((stylesheet, i) => {
 					switch (typeof stylesheet) {
 					case 'string':

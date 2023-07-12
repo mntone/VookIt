@@ -75,19 +75,20 @@ export async function setupFastify(app: NestFastifyApplication) {
 	fastify.removeContentTypeParser(['application/json', 'text/plain'])
 
 	// Deploy static assets.
-	if (env.staticDeployEnabled) {
-		app
-			.useStaticAssets({
-				decorateReply: false,
-				preCompressed: true,
-				prefix: '/a',
-				root: resolve('./.assets'),
-			})
-			.useStaticAssets({
-				decorateReply: false,
-				prefix: env.mediaRootPath,
-				root: resolve(env.mediaOutputDir),
-			})
+	if (conf.assets.enableDeploy) {
+		app.useStaticAssets({
+			decorateReply: false,
+			preCompressed: true,
+			prefix: conf.assets.baseUri,
+			root: resolve(conf.assets.outputPath),
+		})
+	}
+	if (conf.media.enableDeploy) {
+		app.useStaticAssets({
+			decorateReply: false,
+			prefix: conf.media.baseUri,
+			root: resolve(conf.media.outputPath),
+		})
 	}
 
 	// Add documents.

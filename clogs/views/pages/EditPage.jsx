@@ -50,7 +50,7 @@ function EditPage({ t, language, session, post }) {
 			language={language}
 			session={session}
 			redirect={'%2Fe%2F' + usid}
-			stylesheets={`${env.styleRelativePath}/form.css`}
+			stylesheets={'/a/form.css'}
 			scripts="edit"
 			lastChild={<script dangerouslySetInnerHTML={{ __html: getInlineScript(t) }} defer={true} />}>
 			<div className="d">

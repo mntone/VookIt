@@ -1,24 +1,6 @@
 // [TODO] JavaScript to yaml file
 module.exports = {
 
-	// --- Path configs
-	scriptRelativePath: '/a',
-	styleRelativePath: '/a',
-
-	// --- Server settings
-	// Defines the redis server.
-	redisHost: 'localhost',
-	redisPort: 6379,
-	redisOptions: {
-		family: 6,
-		username: 'default',
-		password: null,
-		maxRetriesPerRequest: null,
-	},
-
-	// Defines static assets/media deploying feature.
-	staticDeployEnabled: true,
-
 	// --- Hawks (backend) settings
 	// Defines default queue name.
 	// [Note] Reserved name: 'main' & 'encode'.
@@ -102,8 +84,7 @@ module.exports = {
 	topMaxCount: 25,
 
 	// --- Media configs
-	mediaRootPath: '/m',
-
+	// [Backport for /clogs/usecase/uploads/utils.js]
 	// Defines the public media dir.
 	mediaOutputDir: './.media',
 

@@ -2,7 +2,6 @@ const PropTypes = require('prop-types')
 const React = require('react')
 
 const manifest = require('../../../.assets/assets-manifest.json')
-const env = require('../../../constants/env')
 
 /**
  * @param   {object}            props
@@ -12,7 +11,7 @@ const env = require('../../../constants/env')
 function AppScript({ name }) {
 	return (
 		<script
-			src={`${env.scriptRelativePath}/${name}.js`}
+			src={`/a/${name}.js`}
 			integrity={manifest.assets[manifest.origins[name]].js[0].integrity}
 			crossOrigin="anonymous" />
 	)

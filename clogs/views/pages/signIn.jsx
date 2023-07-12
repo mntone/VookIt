@@ -46,7 +46,7 @@ function SignInPage({ t, language, session, redirect }) {
 			title={pageTitle}
 			language={language}
 			session={session}
-			stylesheets={`${env.styleRelativePath}/form.css`}
+			stylesheets={'/a/form.css'}
 			scripts="signin"
 			lastChild={<script dangerouslySetInnerHTML={{ __html: getInlineScript(t) }} defer={true} />}>
 			<div className="d d-narrow">

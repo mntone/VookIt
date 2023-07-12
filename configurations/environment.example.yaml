@@ -8,6 +8,24 @@ http:
     key: .dev/key.pem
     cert: .dev/cert.pem
 
+# Asset settings
+assets:
+  enableDeploy: true
+  outputPath: .assets
+  baseUri: /a
+
+# Media settings
+media:
+  enableDeploy: true
+  outputPath: .media
+  baseUri: /m
+
+# Redis settings
+redis:
+  host: localhost
+  port: 6379
+  username: default
+
 # Session settings
 # [Note] Quickly start with the command "npm run session:init"
 session:

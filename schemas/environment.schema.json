@@ -49,6 +49,42 @@
 				"port"
 			]
 		},
+		"assets": {
+			"$ref": "#/$defs/resource"
+		},
+		"media": {
+			"$ref": "#/$defs/resource"
+		},
+		"redis": {
+			"title": "Redis configuration",
+			"type": "object",
+			"properties": {
+				"host": {
+					"title": "Host name",
+					"type": "string",
+					"default": "localhost"
+				},
+				"port": {
+					"title": "Port number",
+					"type": "number",
+					"default": 443,
+					"minimum": 0,
+					"maximum": 65535
+				},
+				"username": {
+					"title": "User name",
+					"type": "string",
+					"default": "default"
+				},
+				"password": {
+					"title": "Password",
+					"type": "string"
+				}
+			},
+			"required": [
+				"port"
+			]
+		},
 		"session": {
 			"title": "Session configuration",
 			"type": "object",
@@ -82,6 +118,28 @@
 	},
 	"required": [
 		"http",
+		"redis",
 		"session"
-	]
+	],
+	"$defs": {
+		"resource": {
+			"title": "Resource configuration",
+			"type": "object",
+			"properties": {
+				"enableDeploy": {
+					"title": "Enable deploy",
+					"type": "boolean",
+					"default": true
+				},
+				"outputPath": {
+					"title": "Output path",
+					"type": "string"
+				},
+				"baseUri": {
+					"title": "Base URI",
+					"type": "string"
+				}
+			}
+		}
+	}
 }

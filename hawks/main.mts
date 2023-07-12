@@ -1,6 +1,7 @@
 import { Processor, Worker, WorkerOptions } from 'bullmq'
-import IORedis from 'ioredis'
+import { Redis } from 'ioredis'
 
+import { loadConfigurations } from '../configurations/configurations.mjs'
 import env from '../constants/env.js'
 import initConstants from '../constants/init.mjs'
 
@@ -20,7 +21,11 @@ export async function main() {
 	detectSystem()
 
 	// Init workers.
-	const connection = new IORedis(env.redisPort, env.redisHost, env.redisOptions)
+	const conf = loadConfigurations().redis
+	const connection = new Redis({
+		...conf,
+		maxRetriesPerRequest: 0,
+	})
 	const baseOptions: WorkerOptions = {
 		autorun: false,
 		concurrency: env.hawksDefaultConcurrency,
