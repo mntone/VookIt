@@ -2,6 +2,9 @@
 	"jest.jestCommandLine": "npm run test --",
 	"typescript.tsdk": "./node_modules/typescript/lib",
 	"yaml.schemas": {
+		"./schemas/environment.schema.json": [
+			"environment*.yaml"
+		],
 		"./hawks/configs/schemas/format.schema.json": [
 			"/hawks/configs/*.format.yaml"
 		]

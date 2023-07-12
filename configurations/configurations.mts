@@ -1,3 +1,4 @@
+import { mapEnvironment } from '../shared/mappers/configurations/environment.mjs'
 import { Configuration } from '../shared/models/configurations/environment.mjs'
 import { loadSync } from '../shared/utils/loader.mjs'
 
@@ -10,7 +11,7 @@ export const loadConfigurations = () => {
 		return cachedConfigurations
 	}
 
-	const conf = loadSync<Configuration>('configurations', environmentFilename)
+	const conf = loadSync<Configuration>('configurations', environmentFilename, mapEnvironment)
 	cachedConfigurations = conf
 	return conf
 }

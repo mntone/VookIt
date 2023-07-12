@@ -6,7 +6,7 @@ import { NestFactory } from '@nestjs/core'
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify'
 
 import { loadConfigurations } from '../configurations/configurations.mjs'
-import initConstants from '../constants/init.js'
+import initConstants from '../constants/init.mjs'
 
 import { AppModule } from './app.module.mjs'
 import { setupBullMQ } from './setup/bullmq.mjs'

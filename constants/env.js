@@ -16,9 +16,6 @@ module.exports = {
 		maxRetriesPerRequest: null,
 	},
 
-	// [TODO-impl] Defines to launch the redis server by backend: hawks.
-	redisAutorunWhenDevelopment: true,
-
 	// Defines static assets/media deploying feature.
 	staticDeployEnabled: true,
 
@@ -39,10 +36,16 @@ module.exports = {
 	// Defines default concurrency (fallback).
 	hawksDefaultConcurrency: 1,
 
-	// Defines default duration to stall job (fallback).
+	/**
+	 * Defines default duration to stall job (fallback).
+	 * @type {import("../shared/utils/datetimeTerms.mjs").DateTimeString | number}
+	 */
 	hawksDefaultStalledDuration: '30min',
 
-	// Defines encode delayed duration to create CMAF intermediate stream.
+	/**
+	 * Defines encode delayed duration to create CMAF intermediate stream.
+	 * @type {import("../shared/utils/datetimeTerms.mjs").DateTimeString | number}
+	 */
 	hawksEncodeDelayToSaveIntermediateStream: '1min',
 
 	// Defines the count to keep job log when complete if true.
@@ -73,7 +76,7 @@ module.exports = {
 	},
 
 	// Defines the maximum length of description
-	descriptionMaximumLength: 1024,
+	descriptionMaximumLength: 1023,
 
 	// --- VideoCard configs
 	// Defines the thumbnail codec list in VideoCard component.
@@ -125,19 +128,25 @@ module.exports = {
 	mediaHlsFilename: 'hls.m3u8',
 
 	// --- Configurable settings
-	// Defines the maximum size of ordinal request body.
-	requestMaxBodySize: 1024,
-
 	// Defines the upload workdir.
 	uploadWorkdir: './.temp',
 
-	// Defines the maximum size of chunk upload.
+	/**
+	 * Defines the maximum size of chunk upload.
+	 * @type {string | number}
+	 */
 	uploadMaxChunkSize: '8M',
 
-	// Defines the maximum total size of chunk upload.
+	/**
+	 * Defines the maximum total size of chunk upload.
+	 * @type {string | number}
+	 */
 	uploadMaxTotalSize: '256M',
 
-	// Defines the maximum size of upload.
+	/**
+	 * Defines the maximum size of upload.
+	 * @type {string | number}
+	 */
 	uploadMaxFileSize: '8M',
 
 	// Defines the maximum retry count for chunk upload.
@@ -160,9 +169,6 @@ module.exports = {
 
 	// Defines the cache terms to the endpoint `GET /api/version`.
 	apiVersionCacheTerms: '1h',
-
-	// --- For Development
-	uploadMaxFileSizeMultiplierInDev: 15,
 
 	// --- Placeholders: Calc these envs when init.
 	// Note: But, you can apply custom value that is larger than 0.

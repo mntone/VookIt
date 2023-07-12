@@ -12,5 +12,5 @@ http:
 # [Note] Quickly start with the command "npm run session:init"
 session:
   cookieName: __Host-s
-  cookieMaxAge: 1209600 # 14 days (14 * 24 * 60 * 60)
+  cookieMaxAge: 14 days
   key: .dev/session.key

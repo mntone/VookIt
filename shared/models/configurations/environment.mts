@@ -3,61 +3,61 @@ export type SslConfiguration = {
 	/**
 	 * Key file path
 	 */
-	key: string
+	readonly key: string
 
 	/**
 	 * Cert file path
 	 */
-	cert: string
+	readonly cert: string
 }
 
 export type HttpConfiguration = {
 	/**
 	 * Enable http2
 	 */
-	http2?: boolean
+	readonly http2?: boolean
 
 	/**
 	 * Host name
 	 */
-	host: string
+	readonly host: string
 
 	/**
 	 * Port number
 	 */
-	port: number
+	readonly port: number
 
 	/**
 	 * SSL configuration
 	 */
-	ssl?: SslConfiguration
+	readonly ssl?: SslConfiguration
 }
 
 export type SessionConfiguration = {
 	/**
 	 * Session cookie name
 	 */
-	cookieName: string
+	readonly cookieName: string
 
 	/**
 	 * Session cookie max-age
 	 */
-	cookieMaxAge: number
+	readonly cookieMaxAge: number
 
 	/**
 	 * Key path
 	 */
-	key: string
+	readonly key: string
 }
 
 export type Configuration = {
 	/**
 	 * Http configuration
 	 */
-	http: HttpConfiguration
+	readonly http: HttpConfiguration
 
 	/**
 	 * Session configuration
 	 */
-	session: SessionConfiguration
+	readonly session: SessionConfiguration
 }

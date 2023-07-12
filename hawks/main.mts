@@ -2,7 +2,7 @@ import { Processor, Worker, WorkerOptions } from 'bullmq'
 import IORedis from 'ioredis'
 
 import env from '../constants/env.js'
-import initConstants from '../constants/init.js'
+import initConstants from '../constants/init.mjs'
 
 import { detectSystem } from './usecases/startups/detectSystem.mjs'
 import { CodecConfigLoader } from './usecases/workers/CodecConfigLoader.mjs'

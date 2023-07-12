@@ -1,0 +1,87 @@
+{
+	"title": "Environment Settings",
+	"type": "object",
+	"properties": {
+		"http": {
+			"title": "Http configuration",
+			"type": "object",
+			"properties": {
+				"http2": {
+					"title": "Enable http2",
+					"type": "boolean",
+					"default": true
+				},
+				"host": {
+					"title": "Host name",
+					"type": "string",
+					"default": "localhost"
+				},
+				"port": {
+					"title": "Port number",
+					"type": "number",
+					"default": 443,
+					"minimum": 0,
+					"maximum": 65535
+				},
+				"ssl": {
+					"title": "SSL configuration",
+					"type": "object",
+					"properties": {
+						"key": {
+							"title": "Key file path",
+							"type": "string",
+							"default": ".dev/key.pem"
+						},
+						"cert": {
+							"title": "Cert file path",
+							"type": "string",
+							"default": ".dev/cert.pem"
+						}
+					},
+					"required": [
+						"key",
+						"cert"
+					]
+				}
+			},
+			"required": [
+				"host",
+				"port"
+			]
+		},
+		"session": {
+			"title": "Session configuration",
+			"type": "object",
+			"properties": {
+				"cookieName": {
+					"title": "Session cookie name",
+					"type": "string",
+					"default": "__Host-s"
+				},
+				"cookieMaxAge": {
+					"title": "Session cookie max-age",
+					"anyOf": [
+						{
+							"description": "For example, '14 days', '30 mins' or 1209600",
+							"type": "string",
+							"pattern": "^[1-9][0-9]* *(s|secs?|seconds?|mins?|minutes?|h|hrs?|hours?|d|dys?|days?|w|wks?|weeks?)$"
+						},
+						{
+							"description": "For example, 1209600 (14 days) or '30 mins'",
+							"type": "number",
+							"minimum": 0
+						}
+					],
+					"default": "14 days"
+				},
+				"key": {
+					"title": "Key path"
+				}
+			}
+		}
+	},
+	"required": [
+		"http",
+		"session"
+	]
+}
