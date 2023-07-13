@@ -14,19 +14,25 @@ const getInlineScript = t => {
 		.replace('{{maximum}}', env.passwordMaximumLength)
 	return `
 'use strict'
-new window.SignInForm(Object.freeze({
-	screenname: ['screenname', {
-		invalidClassName: 'is-danger',
-		messageElementId: 'screenname-validation',
-		validationMessage: '${screennameValidation}',
-	}],
-	password: ['password', {
-		invalidClassName: 'is-danger',
-		messageElementId: 'password-validation',
-		validationMessage: '${passwordValidation}',
-	}],
-	signin: 'signin',
-}))
+new window.FormValidation({
+	t: [
+		{
+			t: 'textbox',
+			i: 'screenname',
+			c: 'is-danger',
+			messageElementId: 'screenname-validation',
+			m: { l: '${screennameValidation}' }
+		},
+		{
+			t: 'textbox',
+			i: 'password',
+			c: 'is-danger',
+			messageElementId: 'password-validation',
+			m: { l: '${passwordValidation}' }
+		},
+	],
+	s: 'signin',
+})
 `
 }
 
@@ -47,7 +53,7 @@ function SignInPage({ t, language, session, redirect }) {
 			language={language}
 			session={session}
 			stylesheets={'/a/form.css'}
-			scripts="signin"
+			scripts="validation"
 			lastChild={<script dangerouslySetInnerHTML={{ __html: getInlineScript(t) }} defer={true} />}>
 			<div className="d d-narrow">
 				<h1>{pageTitle}</h1>

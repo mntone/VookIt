@@ -14,21 +14,31 @@ const getInlineScript = t => {
 		.replace('{{maximum}}', env.descriptionMaximumLength)
 	return `
 'use strict'
-new window.EditForm(Object.freeze({
-	title: ['title', {
-		invalidClassName: 'is-danger',
-		messageElementId: 'title-validation',
-		validationMessage: '${titleValidation}',
-	}],
-	description: ['description', {
-		invalidClassName: 'is-danger',
-		messageElementId: 'description-validation',
-		validationMessage: '${descriptionValidation}',
-	}],
-	visibility: 'visibility',
-	update: 'update',
-	cancel: 'cancel',
-}))
+new window.FormValidation({
+	t: [
+		{
+			t: 'textbox',
+			i: 'title',
+			c: 'is-danger',
+			messageElementId: 'title-validation',
+			m: { l: '${titleValidation}' }
+		},
+		{
+			t: 'textbox',
+			i: 'description',
+			c: 'is-danger',
+			messageElementId: 'description-validation',
+			m: { l: '${descriptionValidation}' }
+		},
+		{
+			t: 'select',
+			i: 'visibility',
+			c: 'is-danger',
+		},
+	],
+	s: 'update',
+	c: 'cancel',
+})
 `
 }
 
@@ -51,7 +61,7 @@ function EditPage({ t, language, session, post }) {
 			session={session}
 			redirect={'%2Fe%2F' + usid}
 			stylesheets={'/a/form.css'}
-			scripts="edit"
+			scripts="validation"
 			lastChild={<script dangerouslySetInnerHTML={{ __html: getInlineScript(t) }} defer={true} />}>
 			<div className="d">
 				<h1>{pageTitle}</h1>

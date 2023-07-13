@@ -40,13 +40,9 @@ module.exports = {
 	name: 'commonjs',
 	entry: {
 		main: './clogs/scripts/app.js',
-		edit: {
+		validation: {
 			dependOn: 'main',
-			import: './clogs/scripts/edit.js',
-		},
-		signin: {
-			dependOn: 'main',
-			import: './clogs/scripts/signin.js',
+			import: './clogs/scripts/validation.js',
 		},
 		upload: './clogs/scripts/upload.js',
 	},

@@ -1,19 +1,20 @@
 
 /**
  * @typedef ValidationOptions
- * @property {string} invalidClassName
- * @property {string} messageElementId
- * @property {string} validationMessage
+ * @property {string}        c
+ * @property {string | null} messageElementId
+ * @property {object}        m
+ * @property {string}        m.l
  */
 
 export class ValidationPlugin {
 	/**
-	 * @type {ValidationOptions}
+	 * @type {Omit<ValidationOptions, 'messageElementId'>}
 	 */
 	#options
 
 	/**
-	 * @type {HTMLElement}
+	 * @type {HTMLElement | null}
 	 */
 	#messageElement
 
@@ -31,10 +32,14 @@ export class ValidationPlugin {
 	 * @param {ValidationOptions} options
 	 */
 	constructor(options) {
-		this.#messageElement = document.getElementById(options.messageElementId)
+		if (options.messageElementId) {
+			this.#messageElement = document.getElementById(options.messageElementId)
+			delete options.messageElementId
+		} else {
+			this.#messageElement = null
+		}
 
 		// Save ValidationOptions
-		delete options.messageElementId
 		this.#options = Object.freeze(options)
 	}
 
@@ -74,15 +79,17 @@ export class ValidationPlugin {
 
 		let message = ''
 		if (this.#maximumLength !== -1 && length > this.#maximumLength) {
-			message = this.#options.validationMessage
-		} else if (length < this.#minimumLength && length !== 0) {
-			message = this.#options.validationMessage
+			message = this.#options.m.l
+		} else if (this.#minimumLength !== -1 && length < this.#minimumLength) {
+			message = this.#options.m.l
 		}
 		e.target.setCustomValidity(message)
 
 		if (e.target.reportValidity()) {
-			this.#messageElement.textContent = ''
-			e.target.classList.remove(this.#options.invalidClassName)
+			if (this.#messageElement) {
+				this.#messageElement.textContent = ''
+			}
+			e.target.classList.remove(this.#options.c)
 		}
 	}
 
@@ -90,8 +97,10 @@ export class ValidationPlugin {
 	 * @param {Event} e
 	 */
 	_onInvalid(e) {
-		this.#messageElement.textContent = e.target.validationMessage
-		e.target.classList.add(this.#options.invalidClassName)
+		if (this.#messageElement) {
+			this.#messageElement.textContent = e.target.validationMessage
+		}
+		e.target.classList.add(this.#options.c)
 		e.preventDefault()
 	}
 }
