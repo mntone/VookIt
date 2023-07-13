@@ -1,18 +1,23 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common'
 
 import { toInternalError } from '../../utils/errors/toInternalError.js'
-import { Prisma } from '../utils/prisma.mjs'
+import { PrismaService } from '../utils/prisma.service.mjs'
 
 import { comparePassword } from './password.util.mjs'
 
+/** @sealed */
 @Injectable()
 export class SignInUseCase {
+	readonly #prisma: PrismaService
+
 	constructor(
-		readonly _prisma: Prisma,
-	) { }
+		prisma: PrismaService,
+	) {
+		this.#prisma = prisma
+	}
 
 	async signIn(screenName: string, password: string) {
-		const { id, password: encryptedPassword } = await this._prisma.user.update({
+		const { id, password: encryptedPassword } = await this.#prisma.user.update({
 			select: {
 				id: true,
 				password: true,

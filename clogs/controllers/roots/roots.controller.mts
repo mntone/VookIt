@@ -11,8 +11,8 @@ import {
 import { Prisma } from '@prisma/client'
 
 import env from '../../../constants/env.js'
-import findPostById from '../../usecase/posts/findById.js'
-import findPosts from '../../usecase/posts/findMany.js'
+import { FindPostByIdUseCase } from '../../usecase/posts/findById.mjs'
+import { FindPostsUseCase, FindPostsUseCaseOptions } from '../../usecase/posts/findMany.mjs'
 import { HtmlPageExceptionFilter } from '../../utils/filters/htmlPageException.filter.mjs'
 import { ParseUsidPipe } from '../../utils/pipes/parseUsid.pipe.mjs'
 import { AuthenticationsGuard } from '../authentications/authentications.guard.mjs'
@@ -20,6 +20,17 @@ import { AuthenticationsGuard } from '../authentications/authentications.guard.m
 @Controller()
 @UseFilters(HtmlPageExceptionFilter)
 export class RootController {
+	readonly #findPosts: FindPostsUseCase
+	readonly #findPost: FindPostByIdUseCase
+
+	constructor(
+		findPosts: FindPostsUseCase,
+		findPost: FindPostByIdUseCase,
+	) {
+		this.#findPosts = findPosts
+		this.#findPost = findPost
+	}
+
 	@Get()
 	@Render('TopPage')
 	async create(
@@ -33,11 +44,11 @@ export class RootController {
 			publishedBy: true,
 		}
 		const limit = env.topMaxCount + 1
-		const options: any = { select, limit }
+		const options: FindPostsUseCaseOptions = { select, limit }
 		if (until) {
 			options.untilDate = new Date(until)
 		}
-		const posts = await findPosts(options)
+		const posts = await this.#findPosts.findMany(options)
 		return {
 			limit,
 			until,
@@ -60,7 +71,7 @@ export class RootController {
 			updatedBy: true,
 		}
 		// [TODO] Last-Modified
-		const post = await findPostById(id, { select })
+		const post = await this.#findPost.findById(id, { select })
 		return {
 			id,
 			...post,
@@ -77,7 +88,7 @@ export class RootController {
 			description: true,
 			published: true,
 		}
-		const post = await findPostById(id, { select })
+		const post = await this.#findPost.findById(id, { select })
 		return {
 			post: {
 				id,

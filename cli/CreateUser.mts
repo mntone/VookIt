@@ -1,7 +1,7 @@
 import { ParseArgsConfig, parseArgs } from 'util'
 
 import { CreateUserUseCase } from '../clogs/usecase/users/create.mjs'
-import { Prisma } from '../clogs/usecase/utils/prisma.mjs'
+import { PrismaService } from '../clogs/usecase/utils/prisma.service.mjs'
 
 const main = async () => {
 	const config: ParseArgsConfig = {
@@ -25,7 +25,7 @@ const main = async () => {
 	const screenname = positionals[0] || props.screenname as string
 	const password = positionals[1] || props.password as string
 
-	const prisma = new Prisma()
+	const prisma = new PrismaService()
 	const user = await new CreateUserUseCase(prisma).create(screenname, password)
 	return user
 }

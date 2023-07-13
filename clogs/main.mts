@@ -11,7 +11,7 @@ import initConstants from '../constants/init.mjs'
 import { AppModule } from './app.module.mjs'
 import { setupBullMQ } from './setup/bullmq.mjs'
 import { setupFastify } from './setup/fastify.mjs'
-import { Prisma } from './usecase/utils/prisma.mjs'
+import { PrismaService } from './usecase/utils/prisma.service.mjs'
 
 async function bootstrap() {
 	const isProd = process.env.NODE_ENV !== 'development'
@@ -47,7 +47,7 @@ async function bootstrap() {
 	)
 
 	// Fix issue for Prisma
-	const prisma = app.get(Prisma)
+	const prisma = app.get(PrismaService)
 	await prisma.enableShutdownHooks(app)
 
 	// Setup fastify
