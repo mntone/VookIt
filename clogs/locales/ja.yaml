@@ -52,6 +52,9 @@ uploadpage:
   help: MP4またはWebMのファイルをアップロードできます
   upload: アップロード
   choose: ファイルを選択…
+  messages:
+    limitfps: 120 fpsを超えている動画は、最高画質設定で120 fpsになります
+    limitsize: 画面比率が21.6:9より小さい動画は、高さ基準で処理されます
 
 errorpage:
   pagetitle: エラー！

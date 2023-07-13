@@ -52,6 +52,9 @@ uploadpage:
   help: Require MP4 or WebM file
   upload: Upload
   choose: Choose a file…
+  messages:
+    limitfps: Transcode your video as 120 fps on maximum quality when its framerate is higher than 120 fps.
+    limitsize: Reduce your video by reference height when its aspect ratio is lower than 21.6:9.
 
 errorpage:
   pagetitle: Error!

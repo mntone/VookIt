@@ -67,7 +67,8 @@ function UploadPage({ t, language, session }) {
 					<p id="file-validation" className="help is-danger" />
 					<p className="help"><ul>
 						<li>{t('uploadpage.help')}</li>
-						<li>21.6:9までの動画は高さ基準で処理されます</li>
+						<li>{t('uploadpage.messages.limitsize')}</li>
+						<li>{t('uploadpage.messages.limitfps')}</li>
 					</ul></p>
 					<noscript>
 						<div className="control">
