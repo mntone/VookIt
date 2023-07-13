@@ -27,7 +27,7 @@ export class VirtualCallbackElement extends VirtualElement {
 	 */
 	on(eventName, callback) {
 		if (!this.#callbacks[eventName]) {
-			this.#callbacks[eventName] = Object.create(null)
+			this.#callbacks[eventName] = {}
 		}
 		this.#callbacks[eventName].push(callback)
 	}

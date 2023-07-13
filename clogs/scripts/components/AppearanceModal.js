@@ -1,4 +1,4 @@
-import ModalSupport from '../utils/ModalSupport'
+import { ModalSupport } from '../utils/ModalSupport'
 import { preferredReducedMotion } from '../utils/StyleStateHelpers'
 import { VirtualCheckBox } from '../virtuals/inputs/VirtualCheckBox'
 
@@ -117,7 +117,7 @@ class AppearanceState {
 	}
 }
 
-export default class AppearanceModal extends ModalSupport {
+export class AppearanceModal extends ModalSupport {
 	/**
 	 * @type {AppearanceState}
 	 */
@@ -133,15 +133,15 @@ export default class AppearanceModal extends ModalSupport {
 	 */
 	#noscale
 
-	constructor(modalId = AppearanceModal.name) {
+	constructor(modalId = 'AppearanceModal') {
 		super(modalId)
 
 		this._hookDefaultClose()
-		document.getElementById('AppearanceModal-save').addEventListener('click', this.#onSaveClick.bind(this))
+		document.getElementById(modalId + '-save').addEventListener('click', this.#onSaveClick.bind(this))
 
 		const state = new AppearanceState()
-		this.#animation = new VirtualCheckBox(document.getElementById('AppearanceModal-animation'), state.animation, true)
-		this.#noscale = new VirtualCheckBox(document.getElementById('AppearanceModal-noscale'), state.noscale, true)
+		this.#animation = new VirtualCheckBox(document.getElementById(modalId + '-animation'), state.animation, true)
+		this.#noscale = new VirtualCheckBox(document.getElementById(modalId + '-noscale'), state.noscale, true)
 		this.#state = state
 	}
 

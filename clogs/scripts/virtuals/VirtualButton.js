@@ -36,6 +36,6 @@ export class VirtualButton extends VirtualElement {
 	}
 
 	#applyDisabled(disabled) {
-		this.element.disabled = disabled
+		this.elem.disabled = disabled
 	}
 }

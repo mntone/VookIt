@@ -2,7 +2,7 @@ const IS_ACTIVE_STATE_CLASS = 'is-active'
 const IS_POPOVER_ACTIVE_STATE_CLASS = 'is-popover-active'
 const MODAL_TRIGGER_QUERY = '.hint-popoverable'
 
-export default class ModalSupport {
+export class ModalSupport {
 	/**
 	 * Is initialized
 	 * @type {boolean}

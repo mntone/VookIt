@@ -52,30 +52,30 @@ module.exports = {
 	},
 	devtool: isDev
 		? 'eval-cheap-module-source-map' // build: slow, rebuild: fast
-		: false,
+		: 'hidden-source-map',
 	optimization: {
 		minimize: !isDev,
 		minimizer: [new TerserPlugin({
 			terserOptions: {
 				/* eslint-disable camelcase */
-				ecma: 2015,
+				ecma: 2022,
 				parse: {
 					shebang: false,
 				},
 				compress: {
 					keep_fargs: false,
-				},
-				mangle: {
-					reserved: ['AppearanceModal', 'installUpload'],
-					properties: true,
+					passes: 2,
+					unsafe_arrows: true,
+					unsafe_comps: true,
+					unsafe_methods: true,
 				},
 				format: {
-					quote_style: 1,
 					shebang: false,
 				},
 				toplevel: true,
 				/* eslint-enable camelcase */
 			},
+			extractComments: false,
 		})],
 	},
 	output: {

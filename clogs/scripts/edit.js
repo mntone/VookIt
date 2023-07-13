@@ -71,9 +71,9 @@ class EditForm {
 			|| !isDirty
 
 		if (isDirty) {
-			this.#cancel.element.classList.add('error')
+			this.#cancel.elem.classList.add('error')
 		} else {
-			this.#cancel.element.classList.remove('error')
+			this.#cancel.elem.classList.remove('error')
 		}
 	}
 }

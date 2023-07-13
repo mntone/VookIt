@@ -17,13 +17,9 @@ export class VirtualSelect extends VirtualInput {
 	 * @param {{ [key: string]: ((e: InputEvent) => void)[] }} callbacks
 	 */
 	constructor(elem, autoHook, callbacks) {
-		super(elem, callbacks)
+		super(elem, autoHook, callbacks)
 		this.#defaultSelectedIndex = elem.selectedIndex
 		this.#selectedIndex = elem.selectedIndex
-
-		if (autoHook) {
-			this._hook()
-		}
 	}
 
 	/**
@@ -51,7 +47,7 @@ export class VirtualSelect extends VirtualInput {
 	}
 
 	#applySelectedIndex(index) {
-		this.element.selectedIndex = index
+		this.elem.selectedIndex = index
 	}
 
 	get isDirty() {

@@ -35,19 +35,19 @@ export class VirtualCheckBox extends VirtualElement {
 		}
 
 		if (autoHook) {
-			this._hook()
+			this.#hook()
 		}
 	}
 
 	hookIfNeeded() {
 		if (!this.#hooked) {
-			this._hook()
+			this.#hook()
 		}
 	}
 
-	_hook() {
+	#hook() {
 		this._hooked = true
-		this.element.addEventListener('change', this._onChange.bind(this))
+		this.elem.addEventListener('change', this._onChange.bind(this))
 	}
 
 	/**
@@ -75,7 +75,7 @@ export class VirtualCheckBox extends VirtualElement {
 	}
 
 	#applyChecked(checked) {
-		this.element.checked = checked
+		this.elem.checked = checked
 	}
 
 	get isDirty() {

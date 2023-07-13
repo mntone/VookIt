@@ -8,22 +8,27 @@ export class VirtualInput extends VirtualCallbackElement {
 
 	/**
 	 * @param {HTMLInputElement}                               elem
+	 * @param {boolean}                                        autoHook
 	 * @param {{ [key: string]: ((e: InputEvent) => void)[] }} callbacks
 	 */
-	constructor(elem, callbacks) {
+	constructor(elem, autoHook, callbacks) {
 		super(elem, callbacks)
 		this.#hooked = false
+
+		if (autoHook) {
+			this.#hook()
+		}
 	}
 
 	hookIfNeeded() {
 		if (!this.#hooked) {
-			this._hook()
+			this.#hook()
 		}
 	}
 
-	_hook() {
+	#hook() {
 		this.#hooked = true
-		this.element.addEventListener('input', this._onInput.bind(this))
+		this.elem.addEventListener('input', this._onInput.bind(this))
 	}
 
 	/**
@@ -37,7 +42,7 @@ export class VirtualInput extends VirtualCallbackElement {
 	 * @type {boolean}
 	 */
 	get hasError() {
-		return !this.element.validity.valid
+		return !this.elem.validity.valid
 	}
 
 	/**

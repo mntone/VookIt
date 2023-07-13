@@ -12,12 +12,8 @@ export class VirtualTextBox extends VirtualInput {
 	 * @param {{ [key: string]: ((e: InputEvent) => void)[] }} callbacks
 	 */
 	constructor(elem, autoHook, callbacks) {
-		super(elem, callbacks)
+		super(elem, autoHook, callbacks)
 		this.#text = elem.value
-
-		if (autoHook) {
-			this._hook()
-		}
 	}
 
 	/**
@@ -45,10 +41,10 @@ export class VirtualTextBox extends VirtualInput {
 	}
 
 	#applyText(text) {
-		this.element.value = text
+		this.elem.value = text
 	}
 
 	get isDirty() {
-		return this.#text !== this.element.defaultValue
+		return this.#text !== this.elem.defaultValue
 	}
 }

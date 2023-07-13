@@ -15,7 +15,7 @@ export class VirtualElement {
 	/**
 	 * @type {HTMLElement}
 	 */
-	get element() {
+	get elem() {
 		return this.#elem
 	}
 }

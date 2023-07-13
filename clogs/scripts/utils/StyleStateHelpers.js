@@ -2,6 +2,6 @@
 /**
  * @returns {boolean}
  */
-export function preferredReducedMotion() {
+export const preferredReducedMotion = () => {
 	return window.matchMedia('(prefers-reduced-motion:reduce)').matches
 }

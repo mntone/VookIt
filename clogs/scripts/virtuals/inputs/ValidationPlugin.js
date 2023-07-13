@@ -43,23 +43,23 @@ export class ValidationPlugin {
 	 */
 	connect(parent) {
 		parent.on('input', this._onInput.bind(this))
-		parent.element.addEventListener('invalid', this._onInvalid.bind(this))
+		parent.elem.addEventListener('invalid', this._onInvalid.bind(this))
 
-		if (parent.element.minLength > 0) {
-			this.#minimumLength = parent.element.minLength
+		if (parent.elem.minLength > 0) {
+			this.#minimumLength = parent.elem.minLength
 			if (this.#minimumLength) {
-				parent.element.removeAttribute('minlength')
+				parent.elem.removeAttribute('minlength')
 			}
-			if (parent.element.required) {
+			if (parent.elem.required) {
 				if (this.#minimumLength === 0) {
 					this.#minimumLength = 1
 				}
-				parent.element.removeAttribute('required')
+				parent.elem.removeAttribute('required')
 			}
 		}
-		if (parent.element.maxLength > 0) {
-			this.#maximumLength = parent.element.maxLength
-			parent.element.removeAttribute('maxlength')
+		if (parent.elem.maxLength > 0) {
+			this.#maximumLength = parent.elem.maxLength
+			parent.elem.removeAttribute('maxlength')
 		}
 	}
 
