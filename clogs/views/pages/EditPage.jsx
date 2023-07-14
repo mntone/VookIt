@@ -60,7 +60,6 @@ function EditPage({ t, language, session, post }) {
 			language={language}
 			session={session}
 			redirect={'%2Fe%2F' + usid}
-			stylesheets={'/a/form.css'}
 			scripts="validation"
 			lastChild={<script dangerouslySetInnerHTML={{ __html: getInlineScript(t) }} defer={true} />}>
 			<div className="d">

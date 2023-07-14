@@ -2,6 +2,7 @@ const PropTypes = require('prop-types')
 const React = require('react')
 
 const AppScript = require('../components/AppScript')
+const StyleSheet = require('../components/StyleSheet')
 
 const AppearanceModal = require('./AppearanceModal')
 const Footer = require('./Footer')
@@ -24,8 +25,18 @@ const NavBar = require('./NavBar')
  * @returns {React.JSX.Element}
  */
 function Root({ t, session, redirect, title, language, className, toppageLinkEnabled, stylesheets, scripts, lastChild, children }) {
-	if (typeof stylesheets === 'string') {
-		stylesheets = [stylesheets]
+	switch (typeof stylesheets) {
+	case 'undefined':
+		stylesheets = ['base', 'bulma']
+		break
+	case 'string':
+		stylesheets = ['base', 'bulma', stylesheets]
+		break
+	default:
+		if (Array.isArray(stylesheets)) {
+			stylesheets = ['base', 'bulma', ...stylesheets]
+		}
+		break
 	}
 	if (typeof scripts === 'string') {
 		scripts = [scripts]
@@ -36,23 +47,9 @@ function Root({ t, session, redirect, title, language, className, toppageLinkEna
 			<head>
 				<title>{title ? title + ' - ' + t('sitename') : t('sitename')}</title>
 				<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no" />
-				<link rel="stylesheet" href={'/a/index.css'} referrerPolicy="no-referrer" />
-				{stylesheets.map((stylesheet, i) => {
-					switch (typeof stylesheet) {
-					case 'string':
-						return <link key={i} rel="stylesheet" href={stylesheet} referrerPolicy="no-referrer" />
-					case 'object':
-						return <link
-							key={i}
-							rel="stylesheet"
-							href={stylesheet.href}
-							integrity={stylesheet.integrity}
-							crossOrigin={stylesheet.crossOrigin === 'anonymous' ? '' : stylesheet.crossOrigin}
-							referrerPolicy={stylesheet.referrerPolicy || 'no-referrer'} />
-					default:
-						return null
-					}
-				})}
+				{stylesheets.map((stylesheet, i) => (
+					<StyleSheet key={i} stylesheet={stylesheet} />
+				))}
 			</head>
 			<body className={className}>
 				<NavBar
@@ -85,24 +82,9 @@ Root.propTypes = {
 	className: PropTypes.string,
 	toppageLinkEnabled: PropTypes.bool,
 	stylesheets: PropTypes.oneOfType([
-		PropTypes.string,
-		PropTypes.arrayOf(PropTypes.string),
-		PropTypes.arrayOf(PropTypes.exact({
-			href: PropTypes.string.isRequired,
-			integrity: PropTypes.string,
-			crossOrigin: PropTypes.oneOf(['anonymous', 'use-credentials']),
-			referrerPolicy: PropTypes.oneOf([
-				'no-referrer',
-				'no-referrer-when-downgrade',
-				'same-origin',
-				'origin',
-				'strict-origin',
-				'origin-when-cross-origin',
-				'strict-origin-when-cross-origin',
-				'unsafe-url',
-			]),
-		})),
-	]).isRequired,
+		StyleSheet.propTypes.stylesheet,
+		PropTypes.arrayOf(StyleSheet.propTypes.stylesheet),
+	]),
 	scripts: PropTypes.oneOfType([
 		PropTypes.string,
 		PropTypes.arrayOf(PropTypes.string),

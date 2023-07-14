@@ -52,7 +52,6 @@ function SignInPage({ t, language, session, redirect }) {
 			title={pageTitle}
 			language={language}
 			session={session}
-			stylesheets={'/a/form.css'}
 			scripts="validation"
 			lastChild={<script dangerouslySetInnerHTML={{ __html: getInlineScript(t) }} defer={true} />}>
 			<div className="d d-narrow">

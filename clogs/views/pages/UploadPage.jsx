@@ -48,8 +48,7 @@ function UploadPage({ t, language, session }) {
 			t={t}
 			title={title}
 			language={language}
-			session={session}
-			stylesheets={'/a/form.css'}>
+			session={session}>
 			<div className="d">
 				<h1>{title}</h1>
 

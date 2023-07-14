@@ -55,7 +55,6 @@ I really wanted to write a sentence in Japanese. It means “This software is wr
 1. Install nodejs, Redis, ffmpeg and SQLite.
 2. Build static assets.
   ```shell-session
-  % npm run sass
   % npm run webpack:build
   ```
 3. Generate SSL certificate (if use ssl).

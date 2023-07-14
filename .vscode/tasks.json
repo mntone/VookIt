@@ -9,15 +9,6 @@
 				"runOn": "folderOpen"
 			},
 			"problemMatcher": []
-		},
-		{
-			"label": "Sass (watch)",
-			"type": "npm",
-			"script": "sass:serve",
-			"runOptions": {
-				"runOn": "folderOpen"
-			},
-			"problemMatcher": []
 		}
 	]
 }
