@@ -11,13 +11,22 @@ import {
 } from '@nestjs/common'
 import fastify from 'fastify'
 
-import updatePost from '../../../usecase/posts/update.js'
+import { UpdatePostDto } from '../../../usecase/posts/dto/update.dto.mjs'
+import { UpdatePostUseCase } from '../../../usecase/posts/update.mjs'
 import { ParseUsidPipe } from '../../../utils/pipes/parseUsid.pipe.mjs'
 
 import { EditDto, PatchableEditDto } from './dto/edit.dto.mjs'
 
 @Controller('api/post')
 export class PostController {
+	readonly #updatePost: UpdatePostUseCase
+
+	constructor(
+		updatePost: UpdatePostUseCase,
+	) {
+		this.#updatePost = updatePost
+	}
+
 	@Post(':usid.html')
 	@UsePipes(new ValidationPipe({
 		forbidNonWhitelisted: true,
@@ -30,7 +39,7 @@ export class PostController {
 		@Param('usid', new ParseUsidPipe()) id: number,
 		@Body() body: EditDto,
 	) {
-		await updatePost(id, body)
+		await this.#updatePost.update(id, body as UpdatePostDto)
 		reply.redirect(302, '/v/' + usid)
 	}
 
@@ -45,7 +54,7 @@ export class PostController {
 		@Param('usid', new ParseUsidPipe()) id: number,
 		@Body() body: PatchableEditDto,
 	) {
-		const post = await updatePost(id, body)
+		const post = await this.#updatePost.update(id, body as UpdatePostDto)
 		return post
 	}
 }

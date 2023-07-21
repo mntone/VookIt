@@ -1,5 +1,5 @@
-import { Prisma } from '.prisma/client'
 import { Injectable } from '@nestjs/common'
+import { Prisma } from '@prisma/client'
 
 import { toInternalError } from '../../utils/errors/toInternalError.js'
 import { PrismaService } from '../utils/prisma.service.mjs'
