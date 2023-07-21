@@ -3,12 +3,20 @@ import {
 	Get,
 } from '@nestjs/common'
 
-import version from '../../usecase/version.js'
+import { VersionUseCase } from '../../usecase/version.mjs'
 
 @Controller('api')
 export class ApisController {
+	readonly #version: VersionUseCase
+
+	constructor(
+		version: VersionUseCase,
+	) {
+		this.#version = version
+	}
+
 	@Get('version')
 	async version() {
-		return version()
+		return this.#version.get()
 	}
 }

@@ -1,7 +1,11 @@
 const PropTypes = require('prop-types')
 const React = require('react')
 
-const { getSoftwareVersion, getGitHashSync } = require('../../utils/VersionSupport')
+// eslint-disable-next-line node/no-missing-require
+const { getSoftwareVersion, getGitHash } = require('../../utils/version.mjs')
+
+const hash = getGitHash().slice(0, 7)
+const version = getSoftwareVersion()
 
 /**
  * @param   {object}                   props
@@ -9,8 +13,6 @@ const { getSoftwareVersion, getGitHashSync } = require('../../utils/VersionSuppo
  * @returns {React.JSX.Element}
  */
 function Footer({ t }) {
-	const hash = getGitHashSync().slice(0, 7)
-	const version = getSoftwareVersion()
 	const sitename = t('sitename')
 
 	let content

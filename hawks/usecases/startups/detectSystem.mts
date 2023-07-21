@@ -1,4 +1,4 @@
-import { getSoftwareVersion } from '../../../clogs/utils/VersionSupport.js'
+import { getSoftwareVersion } from '../../../clogs/utils/version.mjs'
 import { VideoFilter } from '../filters/video.mjs'
 import { ffmpeg } from '../trampolines/ffmpeg.mjs'
 
