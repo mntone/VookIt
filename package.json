@@ -21,7 +21,6 @@
     "clogs:start:serve": "nodemon -x \"npm run clogs:start\" --config clogs/nodemon.config.json",
     "hawks:start": "node --loader ts-node/esm hawks/main.mts",
     "hawks:start:serve": "nodemon -x \"npm run hawks:start\" --watch ./hawks,./constants --ext js,ts,cts,mts,yaml --ignore **/__test__/** --delay 5 --signal SIGINT",
-    "redis:start": "redis-server",
     "redis:reset": "redis-cli FLUSHALL",
     "redis:stop": "redis-cli shutdown",
     "redis:ping": "redis-cli ping",

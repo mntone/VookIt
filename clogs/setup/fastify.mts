@@ -42,18 +42,13 @@ export async function setupFastify(app: NestFastifyApplication) {
 			maxAge: conf.session.cookieMaxAge,
 			path: '/',
 			sameSite: 'lax',
-			secure: conf.http.ssl != null,
+			secure: conf.session.cookieSecure ?? conf.http.ssl != null,
 		},
 		secret: await readFile(conf.session.key),
 	})
 
 	// Set default renderer.
-	const defaultHeaders: Record<string, string> = {
-		'Referrer-Policy': 'no-referrer',
-		'X-Content-Type-Options': 'nosniff',
-		'X-Download-Options': 'noopen',
-		'X-Frame-Options': 'DENY',
-	}
+	const defaultHeaders: Record<string, string> = { ...conf.http.headers }
 	if (conf.http.ssl) {
 		defaultHeaders['Strict-Transport-Security'] = 'max-age=' + (3 * 365 * 24 * 60 * 60).toString()
 	}

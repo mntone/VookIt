@@ -31,6 +31,11 @@ export type HttpConfiguration = {
 	 * SSL configuration
 	 */
 	readonly ssl?: SslConfiguration
+
+	/**
+	 * HTTP Default Headers
+	 */
+	readonly headers: Record<string, string>
 }
 
 export type ResourceConfiguration = {
@@ -82,6 +87,11 @@ export type SessionConfiguration = {
 	 * Session cookie max-age
 	 */
 	readonly cookieMaxAge: number
+
+	/**
+	 * Session cookie is sent on https
+	 */
+	readonly cookieSecure?: boolean
 
 	/**
 	 * Key path

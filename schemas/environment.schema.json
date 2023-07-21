@@ -42,6 +42,11 @@
 						"key",
 						"cert"
 					]
+				},
+				"headers": {
+					"title": "HTTP Headers",
+					"type": "object",
+					"additionalProperties": true
 				}
 			},
 			"required": [
@@ -109,6 +114,11 @@
 						}
 					],
 					"default": "14 days"
+				},
+				"cookieSecure": {
+					"title": "Session cookie is sent on https",
+					"type": "boolean",
+					"default": true
 				},
 				"key": {
 					"title": "Key path"

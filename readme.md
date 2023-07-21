@@ -52,26 +52,30 @@ I really wanted to write a sentence in Japanese. It means “This software is wr
 
 ## How to Use
 
-1. Install nodejs, Redis, ffmpeg and SQLite.
+1. Install nodejs, ffmpeg and SQLite.
 2. Build static assets.
   ```shell-session
   % npm run webpack:build
   ```
-3. Generate SSL certificate (if use ssl).
+3. Generate SSL certificate (if use ssl) and session key.
   ```shell-session
   % npm run openssl:init
+  % npm run session:init
   ```
-4. Start redis, clogs (frontend) and hawks (backend).
+4. Set docker volume up.
   ```shell-session
-  % npm run redis:start
-  % npm run clogs:start
+  % docker volume create vhosting_node_modules
+  ```
+5. Start docker and hawks (backend). Currently, use local node.js and ffmpeg for the backend.
+  ```shell-session
+  % docker-compose up -d
   % npm run hawks:start
   ```
-5. (Tentatively) Create your user. Currently program use screenname "dev" (hard coding on source).
+6. (Tentatively) Create your user. Currently program use screenname "dev" (hard coding on source).
   ```shell-session
-  % npm run user:new
+  % npm run user:new dev [password]
   ```
-6. (Manual) Rename directory after encoding. For example, rename "./.media/[usid]/st_avc1_ntvp" to "./.media/[usid]/avc1". In the future, program use as-is stream name like "st_avc1_720p" or "st_avc1_ntvp".
+7. (Manual) Rename directory after encoding. For example, rename "./.media/[usid]/st_avc1_ntvp" to "./.media/[usid]/avc1". In the future, program use as-is stream name like "st_avc1_720p" or "st_avc1_ntvp".
 
 ## Architecture
 

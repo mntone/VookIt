@@ -7,6 +7,11 @@ http:
   ssl:
     key: .dev/key.pem
     cert: .dev/cert.pem
+  headers:
+    Referrer-Policy: no-referrer
+    X-Content-Type-Options: nosniff
+    X-Download-Options: noopen
+    X-Frame-Options: DENY
 
 # Asset settings
 assets:
@@ -29,6 +34,7 @@ redis:
 # Session settings
 # [Note] Quickly start with the command "npm run session:init"
 session:
-  cookieName: __Host-s
+  cookieName: __Host-s # Require "cookieSecure: true". Rename it if you use http.
   cookieMaxAge: 14 days
+  cookieSecure: true
   key: .dev/session.key

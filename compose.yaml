@@ -1,0 +1,57 @@
+services:
+  h2o:
+    image: lkwg82/h2o-http2-server
+    depends_on:
+    - clogs
+    volumes:
+    - ./.docker/h2o:/home/h2o
+    - type: bind
+      source: ./.dev
+      target: /home/h2o/ssl
+      read_only: true
+    - type: bind
+      source: .
+      target: /app
+      read_only: true
+    ports:
+    - 443:3000
+    networks:
+    - default
+  clogs:
+    build:
+      context: .
+      dockerfile: ./.docker/clogs/Dockerfile
+    depends_on:
+    - redis
+    hostname: clogs
+    volumes:
+    - vhosting_node_modules:/app/node_modules/
+    - type: bind
+      source: ./.docker/configurations
+      target: /app/configurations
+      read_only: true
+    - type: bind
+      source: .
+      target: /app
+    working_dir: /app
+    networks:
+    - default
+    command: bash -c "npm install -g nodemon && npm install && npx prisma generate && npm run clogs:start:serve"
+  redis:
+    image: redis:latest
+    hostname: redis
+    ports:
+    - 6379:6379
+    networks:
+    - default
+
+volumes:
+  vhosting_node_modules:
+    external: true
+
+networks:
+  default:
+    ipam:
+      config:
+      - subnet: 172.16.0.0/28
+        ip_range: 172.16.0.0/29
